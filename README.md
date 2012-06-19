@@ -1,0 +1,4 @@
+Accurator
+=========
+
+RMA Accurator prototype
