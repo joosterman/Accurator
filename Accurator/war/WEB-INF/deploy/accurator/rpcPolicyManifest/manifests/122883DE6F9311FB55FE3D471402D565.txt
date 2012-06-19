@@ -1,0 +1,2 @@
+serviceClass: nl.wisdelft.accurator.client.service.RecommenderService
+path: 66A4D326794C22A3B88BEAF151F918F4.gwt.rpc

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
+
+
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>Accurator.html</welcome-file>
+  </welcome-file-list>
+  <servlet>
+  	<servlet-name>RecommenderServiceImpl</servlet-name>
+  	<servlet-class>nl.wisdelft.accurator.server.RecommenderServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>RecommenderServiceImpl</servlet-name>
+  	<url-pattern>/accurator/RecommenderService</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>ResourceDetailService</servlet-name>
+  	<servlet-class>nl.wisdelft.accurator.server.ResourceDetailServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ResourceDetailService</servlet-name>
+  	<url-pattern>/accurator/ResourceDetailService</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>UserInformationService</servlet-name>
+  	<servlet-class>nl.wisdelft.accurator.server.UserInformationServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>UserInformationService</servlet-name>
+  	<url-pattern>/accurator/UserInformationService</url-pattern>
+  </servlet-mapping>
+
+</web-app>
