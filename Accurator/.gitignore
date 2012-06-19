@@ -1,0 +1,13 @@
+*.class
+*DS_Store
+*.prefs
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# folders #
+/gwt-unitCache
+/.settings
+/.gwt

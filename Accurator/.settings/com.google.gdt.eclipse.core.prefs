@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
+jarsExcludedFromWebInfLib=/Users/oosterman/git/Accurator/Accurator/libs/jena-arq-2.9.0-incubating.jar|/Users/oosterman/git/Accurator/Accurator/libs/jena-core-2.7.0-incubating.jar|/Users/oosterman/git/Accurator/Accurator/libs/log4j-1.2.17.jar
 warSrcDir=war
 warSrcDirIsOutput=true
