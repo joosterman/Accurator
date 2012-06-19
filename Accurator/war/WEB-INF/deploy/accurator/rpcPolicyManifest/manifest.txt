@@ -1,5 +1,2 @@
 # Module accurator
 # RPC service class, partial path of RPC policy file
-nl.wisdelft.accurator.client.service.RecommenderService, 66A4D326794C22A3B88BEAF151F918F4.gwt.rpc
-nl.wisdelft.accurator.client.service.ResourceDetailService, 605FEA314ACB4C701CAD9DB8A426AE23.gwt.rpc
-nl.wisdelft.accurator.client.service.UserInformationService, C83AC55B368712F0C5E203C0B5C3EE0E.gwt.rpc

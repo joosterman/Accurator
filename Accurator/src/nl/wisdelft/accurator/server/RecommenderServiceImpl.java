@@ -19,6 +19,7 @@ import java.util.List;
 
 import nl.wisdelft.accurator.client.service.RecommenderService;
 import nl.wisdelft.accurator.shared.ResourceWithValue;
+import nl.wisdelft.accurator.shared.Utility;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.hp.hpl.jena.query.QueryExecution;

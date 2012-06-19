@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nl.wisdelft.accurator.client.service.UserInformationService;
+import nl.wisdelft.accurator.shared.Utility;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.hp.hpl.jena.query.QueryExecution;

@@ -1,6 +1,8 @@
 package nl.wisdelft.accurator.client.component;
 
 
+import nl.wisdelft.accurator.shared.Utility;
+
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.NamedFrame;
@@ -16,7 +18,7 @@ public class AnnotateScreen extends Composite {
 		
 		NamedFrame annotationFrame = new NamedFrame("annotationFrame");
 		annotationFrame.setStyleName("gwt-Frame-Annotate");
-		annotationFrame.setUrl("http://e-culture.multimedian.nl/sealinc/annotate");
+		annotationFrame.setUrl(Utility.getAnnotationComponentURL());
 		horizontalPanel.add(annotationFrame);
 		annotationFrame.setSize("800px", "800px");
 		

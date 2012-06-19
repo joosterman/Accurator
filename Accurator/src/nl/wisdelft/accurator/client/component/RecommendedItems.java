@@ -8,6 +8,7 @@ import nl.wisdelft.accurator.client.service.RecommenderServiceAsync;
 import nl.wisdelft.accurator.client.service.ResourceDetailService;
 import nl.wisdelft.accurator.client.service.ResourceDetailServiceAsync;
 import nl.wisdelft.accurator.shared.ResourceDetail;
+import nl.wisdelft.accurator.shared.Utility;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -59,7 +60,7 @@ public class RecommendedItems extends Composite {
 							verticalPanel.add(label2);
 
 							FormPanel formPanel = new FormPanel("annotationFrame");
-							formPanel.setAction("http://e-culture.multimedian.nl/sealinc/annotate");
+							formPanel.setAction(Utility.getAnnotationComponentURL());
 							formPanel.setMethod("GET");
 							verticalPanel.add(formPanel);
 							verticalPanel.setCellVerticalAlignment(formPanel, HasVerticalAlignment.ALIGN_BOTTOM);
@@ -76,7 +77,6 @@ public class RecommendedItems extends Composite {
 							target.setName("target");
 							fields.add(target);
 						}
-
 					}
 
 					@Override
