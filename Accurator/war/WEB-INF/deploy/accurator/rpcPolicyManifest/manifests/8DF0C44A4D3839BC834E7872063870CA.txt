@@ -1,2 +1,2 @@
-serviceClass: nl.wisdelft.accurator.client.service.UserInformationService
+serviceClass: org.sealinc.accurator.client.service.UserComponentService
 path: C83AC55B368712F0C5E203C0B5C3EE0E.gwt.rpc

@@ -13,4 +13,4 @@ java.util.Collections$SingletonList, true, true, false, false, java.util.Collect
 java.util.LinkedList, true, true, false, false, java.util.LinkedList/3953877921, 3953877921
 java.util.Stack, true, true, false, false, java.util.Stack/1346942793, 1346942793
 java.util.Vector, true, true, false, false, java.util.Vector/3057315478, 3057315478
-nl.wisdelft.accurator.client.service.UserInformationService, false, false, false, false, _, 2307671218
+org.sealinc.accurator.client.service.UserComponentService, false, false, false, false, _, 2307671218

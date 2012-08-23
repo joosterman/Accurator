@@ -13,6 +13,6 @@ java.util.Collections$SingletonList, true, true, true, true, java.util.Collectio
 java.util.LinkedList, true, true, true, true, java.util.LinkedList/3953877921, 3953877921
 java.util.Stack, true, true, true, true, java.util.Stack/1346942793, 1346942793
 java.util.Vector, true, true, true, true, java.util.Vector/3057315478, 3057315478
-nl.wisdelft.accurator.client.service.ResourceDetailService, false, false, false, false, _, 1899253719
-nl.wisdelft.accurator.shared.ResourceDetail, true, true, false, false, nl.wisdelft.accurator.shared.ResourceDetail/386114182, 386114182
+org.sealinc.accurator.client.service.ItemComponentService, false, false, false, false, _, 1899253719
+org.sealinc.accurator.shared.ResourceDetail, true, true, false, false, org.sealinc.accurator.shared.ResourceDetail/386114182, 386114182
 [Lnl.wisdelft.accurator.shared.ResourceDetail;, true, true, false, false, [Lnl.wisdelft.accurator.shared.ResourceDetail;/4238090086, 4238090086
