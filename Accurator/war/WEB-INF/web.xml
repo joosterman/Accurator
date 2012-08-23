@@ -10,28 +10,36 @@
     <welcome-file>Accurator.html</welcome-file>
   </welcome-file-list>
   <servlet>
-  	<servlet-name>RecommenderServiceImpl</servlet-name>
-  	<servlet-class>nl.wisdelft.accurator.server.RecommenderServiceImpl</servlet-class>
+  	<servlet-name>ItemComponentService</servlet-name>
+  	<servlet-class>org.sealinc.accurator.server.service.ItemComponentServiceImpl</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>RecommenderServiceImpl</servlet-name>
-  	<url-pattern>/accurator/RecommenderService</url-pattern>
+  	<servlet-name>ItemComponentService</servlet-name>
+  	<url-pattern>/accurator/ItemComponentService</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>ResourceDetailService</servlet-name>
-  	<servlet-class>nl.wisdelft.accurator.server.ResourceDetailServiceImpl</servlet-class>
+  	<servlet-name>UserComponentService</servlet-name>
+  	<servlet-class>org.sealinc.accurator.server.service.UserComponentServiceImpl</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>ResourceDetailService</servlet-name>
-  	<url-pattern>/accurator/ResourceDetailService</url-pattern>
+  	<servlet-name>UserComponentService</servlet-name>
+  	<url-pattern>/accurator/UserComponentService</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>UserInformationService</servlet-name>
-  	<servlet-class>nl.wisdelft.accurator.server.UserInformationServiceImpl</servlet-class>
+  	<servlet-name>AssignComponentService</servlet-name>
+  	<servlet-class>org.sealinc.accurator.server.service.AssignComponentServiceImpl</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>UserInformationService</servlet-name>
-  	<url-pattern>/accurator/UserInformationService</url-pattern>
+  	<servlet-name>AssignComponentService</servlet-name>
+  	<url-pattern>/accurator/AssignComponentService</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>QualityComponentService</servlet-name>
+  	<servlet-class>org.sealinc.accurator.server.service.QualityComponentServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>QualityComponentService</servlet-name>
+  	<url-pattern>/accurator/QualityComponentService</url-pattern>
   </servlet-mapping>
 
 </web-app>

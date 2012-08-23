@@ -1,9 +1,53 @@
-.gwt-Label-Title {
+.applicationTitle {
 	font-size: xx-large;
 	font-weight: bold;
+	vertical-align: middle;
+	text-align: center;
 }
-.gwt-Frame-Annotate {
+
+.wide
+{
+	width:100%;	
+}
+
+.page,.header,.content,.annotate {
+	width: 100%;
+}
+
+.doneButton{
+	position:absolute;
+	left:13px;
+	top:13px;	
+}
+
+.header td:nth-child(1)
+{
+	width:60%;
+}
+
+.annotate td:first-child {
+	width: 800px;
+}
+
+.annotationFrame {
 	border: none;
+	width: 800px;
+	height: 800px;
 }
 
+.annotationBlock {
+	width: 800px;
+	heigth: 800px;
+}
 
+.recommendationBlock,.recommendationRow,.recommendationText {
+	width: 100%;
+}
+
+.recommendationText tr:first-child {
+	font-weight: bold;
+}
+
+.recommendationRow td:first-child {
+	width: 100px;
+}
