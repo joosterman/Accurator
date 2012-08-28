@@ -41,5 +41,13 @@
   	<servlet-name>QualityComponentService</servlet-name>
   	<url-pattern>/accurator/QualityComponentService</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>AdminComponentService</servlet-name>
+  	<servlet-class>org.sealinc.accurator.server.service.AdminComponentServiceImpl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>AdminComponentService</servlet-name>
+  	<url-pattern>/accurator/AdminComponentService</url-pattern>
+  </servlet-mapping>
 
 </web-app>

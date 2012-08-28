@@ -1,26 +1,47 @@
 <!doctype html>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <link type="text/css" rel="stylesheet" href="Accurator.css">
-    <title>RMA Accurator</title>
-    <!--                                           -->
-    <!-- This script loads your compiled module.   -->
-    <!-- If you add any GWT meta tags, they must   -->
-    <!-- be added before this line.                -->
-    <!--                                           -->
-    <script type="text/javascript" language="javascript" src="accurator/accurator.nocache.js"></script>
-  </head>
-  <body>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link type="text/css" rel="stylesheet" href="css/Accurator.css" />
+<link type="text/css" rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.23.custom.css" />
+<title>RMA Accurator</title>
+<!--                                           -->
+<!-- This script loads your compiled module.   -->
+<!-- If you add any GWT meta tags, they must   -->
+<!-- be added before this line.                -->
+<!--                                           -->
+<script type="text/javascript" src="accurator/accurator.nocache.js"></script>
+<script type="text/javascript" src="scripts/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui-1.8.23.custom.min.js"></script>
 
-    <!-- OPTIONAL: include this if you want history support -->
-    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
-    
-    <noscript>
-      <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Your web browser must have JavaScript enabled
-        in order for this application to display correctly.
-      </div>
-    </noscript>
-  </body>
+
+</head>
+<body>
+	<div id="dialog-form" title="Login">
+		<p class="validateTips">Beide velden zijn verplicht. Voor een demo gebruik jasper/jasper.</p>
+		<form>
+			<fieldset>
+				<label for="name">Naam</label> <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" /> <label
+					for="password">Wachtwoord</label> <input type="password" name="password" id="password" value=""
+					class="text ui-widget-content ui-corner-all" />
+			</fieldset>
+		</form>
+	</div>
+	<div class="header">
+		<h1>Accurator</h1>
+		<div class="navbar">
+			<a href="#Annotate">Annoteren</a> <a href="#Profile">Profiel</a> <a href="#Quality">Kwaliteit</a> <a href="#Admin">Admin</a>
+		</div>
+	</div>
+	<div id="accuratorMain"></div>
+
+
+	<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+
+	<noscript>
+		<div
+			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+			Your web browser must have JavaScript enabled in order for this application to display correctly.</div>
+	</noscript>
+</body>
 </html>

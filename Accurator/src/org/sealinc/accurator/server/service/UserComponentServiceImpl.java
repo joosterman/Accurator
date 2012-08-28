@@ -24,12 +24,14 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 	private static final long serialVersionUID = 4303074923419143275L;
 
 	@Override
-	public List<Annotation> getAnnotations(String userURI) {
-		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . ?subject rdf:type oa:Annotation . ?subject oa:annotator <%s> } ", Config.getRDFPrefixes(), userURI);
+	public List<Annotation> getAnnotations(String user) {
+		String userURI = Config.getUserComponentUserURI()+user;
+		String sparql = String.format(
+				"%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . ?subject rdf:type oa:Annotation . ?subject oa:annotator <%s> } ",
+				Config.getRDFPrefixes(), userURI);
 		List<Annotation> anns = null;
 		anns = Utility.getObjects(sparql, Annotation.class);
 
 		return anns;
 	}
-
 }

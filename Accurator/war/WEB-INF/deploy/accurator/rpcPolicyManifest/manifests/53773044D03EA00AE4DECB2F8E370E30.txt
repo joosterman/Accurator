@@ -1,2 +1,0 @@
-serviceClass: org.sealinc.accurator.client.service.ItemComponentService
-path: 605FEA314ACB4C701CAD9DB8A426AE23.gwt.rpc

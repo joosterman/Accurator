@@ -26,6 +26,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface UserComponentService extends RemoteService {
 	
 	public List<Annotation> getAnnotations(String user);
+	
 	/**
 	 * Utility class for simplifying access to the instance of async service.
 	 */

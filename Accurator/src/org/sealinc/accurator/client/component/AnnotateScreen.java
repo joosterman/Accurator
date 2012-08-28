@@ -24,7 +24,7 @@ public class AnnotateScreen extends Composite {
 		
 		NamedFrame annotationFrame = new NamedFrame("annotationFrame");
 		annotationFrame.setStyleName("annotationFrame");
-		annotationFrame.setUrl(Config.getAnnotationComponentURL());
+		//annotationFrame.setUrl(Config.getAnnotationComponentURL());
 		horizontalPanel.add(annotationFrame);
 		
 		RecommendedItems recommendedItems = new RecommendedItems();

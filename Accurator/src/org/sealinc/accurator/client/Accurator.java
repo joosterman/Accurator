@@ -5,11 +5,12 @@ import org.sealinc.accurator.client.component.AnnotateScreen;
 import org.sealinc.accurator.client.component.Header;
 import org.sealinc.accurator.client.component.ProfileScreen;
 import org.sealinc.accurator.client.component.QualityScreen;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -25,58 +26,105 @@ public class Accurator implements EntryPoint {
 	private ProfileScreen profileScreen;
 	private QualityScreen qualityScreen;
 	private AdminScreen adminScreen;
+	private String username = null;
 
 	private enum State {
 		Annotate, Profile, Quality, Admin
 	};
 
+	public void loadApplication() {
+		RootPanel rootPanel = RootPanel.get("accuratorMain");
+		verticalPanel_3 = new VerticalPanel();
+		verticalPanel_3.setStyleName("page");
+		rootPanel.add(verticalPanel_3);
+		mainContent = new SimplePanel();
+		mainContent.setStyleName("content");
+		verticalPanel_3.add(mainContent);
+		annotateScreen = new AnnotateScreen();
+		mainContent.setWidget(annotateScreen);
+		profileScreen = new ProfileScreen();
+		qualityScreen = new QualityScreen();
+		adminScreen = new AdminScreen();
+		initHistorySupport();
+	}
+
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		RootPanel rootPanel = RootPanel.get();
-	
-		verticalPanel_3 = new VerticalPanel();
-		verticalPanel_3.setStyleName("page");
-		rootPanel.add(verticalPanel_3);
-
-		header = new Header();
-		header.setStyleName("header");
-		verticalPanel_3.add(header);
-
-		mainContent = new SimplePanel();
-		mainContent.setStyleName("content");
-		verticalPanel_3.add(mainContent);
-
-		annotateScreen = new AnnotateScreen();
-		mainContent.setWidget(annotateScreen);
-
-		profileScreen = new ProfileScreen();
-
-		qualityScreen = new QualityScreen();
-
-		adminScreen = new AdminScreen();
-
-		initHistorySupport();
+		// check if we have a user cookie
+		username = Cookies.getCookie("username");
+		if (username == null) {
+			openLogin(this);
+		}
+		else {
+			loadApplication();
+		}
 	}
+
+	public native void openLogin(Accurator acc)/*-{
+		$wnd
+			.jQuery("#dialog-form")
+			.dialog({
+				autoOpen : false,
+				height : 300,
+				width : 350,
+				modal : true,
+				draggable : false,
+				resizable : false,
+				closeOnEscape : false,
+				buttons : {
+					"Log in" : function() {
+						user = $wnd.jQuery("#name").val();
+						password = $wnd.jQuery("#password").val();
+						$wnd.jQuery(".validateTips").text("We checken je gegevens...");
+						acc.@org.sealinc.accurator.client.Accurator::login(Lorg/sealinc/accurator/client/Accurator;Ljava/lang/String;Ljava/lang/String;)(acc,user,password);
+					},
+				}
+			});
+		$wnd.jQuery("#dialog-form").dialog("open");
+		$wnd.jQuery(".ui-dialog-titlebar-close").hide();
+	}-*/;
+
+	public native void login(Accurator acc, String username, String password)/*-{
+		loginURL = @org.sealinc.accurator.shared.Config::getLoginURL()();
+		$wnd.jQuery.ajax({
+			type : 'GET',
+			url : loginURL,
+			dataType : 'jsonp',
+
+			data : {
+				"user" : username,
+				"password" : password
+			},
+			statusCode : {
+				200 : function() {
+					$wnd.jQuery("#dialog-form").dialog("close");
+					acc.@org.sealinc.accurator.client.Accurator::username = username;
+					@com.google.gwt.user.client.Cookies::setCookie(Ljava/lang/String;Ljava/lang/String;)("username",username);
+					acc.@org.sealinc.accurator.client.Accurator::loadApplication()();
+				}
+			},
+		});
+	}-*/;
 
 	private void LoadState(String token) {
 		State state = null;
 		try {
 			state = State.valueOf(token);
 			switch (state) {
-			case Annotate:
-				mainContent.setWidget(annotateScreen);
-				break;
-			case Profile:
-				mainContent.setWidget(profileScreen);
-				break;
-			case Quality:
-				mainContent.setWidget(qualityScreen);
-				break;
+				case Annotate:
+					mainContent.setWidget(annotateScreen);
+					break;
+				case Profile:
+					mainContent.setWidget(profileScreen);
+					break;
+				case Quality:
+					mainContent.setWidget(qualityScreen);
+					break;
 
-			case Admin:
-				mainContent.setWidget(adminScreen);
+				case Admin:
+					mainContent.setWidget(adminScreen);
 			}
 		}
 		catch (Exception ex) {
@@ -87,8 +135,7 @@ public class Accurator implements EntryPoint {
 
 	private void initHistorySupport() {
 		String token = History.getToken();
-		if (token != null && token.length() > 0)
-			LoadState(token);
+		if (token != null && token.length() > 0) LoadState(token);
 
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
 

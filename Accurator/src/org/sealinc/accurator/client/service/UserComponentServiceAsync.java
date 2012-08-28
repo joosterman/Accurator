@@ -11,4 +11,5 @@ public interface UserComponentServiceAsync {
 
 	void getAnnotations(String user, AsyncCallback<List<Annotation>> callback);
 
+
 }

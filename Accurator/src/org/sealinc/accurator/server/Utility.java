@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -23,7 +24,6 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.graph.Node;
-import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFactory;
@@ -34,8 +34,8 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.RDFVisitor;
+import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 import com.hp.hpl.jena.sparql.resultset.ResultSetException;
 
 public class Utility {
@@ -68,6 +68,55 @@ public class Utility {
 			};
 		}
 		return visitor;
+	}
+
+	private static Integer getStatusCode(String url) {
+		Integer code = null;
+		try {
+			URL u = new URL(url);
+
+			HttpURLConnection con = (HttpURLConnection) u.openConnection();
+			con.setRequestMethod("GET");
+			con.connect();
+			code = con.getResponseCode();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return code;
+	}
+
+	/**
+	 * Login the Server component with the configured credentials
+	 * 
+	 * @return If the logon was successful
+	 */
+	public static boolean login() {
+		String url = String.format("%s?user=%s&password=%s", Config.getLoginURL(), Config.getAdminUsername(), Config.getAdminPassword());
+		Integer code = Utility.getStatusCode(url);
+		return code != null && code == 200;
+	}
+
+	/**
+	 * Logout the current logged in Server component.
+	 * 
+	 * @return If the logout was successful or was not logged on
+	 */
+	public static boolean logout() {
+		String url = Config.getLogoutURL();
+		Integer code = Utility.getStatusCode(url);
+		return code != null && code == 200;
+	}
+
+	/**
+	 * Checks if the Server component is currently logged on
+	 * 
+	 * @return
+	 */
+	public static boolean isLoggedIn() {
+		String url = Config.getLoginCheckURL();
+		Integer code = Utility.getStatusCode(url);
+		return code != null && code == 200;
 	}
 
 	public static String getContent(String url) {
@@ -115,15 +164,58 @@ public class Utility {
 
 		}
 	}
+	
+	private static void adminPrecondition(){
+		login();
+	}
+
+	public static boolean uploadData(Model m) {
+		adminPrecondition();
+		String url = Config.getAdminComponentUploadDataURL();
+		RDFWriter writer = m.getWriter("RDF/XML");
+		URL u;
+		
+		HttpURLConnection con;
+		int responseCode = 0;
+		try {
+			u = new URL(url);
+			con = (HttpURLConnection) u.openConnection();
+			con.setDoOutput(true);
+			con.setRequestMethod("POST");
+			PrintStream out = new PrintStream(con.getOutputStream());
+			out.print(String.format("baseURI=%s&",Config.getAdminComponentBaseURI()));
+			out.print("data=");
+			writer.write(m, out, null);
+			out.close();
+			responseCode = con.getResponseCode();
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String line = null;		
+			String output = "";
+			while ((line = in.readLine()) != null) {
+				output+=line;
+			}
+			System.out.println(output);
+		}
+		catch (MalformedURLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return responseCode==200;
+	}
 
 	/**
-	 * 
 	 * @param sparql
-	 * @return The resulting ResultSet of the query or null if the query did not result a ResultSet (query failed/wrong endpoint etc.) 
+	 * @return The resulting ResultSet of the query or null if the query did not
+	 *         result a ResultSet (query failed/wrong endpoint etc.)
 	 */
 	private static ResultSet getRDFFromEndpoint(String sparql) {
 		try {
-			URL url = new URL(String.format("%s?query=%s", Config.getSparqlEndpoint(),URLEncoder.encode(sparql, "UTF-8")));
+			URL url = new URL(String.format("%s?query=%s", Config.getSparqlEndpoint(), URLEncoder.encode(sparql, "UTF-8")));
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.addRequestProperty("Accept", "application/sparql-results+xml");
 			con.setReadTimeout(10000);
