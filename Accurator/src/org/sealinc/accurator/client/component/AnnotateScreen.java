@@ -16,15 +16,28 @@ import com.google.gwt.user.client.ui.SubmitButton;
 
 public class AnnotateScreen extends Composite {
 	private Hidden target;
+	private NamedFrame annotationFrame;
 	public AnnotateScreen() {
 		
 		HorizontalPanel horizontalPanel = new HorizontalPanel();
 		horizontalPanel.setStyleName("annotate");
 		initWidget(horizontalPanel);
 		
-		NamedFrame annotationFrame = new NamedFrame("annotationFrame");
+		annotationFrame = new NamedFrame("annotationFrame");
 		annotationFrame.setStyleName("annotationFrame");
-		//annotationFrame.setUrl(Config.getAnnotationComponentURL());
+		Utility.assignService.getNextItemsToAnnotate(2, new AsyncCallback<List<String>>() {
+			
+			@Override
+			public void onSuccess(List<String> result) {
+				annotationFrame.setUrl(Config.getAnnotationComponentURL()+"?target="+result.get(0));
+				target.setValue(result.get(1));
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+		});;
 		horizontalPanel.add(annotationFrame);
 		
 		RecommendedItems recommendedItems = new RecommendedItems();
@@ -51,7 +64,7 @@ public class AnnotateScreen extends Composite {
 					
 					@Override
 					public void onSuccess(List<String> result) {
-						target.setValue(result.get(0));						
+						target.setValue(result.get(0));
 					}
 					
 					@Override
