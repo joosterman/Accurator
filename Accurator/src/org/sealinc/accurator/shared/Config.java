@@ -18,13 +18,13 @@ public class Config {
 	private static final String userComponentUserURI = "http://eculture.cs.vu.nl/sealinc/user/";
 	private static final String adminComponentUploadDataURL = "http://eculture.cs.vu.nl/sealinc/servlets/uploadData";
 	private static final String adminComponentBaseURI = "http://purl.org/accurator/";
-	private static final String adminComponentAccuratorNamespace = "http://purl.org/accurator/NS/";
 	
 	private static final String sparqlPrefixes = "PREFIX rmaschema: <http://purl.org/collections/nl/rma/schema#> "
 			+ "PREFIX rmaterms: <http://purl.org/collections/nl/rma/terms/> "
 			+ "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
 			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-			+ "PREFIX acc: <"+adminComponentAccuratorNamespace+">";
+			+ "PREFIX acc: <http://purl.org/accurator/NS/> "
+			+ "PREFIX rev: <http://purl.org/stuff/rev#>";
 
 			
 	private Config(){}
@@ -94,9 +94,5 @@ public class Config {
 
 	public static String getAdminComponentBaseURI() {
 		return adminComponentBaseURI;
-	}
-
-	public static String getAdminComponentAccuratorNamespace() {
-		return adminComponentAccuratorNamespace;
 	}
 }

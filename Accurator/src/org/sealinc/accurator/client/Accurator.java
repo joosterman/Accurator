@@ -8,9 +8,8 @@ import org.sealinc.accurator.client.component.QualityScreen;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.Cookies;
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -26,7 +25,8 @@ public class Accurator implements EntryPoint {
 	private ProfileScreen profileScreen;
 	private QualityScreen qualityScreen;
 	private AdminScreen adminScreen;
-	private String username = null;
+	private Storage localStorage;
+	String username = null;
 
 	private enum State {
 		Annotate, Profile, Quality, Admin
@@ -52,16 +52,19 @@ public class Accurator implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		// check if we have a user cookie
-		username = Cookies.getCookie("username");
-		if (username == null) {
-			openLogin(this);
+		// check if we have a user data
+		localStorage = Storage.getLocalStorageIfSupported();
+		String password = null;
+		if (localStorage != null) {
+			username = localStorage.getItem("username");
+			password = localStorage.getItem("password");
 		}
+		if (username == null || password == null) openLogin(this);
 		else {
-			loadApplication();
+			login(this, username, password);
 		}
 	}
-
+	
 	public native void openLogin(Accurator acc)/*-{
 		$wnd
 			.jQuery("#dialog-form")
@@ -100,8 +103,7 @@ public class Accurator implements EntryPoint {
 			statusCode : {
 				200 : function() {
 					$wnd.jQuery("#dialog-form").dialog("close");
-					acc.@org.sealinc.accurator.client.Accurator::username = username;
-					@com.google.gwt.user.client.Cookies::setCookie(Ljava/lang/String;Ljava/lang/String;)("username",username);
+					@org.sealinc.accurator.client.Utility::setUser(Ljava/lang/String;Ljava/lang/String;)(username,password);
 					acc.@org.sealinc.accurator.client.Accurator::loadApplication()();
 				}
 			},

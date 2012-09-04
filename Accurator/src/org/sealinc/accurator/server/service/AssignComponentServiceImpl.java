@@ -31,7 +31,7 @@ public class AssignComponentServiceImpl extends RemoteServiceServlet implements 
 
 	@Override
 	public List<String> getNextItemsToAnnotate(int nritems) {
-		String url = String.format("%s?output=%s&strategy=%s&nritems=%d&string=5",Config.getAssignComponentURL(), "json",Config.getAssignStrategy(),nritems);
+		String url = String.format("%s?output=%s&strategy=%s&nritems=%d",Config.getAssignComponentURL(), "json",Config.getAssignStrategy(),nritems);
 		return Utility.getParsedJSONFromURL(url);
 	}
 }

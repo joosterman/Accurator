@@ -1,10 +1,16 @@
 package org.sealinc.accurator.client.component;
 
 import java.beans.Beans;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Config;
+import org.sealinc.accurator.shared.View;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -18,7 +24,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class RecommendedItems extends Composite {
 
 	private VerticalPanel mainContent;
-
+	
 	public void updateRecommendations() {
 		// Get the recommended items
 		Utility.assignService.getNextItemsToAnnotate(3, new AsyncCallback<List<String>>() {
@@ -28,14 +34,13 @@ public class RecommendedItems extends Composite {
 
 					@Override
 					public void onSuccess(List<CollectionItem> result) {
-						for (CollectionItem val : result) {
+						for (final CollectionItem val : result) {
 							HorizontalPanel recommendationRow = new HorizontalPanel();
 							recommendationRow.setStyleName("recommendationRow");
 							mainContent.add(recommendationRow);
 
 							Image image = new Image(val.thumbnailURL);
 							recommendationRow.add(image);
-							
 
 							VerticalPanel verticalPanel = new VerticalPanel();
 							verticalPanel.setStyleName("recommendationText");
@@ -56,6 +61,26 @@ public class RecommendedItems extends Composite {
 
 							SubmitButton submitButton = new SubmitButton();
 							submitButton.setText("Annoteer!");
+							submitButton.addClickHandler(new ClickHandler() {
+
+								@Override
+								public void onClick(ClickEvent event) {
+									View view = new View();
+									view.date = new Date();
+									view.fromRecommendation = true;
+									view.viewer = Config.getUserComponentUserURI() + Utility.getUser();
+									Utility.userService.setViewed(val.uri, view, new AsyncCallback<Boolean>() {
+
+										@Override
+										public void onSuccess(Boolean result) {
+											System.out.println("View result: " + result);
+										}
+
+										@Override
+										public void onFailure(Throwable caught) {}
+									});
+								}
+							});
 							fields.add(submitButton);
 
 							Hidden target = new Hidden();

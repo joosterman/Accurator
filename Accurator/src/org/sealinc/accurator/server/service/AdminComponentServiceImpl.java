@@ -24,6 +24,11 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 public class AdminComponentServiceImpl extends RemoteServiceServlet implements AdminComponentService {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 814007834668767239L;
+
 	@Override
 	public void testUploadData() {
 		Model m = ModelFactory.createDefaultModel();

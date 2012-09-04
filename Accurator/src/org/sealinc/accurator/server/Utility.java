@@ -14,16 +14,20 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.sealinc.accurator.shared.Config;
+import org.sealinc.accurator.shared.Namespace;
 import org.sealinc.accurator.shared.RDFObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
-import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFactory;
@@ -36,6 +40,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.RDFVisitor;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.sparql.resultset.ResultSetException;
 
 public class Utility {
@@ -43,8 +48,85 @@ public class Utility {
 	public static final Gson gson = new Gson();
 	public static final JsonParser jsonParser = new JsonParser();
 	private static RDFVisitor visitor;
+	private static Logger logger = Logger.getLogger(Utility.class.getName());
 
 	private Utility() {}
+	
+	/**
+	 * Creates triples from the RDFObject o and stores them in a new Model
+	 * @param o
+	 * @return 
+	 */
+	public static Model toRDF(RDFObject o){
+		return toRDF(o,ModelFactory.createDefaultModel());
+	}
+	
+	private static RDFNode createRDFNode(Object o, Model m){
+		RDFNode result = null;
+		//URI / string
+		if(o instanceof String){
+			String s = (String)o;
+			//uri
+			if(s.startsWith("http"))
+				result = m.createResource(s);
+			//plain string
+			else
+				result = m.createTypedLiteral(s);
+		}
+		else if(o instanceof Date){
+			Date d = (Date)o;
+			Calendar c = GregorianCalendar.getInstance(); 
+			c.setTime(d);
+			result = m.createTypedLiteral(c);
+		}
+		//other literals
+		else{
+			result = m.createTypedLiteral(o);
+		}
+		return result;
+	}
+	/**
+	 * Creates triples from the RDFObject o and stores them in Model m 
+	 * @param o
+	 * @param m 
+	 * @return
+	 */
+	public static Model toRDF(RDFObject o, Model m){
+		if(m==null){
+			return null;
+		}
+		else if(o==null){
+			return m;
+		}
+		String propertyNS, propertyName;
+		Property p;
+		Object value;
+		//create resource
+		Resource r = m.createResource(o.uri);
+		for(Field field:o.getClass().getDeclaredFields()){
+			//check Namespace annotation
+			Namespace ns = field.getAnnotation(Namespace.class);
+			if(ns!=null){
+				//create property
+				try {
+					propertyNS = ns.value();
+					propertyName = field.getName();
+					p = m.createProperty(propertyNS, propertyName);
+					value = field.get(o);
+					
+					if(value!=null)
+						m.add(r, p, createRDFNode(value,m));
+				}
+				catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				}
+				catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}				
+			}			
+		}
+		return m;
+	}
 
 	private static RDFVisitor getRDFVisitor() {
 		if (visitor == null) {
@@ -72,6 +154,7 @@ public class Utility {
 
 	private static Integer getStatusCode(String url) {
 		Integer code = null;
+		BufferedReader reader = null;
 		try {
 			URL u = new URL(url);
 
@@ -79,6 +162,14 @@ public class Utility {
 			con.setRequestMethod("GET");
 			con.connect();
 			code = con.getResponseCode();
+			String line;
+			String result = "";
+			reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			while((line = reader.readLine())!=null){
+				result+=line;
+			}
+			reader.close();
+			logger.info("Get statuscode response: "+result);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -119,7 +210,7 @@ public class Utility {
 		return code != null && code == 200;
 	}
 
-	public static String getContent(String url) {
+	public static String getHTMLContent(String url) {
 		URL u;
 		try {
 			u = new URL(url);
@@ -148,7 +239,7 @@ public class Utility {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getParsedJSONFromURL(String url) {
-		String content = getContent(url);
+		String content = getHTMLContent(url);
 		if (content == null) return null;
 		else {
 			Type typeOfT = new TypeToken<T>() {
@@ -164,48 +255,66 @@ public class Utility {
 
 		}
 	}
-	
-	private static void adminPrecondition(){
+
+	private static void adminPrecondition() {
 		login();
 	}
 
-	public static boolean uploadData(Model m) {
+	private static HttpURLConnection prepareDataUpload() throws IOException {
 		adminPrecondition();
 		String url = Config.getAdminComponentUploadDataURL();
-		RDFWriter writer = m.getWriter("RDF/XML");
-		URL u;
-		
-		HttpURLConnection con;
+		URL u = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) u.openConnection();
+		con.setDoOutput(true);
+		con.setRequestMethod("POST");
+		return con;
+	}
+
+	public static boolean uploadData(ResultSet rs) {
+		Model m = toTriples(rs);
+		return uploadData(m);
+	}
+
+	public static boolean uploadData(Statement st) {
+		Model m = ModelFactory.createDefaultModel();
+		m.add(st);
+		return uploadData(m);
+	}
+
+	public static boolean uploadData(Model m) {
+		logger.info("Started uploading data");
+		HttpURLConnection con = null;
+		PrintStream out;
+		BufferedReader reader = null;
 		int responseCode = 0;
 		try {
-			u = new URL(url);
-			con = (HttpURLConnection) u.openConnection();
-			con.setDoOutput(true);
-			con.setRequestMethod("POST");
-			PrintStream out = new PrintStream(con.getOutputStream());
-			out.print(String.format("baseURI=%s&",Config.getAdminComponentBaseURI()));
-			out.print("data=");
+			con = prepareDataUpload();
+			
+			out = new PrintStream(con.getOutputStream());
+			String s =String.format("baseURI=%s&data=", Config.getAdminComponentBaseURI()); 
+			out.print(s);
+			logger.info("Uploading data at: "+con.getURL().toString()+s);
+			RDFWriter writer = m.getWriter("RDF/XML");
 			writer.write(m, out, null);
 			out.close();
-			responseCode = con.getResponseCode();
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			String line = null;		
-			String output = "";
-			while ((line = in.readLine()) != null) {
-				output+=line;
+			//read response
+			reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String line;
+			String result = "";
+			while((line = reader.readLine())!=null){
+				result+=line;
 			}
-			System.out.println(output);
-		}
-		catch (MalformedURLException e) {
-			e.printStackTrace();
-			return false;
+			reader.close();
+			logger.info("Add data response: "+result);
+			responseCode = con.getResponseCode();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			logger.warning(e.toString());
+			return false; 
 		}
-
-		return responseCode==200;
+		logger.info("Upload data complete. Result: "+responseCode);
+		return responseCode == 200;
 	}
 
 	/**
@@ -250,6 +359,7 @@ public class Utility {
 	 * @param rs
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> List<T> getRDFAndConvertToList(String sparql) {
 		ResultSet rs = getRDFFromEndpoint(sparql);
 		List<T> ret = new ArrayList<T>();
@@ -313,14 +423,16 @@ public class Utility {
 	 * @param clazz Class of the resulting objects
 	 * @return List of Objects of Type clazz or null if Objects of type T could
 	 *         not created
+	 * TODO: Set the value of an field based on the namespace+name instead of only name
 	 */
 	public static <T extends RDFObject> List<T> getObjects(String sparql, Class<T> clazz) {
 		ResultSet rs = getRDFFromEndpoint(sparql);
+		if(rs==null)
+			return null;
 		QuerySolution qs = null;
 		List<T> objs = new ArrayList<T>();
 		String uri, fieldName;
 		Object fieldValue;
-		Node node;
 		T obj = null;
 		List<String> unknownFields = new ArrayList<String>();
 		while (rs.hasNext()) {
@@ -340,8 +452,12 @@ public class Utility {
 			}
 			obj.uri = uri;
 			int index = objs.lastIndexOf(obj);
-			if (index >= 0) obj = objs.get(index);
-			else objs.add(obj);
+			if (index >= 0) {
+				obj = objs.get(index);
+			}
+			else {
+				objs.add(obj);
+			}
 			fieldName = qs.get("predicate").asNode().getLocalName();
 			fieldValue = qs.get("object").visitWith(getRDFVisitor());
 			// add value to field of object if exists
@@ -353,7 +469,7 @@ public class Utility {
 			}
 		}
 		// notify of fields that do not exist
-		System.err.println("Class " + clazz.getName() + " does not have the following fields (accessable): \n" + unknownFields.toString());
+		//System.err.println("Class " + clazz.getName() + " does not have the following fields (accessable): \n" + unknownFields.toString());
 		return objs;
 	}
 
@@ -377,6 +493,7 @@ public class Utility {
 		return value;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static <T> void setFieldValue(T obj, String fieldName, Object fieldValue) throws NoSuchFieldException, IllegalArgumentException,
 			IllegalAccessException {
 		Field field = obj.getClass().getDeclaredField(fieldName);
@@ -385,7 +502,7 @@ public class Utility {
 		if (fieldType.equals(List.class)) {
 			// get the current value of the field (the list)
 			Object curValue = field.get(obj);
-			((List) curValue).add(fieldValue);
+			((List<Object>) curValue).add(fieldValue);
 		}
 		else {
 			Object value = convertValue(fieldValue, fieldType);

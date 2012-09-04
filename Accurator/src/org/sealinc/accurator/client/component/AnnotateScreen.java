@@ -1,9 +1,11 @@
 package org.sealinc.accurator.client.component;
 
 
+import java.util.Date;
 import java.util.List;
 import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.Config;
+import org.sealinc.accurator.shared.View;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -37,7 +39,7 @@ public class AnnotateScreen extends Composite {
 			public void onFailure(Throwable caught) {
 				
 			}
-		});;
+		});
 		horizontalPanel.add(annotationFrame);
 		
 		RecommendedItems recommendedItems = new RecommendedItems();
@@ -57,9 +59,25 @@ public class AnnotateScreen extends Composite {
 		SubmitButton tbDone = new SubmitButton("Volgende");
 		horizontalPanel_1.add(tbDone);
 		tbDone.addClickHandler(new ClickHandler() {
-			
+				
 			@Override
 			public void onClick(ClickEvent event) {
+				//store that the user has viewed the resource
+				View view = new View();
+				view.date = new Date();
+				view.fromRecommendation = false;
+				view.viewer = Config.getUserComponentUserURI() + Utility.getUser();
+				Utility.userService.setViewed(target.getValue(), view, new AsyncCallback<Boolean>() {
+
+					@Override
+					public void onSuccess(Boolean result) {
+						System.out.println("View result: " + result);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {}
+				});
+				//get the new resource for the next click 
 				Utility.assignService.getNextItemsToAnnotate(1, new AsyncCallback<List<String>>() {
 					
 					@Override
