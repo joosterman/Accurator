@@ -3,8 +3,6 @@ package org.sealinc.accurator.client.component;
 import java.beans.Beans;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Config;
@@ -24,7 +22,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class RecommendedItems extends Composite {
 
 	private VerticalPanel mainContent;
-	
+
 	public void updateRecommendations() {
 		// Get the recommended items
 		Utility.assignService.getNextItemsToAnnotate(3, new AsyncCallback<List<String>>() {
@@ -34,59 +32,61 @@ public class RecommendedItems extends Composite {
 
 					@Override
 					public void onSuccess(List<CollectionItem> result) {
-						for (final CollectionItem val : result) {
-							HorizontalPanel recommendationRow = new HorizontalPanel();
-							recommendationRow.setStyleName("recommendationRow");
-							mainContent.add(recommendationRow);
+						if (result != null) {
+							for (final CollectionItem val : result) {
+								HorizontalPanel recommendationRow = new HorizontalPanel();
+								recommendationRow.setStyleName("recommendationRow");
+								mainContent.add(recommendationRow);
 
-							Image image = new Image(val.thumbnailURL);
-							recommendationRow.add(image);
+								Image image = new Image(val.thumbnailURL);
+								recommendationRow.add(image);
 
-							VerticalPanel verticalPanel = new VerticalPanel();
-							verticalPanel.setStyleName("recommendationText");
-							recommendationRow.add(verticalPanel);
+								VerticalPanel verticalPanel = new VerticalPanel();
+								verticalPanel.setStyleName("recommendationText");
+								recommendationRow.add(verticalPanel);
 
-							Label label = new Label(val.title);
-							verticalPanel.add(label);
-							Label label2 = new Label(val.description);
-							verticalPanel.add(label2);
+								Label label = new Label(val.title);
+								verticalPanel.add(label);
+								Label label2 = new Label(val.description);
+								verticalPanel.add(label2);
 
-							FormPanel formPanel = new FormPanel("annotationFrame");
-							formPanel.setAction(Config.getAnnotationComponentURL());
-							formPanel.setMethod("GET");
-							verticalPanel.add(formPanel);
+								FormPanel formPanel = new FormPanel("annotationFrame");
+								formPanel.setAction(Config.getAnnotationComponentURL());
+								formPanel.setMethod("GET");
+								verticalPanel.add(formPanel);
 
-							VerticalPanel fields = new VerticalPanel();
-							formPanel.add(fields);
+								VerticalPanel fields = new VerticalPanel();
+								formPanel.add(fields);
 
-							SubmitButton submitButton = new SubmitButton();
-							submitButton.setText("Annoteer!");
-							submitButton.addClickHandler(new ClickHandler() {
+								SubmitButton submitButton = new SubmitButton();
+								submitButton.setText("Annoteer!");
+								submitButton.addClickHandler(new ClickHandler() {
 
-								@Override
-								public void onClick(ClickEvent event) {
-									View view = new View();
-									view.date = new Date();
-									view.fromRecommendation = true;
-									view.viewer = Config.getUserComponentUserURI() + Utility.getUser();
-									Utility.userService.setViewed(val.uri, view, new AsyncCallback<Boolean>() {
+									@Override
+									public void onClick(ClickEvent event) {
+										View view = new View();
+										view.date = new Date();
+										view.fromRecommendation = true;
+										view.viewer = Config.getUserComponentUserURI() + Utility.getUser();
+										Utility.userService.setViewed(val.uri, view, new AsyncCallback<Boolean>() {
 
-										@Override
-										public void onSuccess(Boolean result) {
-											System.out.println("View result: " + result);
-										}
+											@Override
+											public void onSuccess(Boolean result) {
+												System.out.println("View result: " + result);
+											}
 
-										@Override
-										public void onFailure(Throwable caught) {}
-									});
-								}
-							});
-							fields.add(submitButton);
+											@Override
+											public void onFailure(Throwable caught) {}
+										});
+									}
+								});
+								fields.add(submitButton);
 
-							Hidden target = new Hidden();
-							target.setValue(val.uri);
-							target.setName("target");
-							fields.add(target);
+								Hidden target = new Hidden();
+								target.setValue(val.uri);
+								target.setName("target");
+								fields.add(target);
+							}
 						}
 					}
 

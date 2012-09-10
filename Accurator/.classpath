@@ -2,24 +2,19 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/jena/jena-arq-2.9.0-incubating.jar" sourcepath="libs/jena/jena-arq-2.9.0-incubating-sources.jar">
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jena-arq-2.9.0-incubating.jar" sourcepath="libs/jena/jena-arq-2.9.0-incubating-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Accurator/libs/jena/jena-arq-2.9.0-incubating-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/jena/jena-core-2.7.0-incubating.jar" sourcepath="libs/jena/jena-core-2.7.0-incubating-sources.jar">
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jena-core-2.7.0-incubating.jar" sourcepath="libs/jena/jena-core-2.7.0-incubating-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Accurator/libs/jena/jena-core-2.7.0-incubating-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/gson/gson-2.2.2.jar" sourcepath="libs/gson/gson-2.2.2-sources.jar">
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.2.jar" sourcepath="libs/gson/gson-2.2.2-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Accurator/libs/gson/gson-2.2.2-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="libs/apache-io/commons-io-2.4.jar" sourcepath="libs/apache-io/commons-io-2.4-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Accurator/libs/apache-io/commons-io-2.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/Applications/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37/gwt-2.4.0/gwt-user.jar">
@@ -36,5 +31,7 @@
 	<classpathentry kind="lib" path="/Applications/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37/gwt-2.4.0/validation-api-1.0.0.GA.jar" sourcepath="/Applications/eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080120-rel-r37/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-jdk14-1.7.0.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

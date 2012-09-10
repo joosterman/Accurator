@@ -11,12 +11,9 @@
 package org.sealinc.accurator.server.service;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.sealinc.accurator.client.component.RecommendedItems;
 import org.sealinc.accurator.client.service.UserComponentService;
 import org.sealinc.accurator.server.Utility;
 import org.sealinc.accurator.shared.Annotation;

@@ -42,9 +42,6 @@ public class Accurator implements EntryPoint {
 		verticalPanel_3.add(mainContent);
 		annotateScreen = new AnnotateScreen();
 		mainContent.setWidget(annotateScreen);
-		profileScreen = new ProfileScreen();
-		qualityScreen = new QualityScreen();
-		adminScreen = new AdminScreen();
 		initHistorySupport();
 	}
 
@@ -116,16 +113,23 @@ public class Accurator implements EntryPoint {
 			state = State.valueOf(token);
 			switch (state) {
 				case Annotate:
+					if(annotateScreen ==null)
+						annotateScreen = new AnnotateScreen();
 					mainContent.setWidget(annotateScreen);
 					break;
 				case Profile:
+					if(profileScreen==null)
+						profileScreen = new ProfileScreen();
 					mainContent.setWidget(profileScreen);
 					break;
 				case Quality:
+					if(qualityScreen == null)
+						qualityScreen = new QualityScreen();
 					mainContent.setWidget(qualityScreen);
 					break;
-
 				case Admin:
+					if(adminScreen==null)
+						adminScreen = new AdminScreen();
 					mainContent.setWidget(adminScreen);
 			}
 		}
