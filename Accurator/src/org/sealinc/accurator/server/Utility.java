@@ -425,9 +425,9 @@ public class Utility {
 	public static <T extends RDFObject> List<T> getObjectsByURI(List<String> uris, Class<T> clazz) {
 		// generate sparql
 		StringBuilder sb = new StringBuilder();
-		String comparison1 = "{ ?subject ?predicate ?object . FILTER (?subject=";
-		String comparison2 = ")}";
-		String union = " UNION ";
+		String comparison1 = "?subject = ";
+		String comparison2 = " ?predicate ?object}";
+		String union = " || ";
 		String lt = "<";
 		String gt = ">";
 		for (String uri : uris) {
@@ -436,9 +436,8 @@ public class Utility {
 			sb.append(lt);
 			sb.append(uri);
 			sb.append(gt);
-			sb.append(comparison2);
 		}
-		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { %s }", Config.getRDFPrefixes(), sb.toString());
+		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . FILTER( %s )}", Config.getRDFPrefixes(), sb.toString());
 		List<T> cis = Utility.getObjects(sparql, clazz);
 		return cis;
 	}
