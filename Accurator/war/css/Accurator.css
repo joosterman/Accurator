@@ -1,77 +1,41 @@
-h1{
-	text-align: center;
-	width:100%;
-}
-.navbar{
-	position:absolute;
-	top:10px;
-	right:20px;
+/* Header */
+
+.header td:nth-child (1) {
+	width: 60%;
 }
 
-.wide {
-	width: 100%;
+h1 {
+	text-align: center; width: 100%;
 }
 
-#dialog-form{
-	display:none;	
-}
-#dialog-form input.text {
-	margin-bottom: 12px;
-	width: 95%;
-	padding: .4em;
+.navbar {
+	position: absolute; top: 10px; right: 20px;
 }
 
-#dialog-form fieldset {
-	padding: 0;
-	border: 0;
-	margin-top: 25px;
+/* Login and registration */
+
+.dialog{
+	display: none;
 }
 
-.page,.header,.content,.annotate {
-	width: 100%;
+.dialog input.text {
+	margin-bottom: 12px; width: 95%; padding: .4em;
 }
 
-.doneButton {
-	position: absolute;
-	left: 13px;
-	top: 13px;
+.dialog fieldset {
+	padding: 0; border: 0; margin-top: 25px;
 }
 
-.header
- 
-td
-:nth-child
- 
-(1)
-{
-width
-:
- 
-60%;
-}
-.annotate td:first-child {
-	width: 800px;
-}
-
+/* Annotation screen */
 .annotationFrame {
-	border: none;
-	width: 800px;
-	height: 800px;
+	position:relative;
+	float:left;
+	border: none; width: 800px; height: 800px;
 }
-
-.annotationBlock {
-	width: 800px;
-	heigth: 800px;
+.doneButton {
+	position: absolute; left: 13px; top: 13px;
 }
-
-.recommendationBlock,.recommendationRow,.recommendationText {
-	width: 100%;
-}
-
-.recommendationText tr:first-child {
-	font-weight: bold;
-}
-
-.recommendationRow td:first-child {
-	width: 100px;
+.recommendations{
+	position:relative;
+	float:left;
 }

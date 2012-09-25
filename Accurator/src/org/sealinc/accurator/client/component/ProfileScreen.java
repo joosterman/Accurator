@@ -1,74 +1,60 @@
 package org.sealinc.accurator.client.component;
 
-import java.beans.Beans;
 import java.util.List;
-
 import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.Annotation;
-
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.CaptionPanel;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ProfileScreen extends Composite {
-	private CaptionPanel pnlTagsUsed;
-	private CaptionPanel captionPanel_1;
-	private CaptionPanel captionPanel_2;
-	private CaptionPanel captionPanel_3;
-	private CaptionPanel captionPanel_4;
-	private CaptionPanel captionPanel_5;
+	interface MyUiBinder extends UiBinder<Widget, ProfileScreen> {}
 
-	private VerticalPanel pnlAnnotations;
+	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
-	public ProfileScreen() {
-		Grid grid = new Grid(2, 3);
-		initWidget(grid);
-		grid.setSize("100%", "");
+	@UiField
+	VerticalPanel tagsUsed;
+	@UiField
+	Button refresh;
 
-		pnlTagsUsed = new CaptionPanel("Tags used");
-		grid.setWidget(0, 0, pnlTagsUsed);
-
-		pnlAnnotations = new VerticalPanel();
-		pnlTagsUsed.setContentWidget(pnlAnnotations);
-		pnlAnnotations.setSize("", "");
-
-		captionPanel_1 = new CaptionPanel("Statistics");
-		grid.setWidget(0, 1, captionPanel_1);
-
-		captionPanel_2 = new CaptionPanel("We think you like");
-		grid.setWidget(0, 2, captionPanel_2);
-
-		captionPanel_3 = new CaptionPanel("New panel");
-		captionPanel_3.setCaptionHTML("Objects annotated");
-		grid.setWidget(1, 0, captionPanel_3);
-
-		captionPanel_4 = new CaptionPanel("?");
-		grid.setWidget(1, 1, captionPanel_4);
-
-		captionPanel_5 = new CaptionPanel("New panel");
-		captionPanel_5.setCaptionHTML("We think you dislike");
-		grid.setWidget(1, 2, captionPanel_5);
-
-		if (!Beans.isDesignTime())
-		{
-			Utility.userService.getAnnotations("http://sealincmedia.project.cwi.nl/ns/exp/user_1", new AsyncCallback<List<Annotation>>() {
-				
-				@Override
-				public void onSuccess(List<Annotation> result) {
-					
-					
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					
-				}
-			});
-		}
+	@UiHandler("refresh")
+	void handleClick(ClickEvent e) {
+		loadData();
 	}
 
+	private void loadData() {
+		tagsUsed.clear();
+		Utility.userService.getAnnotations(Utility.getUser(), new AsyncCallback<List<Annotation>>() {
 
+			@Override
+			public void onSuccess(List<Annotation> result) {
+				Label l = null;
+				for (Annotation a : result) {
+					l = new Label(a.hasBody);
+					tagsUsed.add(l);
+				}
 
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
+	}
+
+	public ProfileScreen() {
+		initWidget(uiBinder.createAndBindUi(this));
+		loadData();
+	}
 }

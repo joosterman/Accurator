@@ -1,0 +1,7 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
+	<g:HTMLPanel>
+	<h3>Aanbevolen prenten</h3>
+	</g:HTMLPanel>
+
+</ui:UiBinder>

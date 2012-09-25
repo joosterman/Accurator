@@ -1,0 +1,53 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client"
+	xmlns:acc="urn:import:org.sealinc.accurator.client.component">
+	<g:HTMLPanel>
+		<div id="dialog-login" class="dialog" title="Login">
+			<p>
+				<g:Label ui:field="lblLoginMessage">Beide velden zijn verplicht. Voor een demo
+					gebruik
+					test/test.</g:Label>
+			</p>
+
+			<form>
+				<fieldset>
+					<label for="name">Gebruikersnaam</label>
+					<input type="text" class="text ui-widget-content ui-corner-all"
+						name="name" id="name" />
+					<label for="password">Wachtwoord</label>
+					<input type="password" name="password" id="password" value=""
+						class="text ui-widget-content ui-corner-all" />
+				</fieldset>
+				<p>
+					<g:Anchor ui:field="lnkRegister" text="Of klik om te registreren"></g:Anchor>
+				</p>
+			</form>
+		</div>
+		<div id="dialog-register" class="dialog" title="Registreer">
+			<p><g:Label ui:field="lblRegisterMessage"></g:Label> </p>
+			<form>
+				<fieldset>
+					<label for="regname">Gebruikersnaam</label>
+					<input type="text" class="text ui-widget-content ui-corner-all"
+						name="name" id="regname" />
+					<label for="regpassword">Wachtwoord</label>
+					<input type="password" name="password" id="regpassword" value=""
+						class="text ui-widget-content ui-corner-all" />
+					<label for="regrealName">Volledige naam</label>
+					<input type="text" class="text ui-widget-content ui-corner-all"
+						name="realName" id="regrealName" />
+				</fieldset>
+			</form>
+		</div>
+		<div class="header">
+			<h1>Accurator</h1>
+			<div class="navbar">
+				<a href="#Annotate">Annoteren</a>
+				<a href="#Profile">Profiel</a>
+				<a href="#Quality">Kwaliteit</a>
+				<a href="#Admin">Admin</a>
+			</div>
+		</div>
+		<g:SimplePanel ui:field="content"></g:SimplePanel>
+	</g:HTMLPanel>
+</ui:UiBinder>

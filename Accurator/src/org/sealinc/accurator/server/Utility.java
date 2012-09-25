@@ -18,17 +18,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.Namespace;
 import org.sealinc.accurator.shared.RDFObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.appengine.api.utils.SystemProperty;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.google.gwt.core.client.GWT;
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -156,8 +155,7 @@ public class Utility {
 		return visitor;
 	}
 
-	private static Integer getStatusCode(String url) {
-		Integer code = null;
+	public static int getStatusCode(String url) {
 		BufferedReader reader = null;
 		try {
 			URL u = new URL(url);
@@ -165,7 +163,7 @@ public class Utility {
 			HttpURLConnection con = (HttpURLConnection) u.openConnection();
 			con.setRequestMethod("GET");
 			con.connect();
-			code = con.getResponseCode();
+			int code = con.getResponseCode();
 			String line;
 			String result = "";
 			reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
@@ -173,12 +171,22 @@ public class Utility {
 				result += line;
 			}
 			reader.close();
-			logger.info("Get statuscode response: " + result);
+			logger.info(String.format("Get statuscode response:(%s) %s", code, result));
+			return code;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+			return -1;
 		}
-		return code;
+	}
+
+	public static boolean register(String user, String realname, String password) {
+		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.getAdminRegisterUserURL(), user, realname, password);
+		int statusCode = getStatusCode(url);
+		if (statusCode == 200) {
+			return true;
+		}
+		else return false;
 	}
 
 	/**
@@ -188,7 +196,7 @@ public class Utility {
 	 */
 	public static boolean login() {
 		// check if the cookie is at most 5 minutes old
-		if (cookieDate != null && cookie != null) {
+		if (false && cookieDate != null && cookie != null) {
 			long time = new Date().getTime() - cookieDate.getTime();
 			if (time < (5 * 1000 * 60)) {
 				return true;
@@ -287,12 +295,13 @@ public class Utility {
 		URL u = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) u.openConnection();
 		// add cookie only on live server
-		if (GWT.isProdMode() == true) {
+		if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
 			con.setRequestProperty("Cookie", cookie);
 		}
 		con.setDoOutput(true);
 		con.setRequestMethod("POST");
 		con.connect();
+
 		return con;
 	}
 
@@ -331,15 +340,14 @@ public class Utility {
 				result += line;
 			}
 			reader.close();
-			logger.info("Add data response: " + result);
 			responseCode = con.getResponseCode();
+			logger.info(String.format("Add data response: (%s) %s", responseCode, result));
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-			logger.warn(e.toString());
+			logger.warn("Upload data failed: " + e.toString());
 			return false;
 		}
-		logger.info("Upload data complete. Result: " + responseCode);
 		return responseCode == 200;
 	}
 
@@ -437,7 +445,8 @@ public class Utility {
 			sb.append(uri);
 			sb.append(gt);
 		}
-		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . FILTER( %s )}", Config.getRDFPrefixes(), sb.toString());
+		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . FILTER( %s )}",
+				Config.getRDFPrefixes(), sb.toString());
 		List<T> cis = Utility.getObjects(sparql, clazz);
 		return cis;
 	}

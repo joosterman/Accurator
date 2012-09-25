@@ -1,14 +1,15 @@
 package org.sealinc.accurator.client.component;
 
-import java.beans.Beans;
 import java.util.Date;
 import java.util.List;
 import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.View;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -18,12 +19,16 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SubmitButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class RecommendedItems extends Composite {
 
 	private VerticalPanel mainContent;
+	interface MyUiBinder extends UiBinder<Widget, RecommendedItems> {}
 
-	public void updateRecommendations() {
+	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+
+	private void updateRecommendations() {
 		// Get the recommended items
 		Utility.assignService.getNextItemsToAnnotate(3, new AsyncCallback<List<String>>() {
 			@Override
@@ -105,10 +110,7 @@ public class RecommendedItems extends Composite {
 	}
 
 	public RecommendedItems() {
-		// use a vertical stacked layout for the recommendations
-		mainContent = new VerticalPanel();
-		initWidget(mainContent);
-		if (!Beans.isDesignTime()) updateRecommendations();
+		initWidget(uiBinder.createAndBindUi(this));
 	}
 
 }

@@ -13,6 +13,7 @@ public class Config {
 	private static final String loginURL="http://eculture.cs.vu.nl/sealinc/servlets/login"; 
 	private static final String logoutURL="http://eculture.cs.vu.nl/sealinc/servlets/logout"; 
 	private static final String loginCheckURL = "http://eculture.cs.vu.nl/sealinc/admin/form/changePassword";
+	private static final String adminRegisterUserURL = "http://eculture.cs.vu.nl/sealinc/admin/selfRegister";
 	private static final String adminUsername= "admin";
 	private static final String adminPassword= "Anuz3EeY";
 	private static final String userComponentUserURI = "http://eculture.cs.vu.nl/sealinc/user/";
@@ -94,5 +95,9 @@ public class Config {
 
 	public static String getAdminComponentBaseURI() {
 		return adminComponentBaseURI;
+	}
+
+	public static String getAdminRegisterUserURL() {
+		return adminRegisterUserURL;
 	}
 }

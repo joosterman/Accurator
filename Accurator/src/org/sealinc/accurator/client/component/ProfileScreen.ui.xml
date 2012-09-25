@@ -1,0 +1,11 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:HTMLPanel>
+	<g:Button ui:field="refresh">Refresh</g:Button>
+		<fieldset>
+			<legend>Tags used</legend>
+			<g:VerticalPanel ui:field="tagsUsed"></g:VerticalPanel>
+		</fieldset>
+	</g:HTMLPanel>
+
+</ui:UiBinder>

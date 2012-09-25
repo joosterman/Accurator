@@ -1,0 +1,9 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
+	<g:HTMLPanel>
+	<g:Button styleName="doneButton" ui:field="doneButton" >Volgende</g:Button>
+	<g:NamedFrame ui:field="annotationFrame" styleName="annotationFrame"></g:NamedFrame>
+		<acc:RecommendedItems styleName="recommendations"></acc:RecommendedItems>		
+	</g:HTMLPanel>
+
+</ui:UiBinder>
