@@ -2,6 +2,7 @@ package org.sealinc.accurator.client;
 
 import org.sealinc.accurator.client.component.AnnotateScreen;
 import org.sealinc.accurator.client.component.ProfileScreen;
+import org.sealinc.accurator.client.component.RecommendedItems;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,6 +15,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -33,6 +35,10 @@ public class Accurator implements EntryPoint {
 	Anchor lnkRegister;
 	@UiField
 	Label lblLoginMessage, lblRegisterMessage;
+	@UiField
+	Button btnDone;
+	@UiField
+	RecommendedItems recommendations;
 
 	private Storage localStorage;
 	private AnnotateScreen annotateScreen;
@@ -40,9 +46,17 @@ public class Accurator implements EntryPoint {
 	String username = null;
 
 	private enum State {
-		Annotate, Profile, Quality, Admin
+		Annotate, Profile, Quality, Admin, Recommendation
 	};
 
+	@UiHandler("btnDone")
+	void btnDoneClick(ClickEvent e){
+		//load as page 
+		//History.newItem(State.Recommendation.toString());
+		//load as dialog
+		recommendations.loadRecommendations();
+	}
+	
 	@UiHandler("lnkRegister")
 	void clickHandler(ClickEvent e) {
 		closeLogin();

@@ -1,15 +1,57 @@
+/* General */
+html body{
+	margin:0px;
+}
+
 /* Header */
+
+.header{
+	background-color: #F0E4CE;
+	margin-bottom:10px;
+	border-bottom: 3px solid brown;
+}
+
+#headerImage
+{
+	height: 100px;	
+	left: 100px;
+	position:relative;
+	margin: 5px 0px 5px 0px;
+}
 
 .header td:nth-child (1) {
 	width: 60%;
 }
 
-h1 {
-	text-align: center; width: 100%;
-}
-
 .navbar {
 	position: absolute; top: 10px; right: 20px;
+}
+
+.header .done{
+	position:absolute;
+	right:10px;
+	top:80px;
+}
+
+/* Footer */
+.footer
+{
+	background-color: #F0E4CE;
+	height: 90px;
+	clear:both;
+	margin-top:10px;
+	border-top: 3px solid brown;
+	padding-top:5px;
+	padding-bottom: 5px;
+}
+
+.footer .logo
+{
+	max-width: 250px;
+	max-height: 100%;
+	position:relative;
+	vertical-align: middle;
+	
 }
 
 /* Login and registration */
@@ -30,12 +72,62 @@ h1 {
 .annotationFrame {
 	position:relative;
 	float:left;
-	border: none; width: 800px; height: 800px;
+	border: none; 
+	width: 100%; 
+	height: 700px;
 }
 .doneButton {
 	position: absolute; left: 13px; top: 13px;
 }
-.recommendations{
+
+/* Recommendation screen  */
+#dialog-recommendation
+{
+	
+}
+
+#dialog-recommendation .previous,#dialog-recommendation .next
+{
 	position:relative;
 	float:left;
+	margin-top:auto;
+	margin-bottom:auto;
+	top:125px;
+	width:70px;	
 }
+#dialog-recommendation .previous img,#dialog-recommendation .next img
+{
+	position: relative;
+	top: 40%;
+}
+#dialog-recommendation .previous img
+{
+	float:left
+}
+#dialog-recommendation .next img
+{
+	float:right;
+}
+
+#dialog-recommendation .search
+{
+	position:relative;
+	width:100%;
+	text-align: center;
+	margin-bottom:20px;
+	
+}
+
+.recommendationItem
+{
+	position:relative;
+	float:left;
+	width:233px;
+	height:100%;
+	margin-right:10px;
+}
+.recommendationItem img {	
+	max-height:350px;
+	max-width:100%;
+}
+

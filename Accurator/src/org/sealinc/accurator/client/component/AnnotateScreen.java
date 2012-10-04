@@ -6,13 +6,10 @@ import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.View;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.NamedFrame;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,13 +22,6 @@ public class AnnotateScreen extends Composite {
 
 	@UiField
 	NamedFrame annotationFrame;
-	@UiField
-	Button doneButton;
-
-	@UiHandler("doneButton")
-	void handleClick(ClickEvent e) {
-		setNextItemToAnnotate();
-	}
 
 	private void setNextItemToAnnotate() {
 		Utility.assignService.getNextItemsToAnnotate(1, new AsyncCallback<List<String>>() {

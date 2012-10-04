@@ -2,6 +2,16 @@
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client"
 	xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 	<g:HTMLPanel>
+		<div class="header">
+			<img id="headerImage" src="/images/Accurator-header.png" alt="Accurator" />
+			<div class="navbar">
+				<a href="#Annotate">Annoteren</a>
+				<a href="#Profile">Profiel</a>
+				<a href="#Quality">Kwaliteit</a>
+				<a href="#Admin">Admin</a>
+			</div>
+			<g:Button ui:field="btnDone" text="Klaar" styleName="done"></g:Button>
+		</div>
 		<div id="dialog-login" class="dialog" title="Login">
 			<p>
 				<g:Label ui:field="lblLoginMessage">Beide velden zijn verplicht. Voor een demo
@@ -24,30 +34,31 @@
 			</form>
 		</div>
 		<div id="dialog-register" class="dialog" title="Registreer">
-			<p><g:Label ui:field="lblRegisterMessage"></g:Label> </p>
+			<p>
+				<g:Label ui:field="lblRegisterMessage"></g:Label>
+			</p>
 			<form>
 				<fieldset>
 					<label for="regname">Gebruikersnaam</label>
 					<input type="text" class="text ui-widget-content ui-corner-all"
 						name="name" id="regname" />
 					<label for="regpassword">Wachtwoord</label>
-					<input type="password" name="password" id="regpassword" value=""
-						class="text ui-widget-content ui-corner-all" />
+					<input type="password" name="password" id="regpassword"
+						value="" class="text ui-widget-content ui-corner-all" />
 					<label for="regrealName">Volledige naam</label>
 					<input type="text" class="text ui-widget-content ui-corner-all"
 						name="realName" id="regrealName" />
 				</fieldset>
 			</form>
 		</div>
-		<div class="header">
-			<h1>Accurator</h1>
-			<div class="navbar">
-				<a href="#Annotate">Annoteren</a>
-				<a href="#Profile">Profiel</a>
-				<a href="#Quality">Kwaliteit</a>
-				<a href="#Admin">Admin</a>
-			</div>
-		</div>
 		<g:SimplePanel ui:field="content"></g:SimplePanel>
+		<acc:RecommendedItems ui:field="recommendations"></acc:RecommendedItems>
+		<div class="footer">
+			<img src="/images/COMMIT.png" alt="Logo van het COMMIT project" class="logo" />
+			<img src="/images/SEALINCMedia.png" alt="Logo van het SEALINCMedia project" class="logo" />
+			<img src="/images/TUD.png" alt="Logo van de Technische Universiteit Delft" class="logo" />
+			<img src="/images/VU.png" alt="Logo van de Vrije Universiteit" class="logo" />
+			<img src="/images/CWI.png" alt="Logo van het Centrum voor Wiskunde en Informatica" class="logo" /> 
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

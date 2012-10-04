@@ -1,7 +1,40 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client"
+	xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 	<g:HTMLPanel>
-	<h3>Aanbevolen prenten</h3>
+		<div id="dialog-recommendation" class="dialog" title="Uw aanbevelingen">
+			<div class="search">
+				<g:TextBox ui:field="tbSearch" styleName="searchBox"></g:TextBox>
+				<g:Button ui:field="btnSearch" text="Zoeken"></g:Button>
+			</div>
+			<div class="previous">
+				<g:Image ui:field="imgPrevious" altText="Vorige aanbevelingen"
+					url="/images/Actions-go-previous-icon.png"></g:Image>
+			</div>
+
+			<div class="recommendationItem">
+				<g:Label ui:field="lblTitle1" styleName="recTitle"></g:Label>
+				<g:Image ui:field="img1" styleName="recImage"></g:Image>
+				Prentmaker:
+				<g:Label ui:field="lblCreator1" styleName="recCreator"></g:Label>
+			</div>
+			<div class="recommendationItem">
+				<g:Label ui:field="lblTitle2" styleName="recTitle"></g:Label>
+				<g:Image ui:field="img2" styleName="recImage"></g:Image>
+				Prentmaker:
+				<g:Label ui:field="lblCreator2" styleName="recCreator"></g:Label>
+			</div>
+			<div class="recommendationItem">
+				<g:Label ui:field="lblTitle3" styleName="recTitle"></g:Label>
+				<g:Image ui:field="img3" styleName="recImage"></g:Image>
+				Prentmaker:
+				<g:Label ui:field="lblCreator3" styleName="recCreator"></g:Label>
+			</div>
+			<div class="next">
+				<g:Image ui:field="imgNext" altText="Volgende aanbevelingen"
+					url="/images/Actions-go-next-icon.png"></g:Image>
+			</div>
+		</div>
 	</g:HTMLPanel>
 
 </ui:UiBinder>

@@ -15,7 +15,9 @@ import java.util.List;
 import org.sealinc.accurator.client.service.ItemComponentService;
 import org.sealinc.accurator.server.Utility;
 import org.sealinc.accurator.shared.CollectionItem;
+import org.sealinc.accurator.shared.Config;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.hp.hpl.jena.rdf.model.Literal;
 
 public class ItemComponentServiceImpl extends RemoteServiceServlet implements ItemComponentService {
 	/**
@@ -29,7 +31,19 @@ public class ItemComponentServiceImpl extends RemoteServiceServlet implements It
 			return null;
 		else if (resourceURIs.size()==0)
 			return new ArrayList<CollectionItem>();
-		else
-			return Utility.getObjectsByURI(resourceURIs, CollectionItem.class);
+		else{
+			List<CollectionItem> cis =  Utility.getObjectsByURI(resourceURIs, CollectionItem.class);
+			//get the makers
+				for(CollectionItem ci :cis){
+					String sparql = String.format("%s SELECT ?x WHERE { <%s> rma:maker ?y . ?y rdf:value ?z . ?z rma:name ?x . }" , Config.getRDFPrefixes(), ci.uri);
+					List<Literal> ls = Utility.getLiteralValue(sparql);
+					ci.maker = new ArrayList<String>();
+					for(Literal l:ls){
+						ci.maker.add(l.getString());
+					}
+				}
+				return cis;
+		}
+		
 	}
 }

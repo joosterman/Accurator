@@ -142,7 +142,6 @@ public class Utility {
 
 				@Override
 				public Object visitLiteral(Literal l) {
-					// TODO Auto-generated method stub
 					return l.getValue();
 				}
 
@@ -468,6 +467,7 @@ public class Utility {
 		String uri, fieldName;
 		Object fieldValue;
 		T obj = null;
+		RDFNode node;
 		List<String> unknownFields = new ArrayList<String>();
 		while (rs.hasNext()) {
 			qs = rs.next();
@@ -493,7 +493,8 @@ public class Utility {
 				objs.add(obj);
 			}
 			fieldName = qs.get("predicate").asNode().getLocalName();
-			fieldValue = qs.get("object").visitWith(getRDFVisitor());
+			node = qs.get("object");
+			fieldValue = node.visitWith(getRDFVisitor());
 			// add value to field of object if exists
 			try {
 				setFieldValue(obj, fieldName, fieldValue);
@@ -503,9 +504,7 @@ public class Utility {
 			}
 		}
 		// notify of fields that do not exist
-		// System.err.println("Class " + clazz.getName() +
-		// " does not have the following fields (accessable): \n" +
-		// unknownFields.toString());
+		System.err.println("Class " + clazz.getName() + " does not have the following fields (accessable): \n" + unknownFields.toString());
 		return objs;
 	}
 
@@ -527,6 +526,43 @@ public class Utility {
 			}
 		}
 		return value;
+	}
+
+	/**
+	 * Get literal values based on a sparql query. The resultset should include
+	 * only one variable.
+	 * 
+	 * @param sparql
+	 * @return null if there are more variables or the resulting values are not
+	 *         literal values
+	 */
+	public static List<Literal> getLiteralValue(String sparql) {
+		ResultSet rs = getRDFFromEndpoint(sparql);
+		List<Literal> ls = new ArrayList<Literal>();
+		if (rs.getResultVars() == null || rs.getResultVars().size() != 1) {
+			return null;
+		}
+		else {
+			String var = rs.getResultVars().get(0);
+			QuerySolution qs = null;
+			RDFNode node;
+			while (rs.hasNext()) {
+				qs = rs.next();
+				// if the variable is bound
+				if (qs.contains(var)) {
+					node = qs.get(var);
+					// if it is literal
+					if (node.isLiteral()) {
+						ls.add(node.asLiteral());
+					}
+					else {
+						return null;
+					}
+
+				}
+			}
+			return ls;
+		}
 	}
 
 	@SuppressWarnings("unchecked")

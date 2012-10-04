@@ -10,6 +10,7 @@ public class CollectionItem extends RDFObject {
 	public String imageURL;
 	public String notes;
 	public String objectNumber;
+	public List<String> maker;
 	public List<String> contentClassification;
 	
 	public CollectionItem(){
