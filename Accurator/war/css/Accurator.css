@@ -2,6 +2,20 @@
 html body{
 	margin:0px;
 }
+.mainContent
+{
+	min-height: 400px;
+}
+
+.ui-widget
+{
+	font-size:0.8em;
+}
+
+.imageButton:hover{
+	opacity:0.4;
+	cursor: pointer;
+}
 
 /* Header */
 
@@ -30,7 +44,7 @@ html body{
 .header .done{
 	position:absolute;
 	right:10px;
-	top:80px;
+	top:70px;
 }
 
 /* Footer */
@@ -47,8 +61,8 @@ html body{
 
 .footer .logo
 {
-	max-width: 250px;
-	max-height: 100%;
+	max-width: 150px;
+	max-height: 80%;
 	position:relative;
 	vertical-align: middle;
 	
@@ -81,35 +95,37 @@ html body{
 }
 
 /* Recommendation screen  */
-#dialog-recommendation
-{
-	
+
+.recommendation{
+	margin-left:auto;
+	margin-right:auto;
+	width:95%;
 }
 
-#dialog-recommendation .previous,#dialog-recommendation .next
+.recommendation .previous,.recommendation .next
 {
 	position:relative;
 	float:left;
 	margin-top:auto;
 	margin-bottom:auto;
 	top:125px;
-	width:70px;	
+	width:5%;	
 }
-#dialog-recommendation .previous img,#dialog-recommendation .next img
+.recommendation .previous img,.recommendation .next img
 {
 	position: relative;
 	top: 40%;
 }
-#dialog-recommendation .previous img
+.recommendation .previous img
 {
 	float:left
 }
-#dialog-recommendation .next img
+.recommendation .next img
 {
 	float:right;
 }
 
-#dialog-recommendation .search
+.recommendation .search
 {
 	position:relative;
 	width:100%;
@@ -122,12 +138,17 @@ html body{
 {
 	position:relative;
 	float:left;
-	width:233px;
+	text-align:center;
+	width:29%;
 	height:100%;
 	margin-right:10px;
+	margin-bottom:10px;
 }
 .recommendationItem img {	
-	max-height:350px;
+	max-height:450px;
 	max-width:100%;
+	postition:relative;
+	margin-right:auto;
+	margin-left:auto;
 }
 

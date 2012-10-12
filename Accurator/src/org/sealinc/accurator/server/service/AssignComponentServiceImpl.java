@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.sealinc.accurator.client.service.AssignComponentService;
 import org.sealinc.accurator.server.Utility;
+import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Config;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -33,5 +34,12 @@ public class AssignComponentServiceImpl extends RemoteServiceServlet implements 
 	public List<String> getNextItemsToAnnotate(int nritems) {
 		String url = String.format("%s?output=%s&strategy=%s&nritems=%d",Config.getAssignComponentURL(), "json",Config.getAssignStrategy(),nritems);
 		return Utility.getParsedJSONFromURL(url);
+	}
+
+	@Override
+	public List<CollectionItem> search(String text) {
+		String url = String.format("%s&string=%s",Config.getRecommendationComponentSearchURL(),text);
+		List<String> items = Utility.getParsedJSONFromURL(url);
+		return Utility.getObjectsByURI(items, CollectionItem.class);
 	}
 }

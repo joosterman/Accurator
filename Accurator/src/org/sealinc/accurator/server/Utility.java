@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -179,7 +180,16 @@ public class Utility {
 		}
 	}
 
-	public static boolean register(String user, String realname, String password) {
+	public static boolean register(String user, String realname, String password) {	
+		//encode the real name
+		try {
+			realname = URLEncoder.encode(realname,"UTF-8");
+		}
+		catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
 		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.getAdminRegisterUserURL(), user, realname, password);
 		int statusCode = getStatusCode(url);
 		if (statusCode == 200) {
@@ -195,7 +205,7 @@ public class Utility {
 	 */
 	public static boolean login() {
 		// check if the cookie is at most 5 minutes old
-		if (false && cookieDate != null && cookie != null) {
+		if (cookieDate != null && cookie != null) {
 			long time = new Date().getTime() - cookieDate.getTime();
 			if (time < (5 * 1000 * 60)) {
 				return true;
@@ -433,7 +443,6 @@ public class Utility {
 		// generate sparql
 		StringBuilder sb = new StringBuilder();
 		String comparison1 = "?subject = ";
-		String comparison2 = " ?predicate ?object}";
 		String union = " || ";
 		String lt = "<";
 		String gt = ">";

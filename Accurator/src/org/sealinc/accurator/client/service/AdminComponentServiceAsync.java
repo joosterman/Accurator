@@ -5,6 +5,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AdminComponentServiceAsync {
 
-	void register(String user, String password, String realName, AsyncCallback<Integer> callback);
+	void register(String user, String password, String realName, AsyncCallback<Boolean> callback);
 	
 }

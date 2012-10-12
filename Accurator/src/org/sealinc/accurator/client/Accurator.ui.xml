@@ -1,22 +1,10 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client"
 	xmlns:acc="urn:import:org.sealinc.accurator.client.component">
-	<g:HTMLPanel>
-		<div class="header">
-			<img id="headerImage" src="/images/Accurator-header.png" alt="Accurator" />
-			<div class="navbar">
-				<a href="#Annotate">Annoteren</a>
-				<a href="#Profile">Profiel</a>
-				<a href="#Quality">Kwaliteit</a>
-				<a href="#Admin">Admin</a>
-			</div>
-			<g:Button ui:field="btnDone" text="Klaar" styleName="done"></g:Button>
-		</div>
+	<g:HTMLPanel styleName="content">
 		<div id="dialog-login" class="dialog" title="Login">
 			<p>
-				<g:Label ui:field="lblLoginMessage">Beide velden zijn verplicht. Voor een demo
-					gebruik
-					test/test.</g:Label>
+				<g:Label ui:field="lblLoginMessage"></g:Label>
 			</p>
 
 			<form>
@@ -51,14 +39,29 @@
 				</fieldset>
 			</form>
 		</div>
-		<g:SimplePanel ui:field="content"></g:SimplePanel>
-		<acc:RecommendedItems ui:field="recommendations"></acc:RecommendedItems>
+		<div class="header">
+			<img id="headerImage" src="/images/Accurator-header.png" alt="Accurator" />
+			<div class="navbar">
+				<g:Button ui:field="btnAnnotate" text="Annoteren"></g:Button>
+				<g:Button ui:field="btnProfile" text="MijnProfiel"></g:Button>
+			</div>
+			<g:Button ui:field="btnDone" text="Klaar" styleName="done button"></g:Button>
+		</div>
+
+		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
 		<div class="footer">
-			<img src="/images/COMMIT.png" alt="Logo van het COMMIT project" class="logo" />
-			<img src="/images/SEALINCMedia.png" alt="Logo van het SEALINCMedia project" class="logo" />
-			<img src="/images/TUD.png" alt="Logo van de Technische Universiteit Delft" class="logo" />
-			<img src="/images/VU.png" alt="Logo van de Vrije Universiteit" class="logo" />
-			<img src="/images/CWI.png" alt="Logo van het Centrum voor Wiskunde en Informatica" class="logo" /> 
+			<img src="/images/RMA.png" alt="Logo van het Rijksmuseum Amsterdam"
+				class="logo" />
+			<img src="/images/COMMIT.png" alt="Logo van het COMMIT project"
+				class="logo" />
+			<img src="/images/SEALINCMedia.png" alt="Logo van het SEALINCMedia project"
+				class="logo" />
+			<img src="/images/TUD.png" alt="Logo van de Technische Universiteit Delft"
+				class="logo" />
+			<img src="/images/VU.png" alt="Logo van de Vrije Universiteit"
+				class="logo" />
+			<img src="/images/CWI.png" alt="Logo van het Centrum voor Wiskunde en Informatica"
+				class="logo" />
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

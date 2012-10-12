@@ -23,6 +23,25 @@ public class AnnotateScreen extends Composite {
 	@UiField
 	NamedFrame annotationFrame;
 
+	public void loadResource(String resourceURI){
+		String url = Config.getAnnotationComponentURL() +"?target="+resourceURI;
+		annotationFrame.setUrl(url);
+	  // store that the user has viewed the resource
+		View view = new View();
+		view.date = new Date();
+		view.fromRecommendation = false;
+		view.viewer = Config.getUserComponentUserURI() + Utility.getUser();
+		Utility.userService.setViewed(resourceURI, view, new AsyncCallback<Boolean>() {
+			@Override
+			public void onSuccess(Boolean result) {
+				System.out.println("Store View result: " + result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {}
+		});
+	}
+	
 	private void setNextItemToAnnotate() {
 		Utility.assignService.getNextItemsToAnnotate(1, new AsyncCallback<List<String>>() {
 
@@ -30,22 +49,7 @@ public class AnnotateScreen extends Composite {
 			public void onSuccess(List<String> result) {
 				if (result != null && result.size() > 0) {
 					//set the frame to the new annotation
-					String url = Config.getAnnotationComponentURL() +"?target="+result.get(0);
-					annotationFrame.setUrl(url);
-				  // store that the user has viewed the resource
-					View view = new View();
-					view.date = new Date();
-					view.fromRecommendation = false;
-					view.viewer = Config.getUserComponentUserURI() + Utility.getUser();
-					Utility.userService.setViewed(result.get(0), view, new AsyncCallback<Boolean>() {
-						@Override
-						public void onSuccess(Boolean result) {
-							System.out.println("Store View result: " + result);
-						}
-
-						@Override
-						public void onFailure(Throwable caught) {}
-					});
+					loadResource(result.get(0));					
 				}
 			}
 
@@ -62,6 +66,12 @@ public class AnnotateScreen extends Composite {
 	public AnnotateScreen() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setNextItemToAnnotate();
+	}
+	
+	public AnnotateScreen(String resourceURI){
+		initWidget(uiBinder.createAndBindUi(this));
+		loadResource(resourceURI);
+		
 	}
 
 }
