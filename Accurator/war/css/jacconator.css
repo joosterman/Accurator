@@ -1,0 +1,15 @@
+body{
+	background-color: white;
+	height: 600px;
+	max-height: 600px;
+}
+#media .resource img
+{
+	max-height: 500px;	
+}
+
+#fields
+{
+	position:relative;
+	top:25px;
+}

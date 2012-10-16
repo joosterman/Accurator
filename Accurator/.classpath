@@ -33,5 +33,6 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-jdk14-1.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-4.0a3.jar" sourcepath="war/WEB-INF/lib/objectify-4.0a3-sources.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

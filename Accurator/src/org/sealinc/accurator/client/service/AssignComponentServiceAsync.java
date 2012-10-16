@@ -6,8 +6,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AssignComponentServiceAsync {
 
-	void getNextItemsToAnnotate(int nritems, AsyncCallback<List<String>> callback);
-
 	void search(String text, AsyncCallback<List<CollectionItem>> callback);
+
+	void getNextItemsToAnnotate(int nritems, String matches, AsyncCallback<List<String>> callback);
 
 }

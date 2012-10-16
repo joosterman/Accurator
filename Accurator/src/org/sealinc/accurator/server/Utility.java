@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import javax.servlet.http.HttpServletResponse;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.Namespace;
 import org.sealinc.accurator.shared.RDFObject;
@@ -64,6 +65,24 @@ public class Utility {
 	 */
 	public static Model toRDF(RDFObject o) {
 		return toRDF(o, ModelFactory.createDefaultModel());
+	}
+	/**
+	 * Makes sure that the response from a servlet is not chached (in any browser)
+	 * @param response
+	 */
+	public static void setNoCacheJSON(HttpServletResponse response){
+		//set to return JSON
+		response.setContentType("application/json; charset=UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		// Disable cache, also for IE
+		// Set to expire far in the past.
+		response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");
+		// Set standard HTTP/1.1 no-cache headers.
+		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+		// Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
+		// Set standard HTTP/1.0 no-cache header.
+		response.setHeader("Pragma", "no-cache");
 	}
 
 	private static RDFNode createRDFNode(Object o, Model m) {
@@ -439,6 +458,16 @@ public class Utility {
 		return m;
 	}
 
+	public static <T extends RDFObject> T getObjectByURI(String uri, Class<T> clazz){
+		List<String> uris = new ArrayList<String>();
+		uris.add(uri);
+		List<T> objs = getObjectsByURI(uris, clazz);
+		if(objs.size()>0)
+			return objs.get(0);
+		else
+			return null;
+	}
+	
 	public static <T extends RDFObject> List<T> getObjectsByURI(List<String> uris, Class<T> clazz) {
 		// generate sparql
 		StringBuilder sb = new StringBuilder();
@@ -468,11 +497,13 @@ public class Utility {
 	 *         not created TODO: Set the value of an field based on the
 	 *         namespace+name instead of only name
 	 */
-	public static <T extends RDFObject> List<T> getObjects(String sparql, Class<T> clazz) {
+	private static <T extends RDFObject> List<T> getObjects(String sparql, Class<T> clazz) {
 		ResultSet rs = getRDFFromEndpoint(sparql);
-		if (rs == null) return null;
-		QuerySolution qs = null;
 		List<T> objs = new ArrayList<T>();
+		
+		if (rs == null) return objs;
+		QuerySolution qs = null;
+		
 		String uri, fieldName;
 		Object fieldValue;
 		T obj = null;
@@ -538,12 +569,44 @@ public class Utility {
 	}
 
 	/**
+	 * Get URIs as String based on a sparql query. The resultset should include
+	 * only one variable.
+	 * 
+	 * @param sparql
+	 * @return List of uris string or null if more that 1 bound variable was found
+	 */
+	public static List<String> getURIs(String sparql){
+		ResultSet rs = getRDFFromEndpoint(sparql);
+		List<String> uris = new ArrayList<String>();
+		if (rs.getResultVars() == null || rs.getResultVars().size() != 1) {
+			return null;
+		}
+		else {
+			String var = rs.getResultVars().get(0);
+			QuerySolution qs = null;
+			RDFNode node;
+			while (rs.hasNext()) {
+				qs = rs.next();
+				// if the variable is bound
+				if (qs.contains(var)) {
+					node = qs.get(var);
+					// if it is literal
+					if (node.isURIResource()) {
+						uris.add(node.asResource().getURI());
+					}
+				}
+			}
+			return uris;
+		}
+		
+	}
+	
+	/**
 	 * Get literal values based on a sparql query. The resultset should include
 	 * only one variable.
 	 * 
 	 * @param sparql
-	 * @return null if there are more variables or the resulting values are not
-	 *         literal values
+	 * @return List of the found literal values or null if more than 1 bound variables was found
 	 */
 	public static List<Literal> getLiteralValue(String sparql) {
 		ResultSet rs = getRDFFromEndpoint(sparql);

@@ -14,8 +14,11 @@
  *******************************************************************************/
 package org.sealinc.accurator.client.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.sealinc.accurator.shared.Annotation;
+import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Review;
 import org.sealinc.accurator.shared.View;
 import com.google.gwt.core.client.GWT;
@@ -25,9 +28,13 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("UserComponentService")
 public interface UserComponentService extends RemoteService {
 	
-	public List<Annotation> getAnnotations(String user);
+	public List<Annotation> getAnnotations(String user, int nrAnnotations);
+	public List<CollectionItem> getLastAnnotatedItems(String user, int nrItems);
 	public boolean setViewed(String resourceURI, View view);
 	public boolean setReview(String annotationURI, Review review);
+	public int getTotalAnnotatedPrints(String user,Date annotatedSince);
+	public String getAnnotationFieldsParam(String user, String resourceURI);
+	public Map<String,Integer> getExpertise(String user);
 	
 	/**
 	 * Utility class for simplifying access to the instance of async service.

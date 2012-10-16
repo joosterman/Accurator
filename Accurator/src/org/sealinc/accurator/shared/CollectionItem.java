@@ -15,6 +15,7 @@ public class CollectionItem extends RDFObject {
 	
 	public CollectionItem(){
 		contentClassification = new ArrayList<String>();
+		maker = new ArrayList<String>();
 	}
 
 }

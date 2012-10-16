@@ -1,5 +1,10 @@
 package org.sealinc.accurator.client;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import org.sealinc.accurator.client.component.AnnotateScreen;
 import org.sealinc.accurator.client.component.ProfileScreen;
 import org.sealinc.accurator.client.component.RecommendedItems;
@@ -13,6 +18,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -37,7 +43,12 @@ public class Accurator implements EntryPoint {
 	@UiField
 	Label lblLoginMessage, lblRegisterMessage;
 	@UiField
-	Button btnDone,btnAnnotate,btnProfile;
+	Button btnDone, btnAnnotate, btnProfile;
+
+	private Map<String, Integer> expertise;
+	private Queue<String> castlesURIs;
+	private Queue<String> floraURIs;
+	private Map<String, Boolean> printURIIsCastle = new HashMap<String, Boolean>();
 
 	private Storage localStorage;
 	private AnnotateScreen annotateScreen;
@@ -51,14 +62,15 @@ public class Accurator implements EntryPoint {
 	};
 
 	@UiHandler("btnAnnotate")
-	void btnAnnotateClick(ClickEvent e){
+	void btnAnnotateClick(ClickEvent e) {
 		History.newItem(State.Annotate.toString());
 	}
+
 	@UiHandler("btnProfile")
-	void btnProfileClick(ClickEvent e){
+	void btnProfileClick(ClickEvent e) {
 		History.newItem(State.Profile.toString());
 	}
-	
+
 	@UiHandler("btnDone")
 	void btnDoneClick(ClickEvent e) {
 		// load as page
@@ -70,7 +82,7 @@ public class Accurator implements EntryPoint {
 		closeLogin();
 		openRegister(this);
 	}
-	
+
 	private native void loadUIThemeElements()/*-{
 		$wnd.jQuery("button").button();
 		$wnd.jQuery(".button").button();
@@ -82,6 +94,34 @@ public class Accurator implements EntryPoint {
 		rootPanel.add(w);
 		loadUIThemeElements();
 		initHistorySupport();
+		// load prints
+		Utility.assignService.getNextItemsToAnnotate(100, "kasteel", new AsyncCallback<List<String>>() {
+
+			@Override
+			public void onSuccess(List<String> result) {
+				castlesURIs = new java.util.PriorityQueue<String>();
+				castlesURIs.addAll(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+			}
+		});
+		Utility.assignService.getNextItemsToAnnotate(100, "bloem", new AsyncCallback<List<String>>() {
+
+			@Override
+			public void onSuccess(List<String> result) {
+				floraURIs = new java.util.PriorityQueue<String>();
+				floraURIs.addAll(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 
 		// check if we have a user data
 		localStorage = Storage.getLocalStorageIfSupported();
@@ -99,12 +139,12 @@ public class Accurator implements EntryPoint {
 
 	public void annotate(String resourceURI) {
 		if (annotateScreen == null) {
-			annotateScreen = new AnnotateScreen(resourceURI);
+			annotateScreen = new AnnotateScreen(this, resourceURI);
 		}
 		else {
 			annotateScreen.loadResource(resourceURI);
 		}
-		if(!History.getToken().equals(State.Annotate.toString())){
+		if (!History.getToken().equals(State.Annotate.toString())) {
 			History.newItem(State.Annotate.toString());
 		}
 	}
@@ -199,10 +239,92 @@ public class Accurator implements EntryPoint {
 		$wnd.jQuery(".ui-dialog-titlebar-close").hide();
 	}-*/;
 
+	private void loadExpertise() {
+		Utility.userService.getExpertise(Utility.getUser(), new AsyncCallback<Map<String, Integer>>() {
+
+			@Override
+			public void onSuccess(Map<String, Integer> result) {
+				expertise = result;
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+	}
+	
+	public String getUIFieldsParam(String resourceURI){
+		if(printURIIsCastle.get(resourceURI)){
+			return "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
+		}
+		else{
+			return "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorFlowerDemoUi";
+		}
+	}
+
+	public List<String> getNextPrintsToAnnotate(int nrPrints) {
+		List<String> uris = new ArrayList<String>();
+		if (expertise == null || castlesURIs == null || floraURIs == null) {
+			return uris;
+		}
+
+		int castleExp = 0;
+		int floraExp = 0;
+		if (expertise.containsKey("castle")) castleExp = expertise.get("castle");
+		if (expertise.containsKey("flora")) floraExp = expertise.get("flora");
+
+		if (castlesURIs != null && floraURIs != null) {
+			for (int i = 0; i < nrPrints; i++) {
+				boolean addFlora = false;
+				// random number if needed
+				int r = Random.nextInt(10);
+				// equal exp? determine random
+				if (castleExp == floraExp) {
+					if (r > 5) {
+						addFlora = false;
+					}
+					else{
+						addFlora = true;						
+					}
+				}
+				else if (castleExp == 0 && floraExp > 0 && floraExp > 4) {
+					addFlora = true;
+				}
+				else if (castleExp > 0 && castleExp > 4 && floraExp == 0) {
+					addFlora =false;
+				}
+				else {
+					double castle = Math.abs(castleExp - r);
+					double flora = Math.abs(floraExp - r);
+					if (castle > flora){
+						addFlora = false;
+					}
+					else{
+						addFlora = true;
+					}
+				}
+				
+				if(addFlora){
+					printURIIsCastle.put(floraURIs.peek(),false);
+					uris.add(floraURIs.poll());
+					
+				}
+				else{
+					printURIIsCastle.put(castlesURIs.peek(), true);
+					uris.add(castlesURIs.poll());
+				}
+			}
+		}
+		return uris;
+	}
+
 	public void loginSuccessful(String username, String password) {
 		// check if this is the first login
 		// new login
 		if (renewLoginTimer == null) {
+
 			loadCurrentHistory();
 			Utility.setUser(username, password);
 			renewLoginTimer = new Timer() {
@@ -212,23 +334,11 @@ public class Accurator implements EntryPoint {
 				}
 			};
 			// renew login every 4 minutes
-			renewLoginTimer.scheduleRepeating(1000 * 60 * 1);
+			renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
 			System.out.println("First login");
+			loadExpertise();
 		}
 	}
-
-	/*
-	 * public void loginGWT(String username, String password){ String loginURL =
-	 * Config.getLoginURL(); String url =
-	 * loginURL+"?user="+username+"&password="+password; RequestBuilder rb = new
-	 * RequestBuilder(RequestBuilder.GET, url); rb.setCallback(new
-	 * RequestCallback() {
-	 * @Override public void onResponseReceived(Request request, Response
-	 * response) { int status = response.getStatusCode(); }
-	 * @Override public void onError(Request request, Throwable exception) { } });
-	 * rb.setRequestData(""); try { rb.send(); } catch (RequestException e) {
-	 * e.printStackTrace(); } }
-	 */
 
 	public native void login(Accurator acc, String username, String password)/*-{
 		loginURL = @org.sealinc.accurator.shared.Config::getLoginURL()();
@@ -256,15 +366,21 @@ public class Accurator implements EntryPoint {
 		State state = null;
 		try {
 			state = State.valueOf(token);
+			btnDone.setVisible(false);
 			content.clear();
+
 			switch (state) {
+
 				case Annotate:
-					if (annotateScreen == null) annotateScreen = new AnnotateScreen();
+					btnDone.setVisible(true);
+					if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
 					content.add(annotateScreen);
+					loadExpertise();
 					break;
 				case Profile:
-					if (profileScreen == null) profileScreen = new ProfileScreen();
+					if (profileScreen == null) profileScreen = new ProfileScreen(this);
 					content.add(profileScreen);
+					profileScreen.loadUIThemeElements();
 					break;
 				case Quality:
 					break;
@@ -272,7 +388,8 @@ public class Accurator implements EntryPoint {
 					break;
 				case Recommendation:
 					if (recommendationScreen == null) recommendationScreen = new RecommendedItems(this);
-					content.add(recommendationScreen);					
+					content.add(recommendationScreen);
+
 					break;
 			}
 			loadUIThemeElements();

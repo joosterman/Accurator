@@ -3,5 +3,5 @@
 org.sealinc.accurator.client.service.AdminComponentService, B2B2385CF6B08B637575897E43B8223F.gwt.rpc
 org.sealinc.accurator.client.service.QualityComponentService, 09F7EC9F8D53116A1CA5429E230F091E.gwt.rpc
 org.sealinc.accurator.client.service.AssignComponentService, C969FCB8B7A7067C24A8275985276013.gwt.rpc
+org.sealinc.accurator.client.service.UserComponentService, F53E30E53B798B1DCEEEA3176DCB3814.gwt.rpc
 org.sealinc.accurator.client.service.ItemComponentService, DB1B860235295CCD6BEE9E4105901959.gwt.rpc
-org.sealinc.accurator.client.service.UserComponentService, 5ACADCA924F05A0FDD38D7AFD52C0F3D.gwt.rpc

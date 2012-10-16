@@ -5,7 +5,7 @@ public class Config {
 	private static final String sparqlEndpoint = "http://eculture.cs.vu.nl/sealinc/sparql/";	
 	private static final String annotationComponentURL = "http://eculture.cs.vu.nl/sealinc/annotate";	
 	private static final String assignComponentURL  ="http://eculture.cs.vu.nl/sealinc/assign";
-	private static final String assignComponentStrategy = "random";
+	private static final String assignComponentStrategy = "literal_matching";
 	private static final int assignComponentNrItems = 3;	
 	private static final int qualityComponentNrRecentAnnotations = 10;
 	private static final String qualityComponentTrustworthinessURL = "http://eculture.cs.vu.nl/sealinc/quality";
@@ -19,7 +19,7 @@ public class Config {
 	private static final String userComponentUserURI = "http://eculture.cs.vu.nl/sealinc/user/";
 	private static final String adminComponentUploadDataURL = "http://eculture.cs.vu.nl/sealinc/servlets/uploadData";
 	private static final String adminComponentBaseURI = "http://purl.org/accurator/";
-	private static final String recommendationComponentSearchURL = "http://eculture.cs.vu.nl/sealinc/assign?strategy=literal_matching&predicate=http://purl.org/dc/terms/description&nritems=3"; 
+	private static final String recommendationComponentSearchURL = "http://eculture.cs.vu.nl/sealinc/assign?strategy=literal_matching&predicate=http://purl.org/dc/terms/description&nritems=3";
 	
 	private static final String sparqlPrefixes = "PREFIX rmaschema: <http://purl.org/collections/nl/rma/schema#> "
 			+ "PREFIX rmaterms: <http://purl.org/collections/nl/rma/terms/> "

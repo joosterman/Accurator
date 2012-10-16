@@ -7,7 +7,6 @@
 				<g:TextBox ui:field="tbSearch" styleName="searchBox"></g:TextBox>
 				<g:Button ui:field="btnSearch" text="Zoeken"></g:Button>
 			</div>
-
 			<div class="recommendationItem">
 				<g:Label ui:field="lblTitle1" styleName="recTitle"></g:Label>
 				<g:Image ui:field="img1" styleName="recImage imageButton"></g:Image>
@@ -30,8 +29,8 @@
 				<g:Label ui:field="lblCreator3" styleName="recCreator"></g:Label>
 			</div>
 			<div class="next">
-				<g:Image ui:field="imgNext" styleName="imageButton" altText="Volgende aanbevelingen"
-					url="/images/arrow.png"></g:Image>
+				<g:Image ui:field="imgNext" styleName="imageButton"
+					altText="Volgende aanbevelingen" url="/images/arrow.png"></g:Image>
 			</div>
 		</div>
 	</g:HTMLPanel>

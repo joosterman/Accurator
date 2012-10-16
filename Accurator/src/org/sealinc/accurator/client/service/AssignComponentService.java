@@ -22,7 +22,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("AssignComponentService")
 public interface AssignComponentService extends RemoteService {
-	public List<String> getNextItemsToAnnotate(int nritems);
+	public List<String> getNextItemsToAnnotate(int nritems, String matches);
 	public List<CollectionItem> search(String text);
 	
 	/**

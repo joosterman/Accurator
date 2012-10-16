@@ -31,8 +31,8 @@ public class AssignComponentServiceImpl extends RemoteServiceServlet implements 
 	private static final long serialVersionUID = -1666793749883291043L;
 
 	@Override
-	public List<String> getNextItemsToAnnotate(int nritems) {
-		String url = String.format("%s?output=%s&strategy=%s&nritems=%d",Config.getAssignComponentURL(), "json",Config.getAssignStrategy(),nritems);
+	public List<String> getNextItemsToAnnotate(int nritems,String matches) {
+		String url = String.format("%s?output=%s&strategy=%s&nritems=%d&string=%s",Config.getAssignComponentURL(), "json",Config.getAssignStrategy(),nritems,matches);
 		return Utility.getParsedJSONFromURL(url);
 	}
 
