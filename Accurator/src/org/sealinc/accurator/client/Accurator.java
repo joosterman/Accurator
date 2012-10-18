@@ -13,6 +13,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.i18n.client.AccuratorConstants;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -35,6 +36,7 @@ public class Accurator implements EntryPoint {
 	interface MyUiBinder extends UiBinder<Widget, Accurator> {}
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+	private AccuratorConstants constants = GWT.create(AccuratorConstants.class);
 
 	@UiField
 	Panel content;
@@ -44,6 +46,8 @@ public class Accurator implements EntryPoint {
 	Label lblLoginMessage, lblRegisterMessage;
 	@UiField
 	Button btnDone, btnAnnotate, btnProfile;
+	@UiField
+	Anchor lnkLogout;
 
 	private Map<String, Integer> expertise;
 	private Queue<String> castlesURIs;
@@ -55,11 +59,16 @@ public class Accurator implements EntryPoint {
 	private ProfileScreen profileScreen;
 	private RecommendedItems recommendationScreen;
 	String username = null;
-	Timer renewLoginTimer = null;
+	Timer renewLoginTimer = null; 
 
 	private enum State {
 		Annotate, Profile, Quality, Admin, Recommendation
 	};
+
+	@UiHandler("lnkLogout")
+	void lnkLogoutClick(ClickEvent e) {
+		Utility.deleteUser();
+	}
 
 	@UiHandler("btnAnnotate")
 	void btnAnnotateClick(ClickEvent e) {
@@ -80,7 +89,12 @@ public class Accurator implements EntryPoint {
 	@UiHandler("lnkRegister")
 	void registerClickHandler(ClickEvent e) {
 		closeLogin();
-		openRegister(this);
+		openRegister();
+	}
+
+	public String getLocalString(String toTranslate) {
+		String translated = constants.getString(toTranslate);
+		return translated;
 	}
 
 	private native void loadUIThemeElements()/*-{
@@ -91,7 +105,11 @@ public class Accurator implements EntryPoint {
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get();
 		Widget w = uiBinder.createAndBindUi(this);
+		lnkLogout.setVisible(false);
+		btnDone.setVisible(false);
+
 		rootPanel.add(w);
+
 		loadUIThemeElements();
 		initHistorySupport();
 		// load prints
@@ -130,10 +148,9 @@ public class Accurator implements EntryPoint {
 			username = localStorage.getItem("username");
 			password = localStorage.getItem("password");
 		}
-		if (username == null || password == null) openLogin(this);
+		if (username == null || password == null) openLogin();
 		else {
-			// loginGWT(username,password);
-			login(this, username, password);
+			login(username, password);
 		}
 	}
 
@@ -150,18 +167,17 @@ public class Accurator implements EntryPoint {
 	}
 
 	public void register(final String user, final String password, String realName) {
-		final Accurator acc = this;
 		Utility.adminService.register(user, password, realName, new AsyncCallback<Boolean>() {
 
 			@Override
-			public void onSuccess(Boolean result) {
-				if (result) {
-					lblRegisterMessage.setText("");
+			public void onSuccess(Boolean isSuccess) {
+				if (isSuccess) {
+					setRegistrationFailed(false);
 					closeRegister();
-					login(acc, user, password);
+					login(user, password);
 				}
 				else {
-					lblRegisterMessage.setText("Account kon niet aangemaakt worden. Probeer nogmaals of neem contact op met de beheerder.");
+					setRegistrationFailed(true);
 				}
 			}
 
@@ -172,28 +188,31 @@ public class Accurator implements EntryPoint {
 		});
 	}
 
-	public native void openRegister(Accurator acc)/*-{
-		$wnd
-			.jQuery("#dialog-register")
-			.dialog({
-				autoOpen : false,
-				modal : true,
-				draggable : false,
-				resizable : false,
-				closeOnEscape : false,
-				buttons : {
-					"Annuleer" : function() {
-						$wnd.jQuery("#dialog-register").dialog("close");
-						$wnd.jQuery("#dialog-login").dialog("open");
-					},
-					"Registreer" : function() {
-						var user = $wnd.jQuery("#regname").val();
-						var password = $wnd.jQuery("#regpassword").val();
-						var realName = $wnd.jQuery("#regrealName").val();
-						acc.@org.sealinc.accurator.client.Accurator::register(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,password,realName);
-					},
-				}
-			});
+	public native void openRegister()/*-{
+		var acc = this;
+		var cancel = acc.@org.sealinc.accurator.client.Accurator::getLocalString(Ljava/lang/String;)("cancel");
+		var register = acc.@org.sealinc.accurator.client.Accurator::getLocalString(Ljava/lang/String;)("register");
+
+		var localButtons = {};
+		localButtons[cancel] = function() {
+			$wnd.jQuery("#dialog-register").dialog("close");
+			$wnd.jQuery("#dialog-login").dialog("open");
+		};
+		localButtons[register] = function() {
+			var user = $wnd.jQuery("#regname").val();
+			var password = $wnd.jQuery("#regpassword").val();
+			var realName = $wnd.jQuery("#regrealName").val();
+			acc.@org.sealinc.accurator.client.Accurator::register(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,password,realName);
+		};
+
+		$wnd.jQuery("#dialog-register").dialog({
+			autoOpen : false,
+			modal : true,
+			draggable : false,
+			resizable : false,
+			closeOnEscape : false,
+			buttons : localButtons,
+		});
 		$wnd.jQuery("#dialog-register").dialog("open");
 		$wnd.jQuery(".ui-dialog-titlebar-close").hide();
 	}-*/;
@@ -212,29 +231,29 @@ public class Accurator implements EntryPoint {
 			String username = localStorage.getItem("username");
 			String password = localStorage.getItem("password");
 			if (username != null && password != null) {
-				login(this, username, password);
+				login(username, password);
 				System.out.println("Login renewed");
 			}
 		}
 	}
 
-	public native void openLogin(Accurator acc)/*-{
-		$wnd
-			.jQuery("#dialog-login")
-			.dialog({
-				autoOpen : false,
-				modal : true,
-				draggable : false,
-				resizable : false,
-				closeOnEscape : false,
-				buttons : {
-					"Log in" : function() {
-						var user = $wnd.jQuery("#name").val();
-						var password = $wnd.jQuery("#password").val();
-						acc.@org.sealinc.accurator.client.Accurator::login(Lorg/sealinc/accurator/client/Accurator;Ljava/lang/String;Ljava/lang/String;)(acc,user,password);
-					},
-				}
-			});
+	public native void openLogin()/*-{
+		var acc = this;
+		var logIn = acc.@org.sealinc.accurator.client.Accurator::getLocalString(Ljava/lang/String;)("logIn");
+		var localButtons = {};
+		localButtons[logIn] = function() {
+			var user = $wnd.jQuery("#name").val();
+			var password = $wnd.jQuery("#password").val();
+			acc.@org.sealinc.accurator.client.Accurator::login(Ljava/lang/String;Ljava/lang/String;)(user,password);
+		};
+		$wnd.jQuery("#dialog-login").dialog({
+			autoOpen : false,
+			modal : true,
+			draggable : false,
+			resizable : false,
+			closeOnEscape : false,
+			buttons : localButtons,
+		});
 		$wnd.jQuery("#dialog-login").dialog("open");
 		$wnd.jQuery(".ui-dialog-titlebar-close").hide();
 	}-*/;
@@ -254,12 +273,12 @@ public class Accurator implements EntryPoint {
 			}
 		});
 	}
-	
-	public String getUIFieldsParam(String resourceURI){
-		if(printURIIsCastle.get(resourceURI)){
+
+	public String getUIFieldsParam(String resourceURI) {
+		if (printURIIsCastle.get(resourceURI)) {
 			return "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
 		}
-		else{
+		else {
 			return "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorFlowerDemoUi";
 		}
 	}
@@ -285,33 +304,33 @@ public class Accurator implements EntryPoint {
 					if (r > 5) {
 						addFlora = false;
 					}
-					else{
-						addFlora = true;						
+					else {
+						addFlora = true;
 					}
 				}
 				else if (castleExp == 0 && floraExp > 0 && floraExp > 4) {
 					addFlora = true;
 				}
 				else if (castleExp > 0 && castleExp > 4 && floraExp == 0) {
-					addFlora =false;
+					addFlora = false;
 				}
 				else {
 					double castle = Math.abs(castleExp - r);
 					double flora = Math.abs(floraExp - r);
-					if (castle > flora){
+					if (castle > flora) {
 						addFlora = false;
 					}
-					else{
+					else {
 						addFlora = true;
 					}
 				}
-				
-				if(addFlora){
-					printURIIsCastle.put(floraURIs.peek(),false);
+
+				if (addFlora) {
+					printURIIsCastle.put(floraURIs.peek(), false);
 					uris.add(floraURIs.poll());
-					
+
 				}
-				else{
+				else {
 					printURIIsCastle.put(castlesURIs.peek(), true);
 					uris.add(castlesURIs.poll());
 				}
@@ -337,10 +356,26 @@ public class Accurator implements EntryPoint {
 			renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
 			System.out.println("First login");
 			loadExpertise();
+			lnkLogout.setVisible(true);
 		}
 	}
 
-	public native void login(Accurator acc, String username, String password)/*-{
+	private void setLoginFailed(boolean failed){
+		if(failed)
+			lblLoginMessage.setText(constants.loginFailed());
+		else
+			lblLoginMessage.setText("");
+	}
+	
+	private void setRegistrationFailed(boolean failed){
+		if(failed)
+			lblRegisterMessage.setText(constants.registrationFailed());
+		else
+			lblRegisterMessage.setText("");
+	}
+	
+	public native void login(String username, String password)/*-{
+		var acc = this;
 		loginURL = @org.sealinc.accurator.shared.Config::getLoginURL()();
 		$wnd.jQuery.ajax({
 			type : 'GET',
@@ -350,22 +385,34 @@ public class Accurator implements EntryPoint {
 				"user" : username,
 				"password" : password
 			},
-			statusCode : {
-				200 : function() {
+			timeout : 1000,
+			error : function(xhr,ajaxOptions,thrownError) {
+				if(xhr.status===200){
 					try {
 						$wnd.jQuery("#dialog-login").dialog("close");
-					} catch (err) {
+					} 
+					catch (err) {
 					}
-					acc.@org.sealinc.accurator.client.Accurator::loginSuccessful(Ljava/lang/String;Ljava/lang/String;)(username,password);
-				},
-			},
+					acc.@org.sealinc.accurator.client.Accurator::setLoginFailed(Z)(false);
+					acc.@org.sealinc.accurator.client.Accurator::loginSuccessful(Ljava/lang/String;Ljava/lang/String;)(username,password);					
+				}
+				else{
+					//show failed!
+					acc.@org.sealinc.accurator.client.Accurator::setLoginFailed(Z)(true);
+				}
+			}
 		});
 	}-*/;
 
 	private void LoadState(String token) {
 		State state = null;
 		try {
-			state = State.valueOf(token);
+			try {
+				state = State.valueOf(token);
+			}
+			catch (IllegalArgumentException ex) {
+				state = State.Annotate;
+			}
 			btnDone.setVisible(false);
 			content.clear();
 
@@ -381,6 +428,7 @@ public class Accurator implements EntryPoint {
 					if (profileScreen == null) profileScreen = new ProfileScreen(this);
 					content.add(profileScreen);
 					profileScreen.loadUIThemeElements();
+					profileScreen.loadData();
 					break;
 				case Quality:
 					break;

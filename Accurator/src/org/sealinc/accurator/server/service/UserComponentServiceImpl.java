@@ -146,19 +146,6 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 	}
 
 	@Override
-	public String getAnnotationFieldsParam(String user, String resourceURI) {
-		String userURI = Config.getUserComponentUserURI() + user;
-		CollectionItem ci = Utility.getObjectByURI(resourceURI, CollectionItem.class);
-		//check for castle
-		if(ci.contentClassification.contains("http://www.cs.vu.nl/stitch/iconclass#ic_41A12")){
-			return "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
-		}
-		//do not override ui: default
-		else
-			return "";
-	}
-
-	@Override
 	public Map<String,Integer> getExpertise(String user) {
 		Map<String,Integer> exps = new HashMap<String, Integer>();
 		for(UserProfileEntry entry :begin().load().type(UserProfileEntry.class).filter("user", user).filter("type", "expertise").list()){

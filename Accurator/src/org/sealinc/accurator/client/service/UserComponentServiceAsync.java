@@ -22,8 +22,6 @@ public interface UserComponentServiceAsync {
 
 	void getLastAnnotatedItems(String user, int nrItems, AsyncCallback<List<CollectionItem>> callback);
 
-	void getAnnotationFieldsParam(String user, String resourceURI, AsyncCallback<String> callback);
-
 	void getExpertise(String user, AsyncCallback<Map<String,Integer>> callback);
 
 }

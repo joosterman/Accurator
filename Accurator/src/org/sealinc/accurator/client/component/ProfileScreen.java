@@ -15,11 +15,9 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -31,8 +29,6 @@ public class ProfileScreen extends Composite {
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
 	@UiField
-	Button refresh;
-	@UiField
 	VerticalPanel pnlAnnotated;
 	@UiField
 	Label lblTotalAnnotated;
@@ -41,12 +37,7 @@ public class ProfileScreen extends Composite {
 
 	DateTimeFormat df = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
-	@UiHandler("refresh")
-	void handleClick(ClickEvent e) {
-		loadData();
-	}
-
-	private void loadData() {
+	public void loadData() {
 		// total number of annotated prints
 		Utility.userService.getTotalAnnotatedPrints(Utility.getUser(), null, new AsyncCallback<Integer>() {
 
@@ -92,7 +83,7 @@ public class ProfileScreen extends Composite {
 		$wnd.jQuery("#"+topic+"Slider").slider("value",eval(json));
 	}-*/;
 		
-	public static void getExpertise(final String topic){
+	private static void getExpertise(final String topic){
 		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
 		String data = "user=" + Utility.getUser() + "&type=expertise&topic=" + topic;
 		
@@ -120,7 +111,7 @@ public class ProfileScreen extends Composite {
 		}		
 	}
 	
-	public static void storeExpertise(String topic, int value) {
+	private static void storeExpertise(String topic, int value) {
 		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
 		String data = "user=" + Utility.getUser() + "&type=expertise&topic=" + topic + "&value=" + value;		
 		RequestBuilder rb = new RequestBuilder(RequestBuilder.PUT, loc+data);

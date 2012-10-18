@@ -1,39 +1,55 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client"
-	xmlns:acc="urn:import:org.sealinc.accurator.client.component">
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
+	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 	<g:HTMLPanel styleName="content">
 		<div id="dialog-login" class="dialog" title="Login">
+			<ui:attribute name="title" description="Login popup title" />
 			<p>
 				<g:Label ui:field="lblLoginMessage"></g:Label>
 			</p>
 
 			<form>
 				<fieldset>
-					<label for="name">Gebruikersnaam</label>
+					<label for="name">
+						<ui:msg description="Username">Username</ui:msg>
+					</label>
 					<input type="text" class="text ui-widget-content ui-corner-all"
 						name="name" id="name" />
-					<label for="password">Wachtwoord</label>
+					<label for="password">
+						<ui:msg description="Password">Password</ui:msg>
+					</label>
 					<input type="password" name="password" id="password" value=""
 						class="text ui-widget-content ui-corner-all" />
 				</fieldset>
 				<p>
-					<g:Anchor ui:field="lnkRegister" text="Of klik om te registreren"></g:Anchor>
+					<g:Anchor ui:field="lnkRegister">
+						<ui:msg description="Register link">Or click here to register</ui:msg>
+					</g:Anchor>
 				</p>
 			</form>
 		</div>
-		<div id="dialog-register" class="dialog" title="Registreer">
+		<div id="dialog-register" class="dialog" title="Register">
+			<ui:attribute name="title" description="Register popup title" />
 			<p>
 				<g:Label ui:field="lblRegisterMessage"></g:Label>
 			</p>
 			<form>
 				<fieldset>
-					<label for="regname">Gebruikersnaam</label>
+					<label for="regname">
+						<ui:msg description="Username">Username</ui:msg>
+					</label>
 					<input type="text" class="text ui-widget-content ui-corner-all"
 						name="name" id="regname" />
-					<label for="regpassword">Wachtwoord</label>
+					<label for="regpassword">
+						<ui:msg description="Password">Password</ui:msg>
+					</label>
 					<input type="password" name="password" id="regpassword"
 						value="" class="text ui-widget-content ui-corner-all" />
-					<label for="regrealName">Volledige naam</label>
+					<label for="regrealName">
+						<ui:msg description="Full name">Full name</ui:msg>
+					</label>
 					<input type="text" class="text ui-widget-content ui-corner-all"
 						name="realName" id="regrealName" />
 				</fieldset>
@@ -42,26 +58,59 @@
 		<div class="header">
 			<img id="headerImage" src="/images/Accurator-header.png" alt="Accurator" />
 			<div class="navbar">
-				<g:Button ui:field="btnAnnotate" text="Annoteren"></g:Button>
-				<g:Button ui:field="btnProfile" text="MijnProfiel"></g:Button>
+				<g:Button ui:field="btnProfile">
+					<ui:msg description="MyProfile">MyProfile</ui:msg>
+				</g:Button>
+				<g:Button ui:field="btnAnnotate">
+					<ui:msg description="Annotate">Annotate</ui:msg>
+				</g:Button>
+				<g:Anchor ui:field="lnkLogout" styleName="logoutLink button">
+					<ui:msg description="Logout">Log out</ui:msg>
+				</g:Anchor>
 			</div>
-			<g:Button ui:field="btnDone" text="Klaar" styleName="done button"></g:Button>
+
+			<g:Button ui:field="btnDone" styleName="done button">
+				<ui:msg description="Done">Done</ui:msg>
+			</g:Button>
 		</div>
 
 		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
 		<div class="footer">
-			<img src="/images/RMA.png" alt="Logo van het Rijksmuseum Amsterdam"
-				class="logo" />
-			<img src="/images/COMMIT.png" alt="Logo van het COMMIT project"
-				class="logo" />
-			<img src="/images/SEALINCMedia.png" alt="Logo van het SEALINCMedia project"
-				class="logo" />
-			<img src="/images/TUD.png" alt="Logo van de Technische Universiteit Delft"
-				class="logo" />
-			<img src="/images/VU.png" alt="Logo van de Vrije Universiteit"
-				class="logo" />
-			<img src="/images/CWI.png" alt="Logo van het Centrum voor Wiskunde en Informatica"
-				class="logo" />
+			<div class="group">
+				<span class="title">Project</span>
+				<div>
+					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
+						class="logo">
+						<ui:attribute name="alt" description="Alt text COMMIT logo" />
+					</img>
+					<img src="/images/SEALINCMedia.png" alt="Logo of the SEALINCMedia project"
+						class="logo">
+						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+					</img>
+				</div>
+			</div>
+			<div class="group">
+				<span class="title">Partners</span>
+				<div>
+					<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
+						class="logo">
+						<ui:attribute name="alt" description="Alt text RMA logo" />
+					</img>
+					<img src="/images/TUD.png" alt="Logo of Delft University of Technology"
+						class="logo">
+						<ui:attribute name="alt" description="Alt text DUT logo" />
+					</img>
+					<img src="/images/VU.png" alt="Logo of the Free University Amsterdam"
+						class="logo">
+						<ui:attribute name="alt" description="Alt text VU logo" />
+					</img>
+					<img src="/images/CWI.png" alt="Logo of the CWI Centrum voor Wiskunde en Informatica"
+						class="logo">
+						<ui:attribute name="alt" description="Alt text CWI logo" />
+					</img>
+				</div>
+			</div>
+
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

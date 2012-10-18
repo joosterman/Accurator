@@ -1,6 +1,8 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:d="urn:import:com.google.gwt.dom.client"
-	xmlns:acc="urn:import:org.sealinc.accurator.client.component">
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
+	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 	<g:HTMLPanel>
 		<div class="recommendation">
 			<div class="search">
@@ -11,26 +13,31 @@
 				<g:Label ui:field="lblTitle1" styleName="recTitle"></g:Label>
 				<g:Image ui:field="img1" styleName="recImage imageButton"></g:Image>
 				<br />
-				Prentmaker:
+				<ui:msg description="Printmaker">Printmaker</ui:msg>
+				:
 				<g:Label ui:field="lblCreator1" styleName="recCreator"></g:Label>
 			</div>
 			<div class="recommendationItem">
 				<g:Label ui:field="lblTitle2" styleName="recTitle"></g:Label>
 				<g:Image ui:field="img2" styleName="recImage imageButton"></g:Image>
 				<br />
-				Prentmaker:
+				<ui:msg description="Printmaker">Printmaker</ui:msg>
+				:
 				<g:Label ui:field="lblCreator2" styleName="recCreator"></g:Label>
 			</div>
 			<div class="recommendationItem">
 				<g:Label ui:field="lblTitle3" styleName="recTitle"></g:Label>
 				<g:Image ui:field="img3" styleName="recImage imageButton"></g:Image>
 				<br />
-				Prentmaker:
+				<ui:msg description="Printmaker">Printmaker</ui:msg>
+				:
 				<g:Label ui:field="lblCreator3" styleName="recCreator"></g:Label>
 			</div>
 			<div class="next">
-				<g:Image ui:field="imgNext" styleName="imageButton"
-					altText="Volgende aanbevelingen" url="/images/arrow.png"></g:Image>
+				<g:Image ui:field="imgNext" styleName="imageButton" altText="Next recommendations"
+					url="/images/arrow.png">
+					<ui:attribute name="altText" description="Next recommendation" />
+				</g:Image>
 			</div>
 		</div>
 	</g:HTMLPanel>

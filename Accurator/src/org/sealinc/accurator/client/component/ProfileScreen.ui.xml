@@ -1,23 +1,32 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
+	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel>
-		<div class="refresh">
-			<g:Button ui:field="refresh">Refresh</g:Button>
-		</div>
-
-
 		<fieldset class="infoblock">
-			<legend>Prints annotated</legend>
-			<h3>Total prints annotated</h3>
+			<legend>
+				<ui:msg description="Prints annotated">Prints annotated</ui:msg>
+			</legend>
+			<h3>
+				<ui:msg description="Total prints annotated">Total prints annotated</ui:msg>
+			</h3>
 			<g:Label ui:field="lblTotalAnnotated"></g:Label>
-			<h3>Latest (10) prints</h3>
+			<h3>
+				<ui:msg description="Latest (10) prints">Latest (10) prints</ui:msg>
+			</h3>
 			<g:VerticalPanel ui:field="pnlAnnotated"></g:VerticalPanel>
 		</fieldset>
 		<fieldset class="infoblock">
-			<legend>Expertise</legend>
-			<h3>Flora expertise</h3>
+			<legend>
+				<ui:msg description="Expertise">Expertise</ui:msg>
+			</legend>
+			<h3>
+				<ui:msg description="Flora expertise">Flora expertise</ui:msg>
+			</h3>
 			<div id="floraSlider" class="expertiseSlider"></div>
-			<h3>Castle expertise</h3>
+			<h3>
+				<ui:msg description="Castle expertise">Castle expertise</ui:msg>
+			</h3>
 			<div id="castleSlider" class="expertiseSlider"></div>
 		</fieldset>
 	</g:HTMLPanel>

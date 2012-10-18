@@ -12,6 +12,7 @@ import org.sealinc.accurator.client.service.UserComponentService;
 import org.sealinc.accurator.client.service.UserComponentServiceAsync;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.storage.client.Storage;
+import com.google.gwt.user.client.Window;
 
 public class Utility {
 	public static AssignComponentServiceAsync assignService = (AssignComponentServiceAsync) GWT.create(AssignComponentService.class);
@@ -42,5 +43,14 @@ public class Utility {
 		else {
 			return null;
 		}
+	}
+	
+	public static void deleteUser(){
+		Storage localStorage = Storage.getLocalStorageIfSupported();
+		if(localStorage!=null){
+			localStorage.removeItem("username");
+			localStorage.removeItem("password");
+		}
+		Window.Location.reload();
 	}
 }

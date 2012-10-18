@@ -33,7 +33,6 @@ public interface UserComponentService extends RemoteService {
 	public boolean setViewed(String resourceURI, View view);
 	public boolean setReview(String annotationURI, Review review);
 	public int getTotalAnnotatedPrints(String user,Date annotatedSince);
-	public String getAnnotationFieldsParam(String user, String resourceURI);
 	public Map<String,Integer> getExpertise(String user);
 	
 	/**

@@ -25,6 +25,13 @@ html body{
 	border-bottom: 3px solid brown;
 }
 
+.logoutLink
+{
+	clear:both;
+	font-size: 50%;
+}
+
+
 #headerImage
 {
 	height: 100px;	
@@ -35,6 +42,12 @@ html body{
 
 .navbar {
 	position: absolute; top: 10px; right: 18px;
+}
+
+.navbar button, .navbar a
+{
+	position:relative;
+	float:right;
 }
 
 .header .done{
@@ -56,15 +69,34 @@ html body{
 	padding-bottom: 5px;
 }
 
+.footer .group
+{
+	position:relative;
+	float:left;
+	margin-right: 50px;
+	height:95%;
+}
+.footer .group .title
+{
+	position:relative;
+	margin-left:10px;
+	margin-bottom: 10px;
+	font-weight: bold;
+	
+}
+.footer .group > div
+{
+	height:100%;
+}
+
 .footer .logo
 {
 	max-width: 150px;
-	max-height: 80%;
-	position:relative;
+	max-height: 60px;
+	margin-right: 10px;
+	margin-left: 10px;
 	vertical-align: middle;
-	
 }
-
 /* Login and registration */
 
 .dialog{
