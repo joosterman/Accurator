@@ -1,105 +1,85 @@
 /* General */
-html body{
-	margin:0px;
+html body {
+	margin: 0px; font-family: Helvetica, Arial, sans-serif;
 }
-.mainContent
-{
+
+.mainContent {
 	min-height: 500px;
 }
 
-.ui-widget
-{
-	font-size:0.8em;
+.ui-widget {
+	font-size: 0.8em;
 }
 
-.imageButton:hover{
-	opacity:0.4;
+.imageButton:hover {
+	opacity: 0.4; 
+	cursor: pointer;
+}
+
+a {
+	color: brown;
+}
+a:hover {
+	color: chocolate;
 	cursor: pointer;
 }
 
 /* Header */
-
-.header{
+.header {
 	background-color: #F0E4CE;
-	margin-bottom:10px;
 	border-bottom: 3px solid brown;
 }
 
-.logoutLink
-{
-	clear:both;
-	font-size: 50%;
+.logoutLink {
+	clear: both; font-size: 50%;
 }
 
-
-#headerImage
-{
-	height: 100px;	
-	left: 100px;
-	position:relative;
-	margin: 5px 0px 5px 0px;
+#headerImage {
+	height: 100px; left: 100px; position: relative; margin: 5px 0px 5px 0px;
 }
 
 .navbar {
 	position: absolute; top: 10px; right: 18px;
 }
 
-.navbar button, .navbar a
-{
-	position:relative;
-	float:right;
+.navbar button,.navbar a {
+	position: relative; float: right;
 }
 
-.header .done{
-	position:absolute;
-	right:18px;
-	top:135px;
-	z-index:10;
+.header .done {
+	position: absolute; right: 18px; top: 120px; z-index: 10;
 }
 
 /* Footer */
-.footer
-{
-	background-color: #F0E4CE;
-	height: 90px;
-	clear:both;
-	margin-top:10px;
-	border-top: 3px solid brown;
-	padding-top:5px;
-	padding-bottom: 5px;
+.footer {
+	background-color: #F0E4CE; height: 90px; clear: both; margin-top: 10px;
+	border-top: 3px solid brown; padding-top: 5px; padding-bottom: 5px;
+	font-size: 0.8em;
 }
 
-.footer .group
-{
-	position:relative;
-	float:left;
-	margin-right: 50px;
-	height:95%;
+.footer .menu {
+	height: 30%; width: 100%; padding-left: 10px;
 }
-.footer .group .title
-{
-	position:relative;
-	margin-left:10px;
-	margin-bottom: 10px;
+
+.footer .logos {
+	height: 70%; width: 100%;
+}
+
+.footer .group {
+	position: relative; float: left; margin-right: 50px;
+}
+
+.footer .group .title {
+	position: relative; margin-left: 10px; margin-bottom: 10px;
 	font-weight: bold;
-	
-}
-.footer .group > div
-{
-	height:100%;
 }
 
-.footer .logo
-{
-	max-width: 150px;
-	max-height: 60px;
-	margin-right: 10px;
-	margin-left: 10px;
-	vertical-align: middle;
+.footer .logo {
+	max-width: 150px; max-height: 70%; margin-right: 10px;
+	margin-left: 10px; vertical-align: bottom;
 }
 /* Login and registration */
-
-.dialog{
+.dialog {
 	display: none;
 }
 
@@ -113,90 +93,56 @@ html body{
 
 /* Annotation screen */
 .annotationFrame {
-	position:relative;
-	float:left;
-	border: none; 
-	width: 100%; 
+	position: relative; float: left; border: none; width: 100%;
 	height: 650px;
-}
-.doneButton {
-	position: absolute; left: 13px; top: 13px;
 }
 
 /* Recommendation screen  */
-
-.recommendation{
-	margin-left:auto;
-	margin-right:auto;
-	width:95%;
+.recommendation {
+	margin-left: auto; margin-right: auto; width: 95%;
 }
 
-.recommendation .previous,.recommendation .next
-{
-	position:relative;
-	float:left;
-	margin-top:auto;
-	margin-bottom:auto;
-	top:125px;
-	width:5%;	
-}
-.recommendation .previous img,.recommendation .next img
-{
-	position: relative;
-	top: 40%;
-}
-.recommendation .previous img
-{
-	float:left
-}
-.recommendation .next img
-{
-	float:right;
+.recommendation .previous,.recommendation .next {
+	position: relative; float: left; margin-top: auto; margin-bottom: auto;
+	top: 125px; width: 5%;
 }
 
-.recommendation .search
-{
-	position:relative;
-	width:100%;
-	text-align: center;
-	margin-bottom:20px;
-	display:none;
-	
+.recommendation .previous img,.recommendation .next img {
+	position: relative; top: 40%;
 }
 
-.recommendationItem
-{
-	position:relative;
-	float:left;
-	text-align:center;
-	width:29%;
-	height:100%;
-	margin-right:10px;
-	margin-bottom:10px;
+.recommendation .previous img {
+	float: left
 }
-.recommendationItem img {	
-	max-height:450px;
-	max-width:100%;
-	postition:relative;
-	margin-right:auto;
-	margin-left:auto;
+
+.recommendation .next img {
+	float: right;
+}
+
+.recommendation .search {
+	position: relative; width: 100%; text-align: center;
+	margin-bottom: 20px; display: none;
+}
+
+.recommendationItem {
+	position: relative; float: left; text-align: center; width: 29%;
+	height: 100%; margin-right: 10px; margin-bottom: 10px;
+}
+
+.recommendationItem img {
+	max-height: 450px; max-width: 100%; postition: relative;
+	margin-right: auto; margin-left: auto;
 }
 
 /* Profile  */
-
-.infoblock
-{
-	position:relative;
-	float:left;
-	width: 45%;
-	margin-right:10px;
-}
-.expertiseSlider{
-	width:150px;
+.infoblock {
+	position: relative; float: left; width: 45%; margin-right: 10px;
 }
 
-.refresh
-{
-	width:100%;
+.expertiseSlider {
+	width: 150px;
 }
 
+.refresh {
+	width: 100%;
+}

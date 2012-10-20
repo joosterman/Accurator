@@ -8,8 +8,19 @@ body{
 	max-height: 500px;	
 }
 
+#layout{
+	padding:0;
+}
 #fields
 {
-	position:relative;
-	top:25px;
+	top: 32px;
+	position: relative;
+}
+
+a {
+	color: brown;
+}
+a:hover {
+	color: chocolate;
+	cursor: pointer;
 }

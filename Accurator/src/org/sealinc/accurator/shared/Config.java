@@ -1,48 +1,46 @@
 package org.sealinc.accurator.shared;
 
-
 public class Config {
-	private static final String sparqlEndpoint = "http://eculture.cs.vu.nl/sealinc/sparql/";	
-	private static final String annotationComponentURL = "http://eculture.cs.vu.nl/sealinc/annotate";	
-	private static final String assignComponentURL  ="http://eculture.cs.vu.nl/sealinc/assign";
+	private static final String baseURL = "http://eculture.cs.vu.nl/sealinc/";
+	private static final String sparqlEndpoint = baseURL + "sparql/";
+	private static final String annotationComponentURL = baseURL + "annotate";
+	private static final String annotationComponentChangePreferenceURL = baseURL +"admin/changePreference";
+	private static final String assignComponentURL = baseURL + "assign";
 	private static final String assignComponentStrategy = "literal_matching";
-	private static final int assignComponentNrItems = 3;	
+	private static final int assignComponentNrItems = 3;
 	private static final int qualityComponentNrRecentAnnotations = 10;
-	private static final String qualityComponentTrustworthinessURL = "http://eculture.cs.vu.nl/sealinc/quality";
+	private static final String qualityComponentTrustworthinessURL = baseURL + "quality";
 	private static String qualityComponentTrustworthinessStrategy = "valid";
-	private static final String loginURL="http://eculture.cs.vu.nl/sealinc/servlets/login"; 
-	private static final String logoutURL="http://eculture.cs.vu.nl/sealinc/servlets/logout"; 
-	private static final String loginCheckURL = "http://eculture.cs.vu.nl/sealinc/admin/form/changePassword";
-	private static final String adminRegisterUserURL = "http://eculture.cs.vu.nl/sealinc/admin/selfRegister";
-	private static final String adminUsername= "admin";
-	private static final String adminPassword= "Anuz3EeY";
-	private static final String userComponentUserURI = "http://eculture.cs.vu.nl/sealinc/user/";
-	private static final String adminComponentUploadDataURL = "http://eculture.cs.vu.nl/sealinc/servlets/uploadData";
+	private static final String loginURL = baseURL + "servlets/login";
+	private static final String logoutURL = baseURL + "servlets/logout";
+	private static final String adminRegisterUserURL = baseURL + "admin/selfRegister";
+	private static final String adminUsername = "admin";
+	private static final String adminPassword = "Anuz3EeY";
+	private static final String userComponentUserURI = baseURL + "user/";
+	private static final String adminComponentUploadDataURL = baseURL + "servlets/uploadData";
 	private static final String adminComponentBaseURI = "http://purl.org/accurator/";
-	private static final String recommendationComponentSearchURL = "http://eculture.cs.vu.nl/sealinc/assign?strategy=literal_matching&predicate=http://purl.org/dc/terms/description&nritems=3";
-	
+	private static final String recommendationComponentSearchURL = baseURL + "assign?strategy=literal_matching&predicate=http://purl.org/dc/terms/description&nritems=3";
+
 	private static final String sparqlPrefixes = "PREFIX rmaschema: <http://purl.org/collections/nl/rma/schema#> "
-			+ "PREFIX rmaterms: <http://purl.org/collections/nl/rma/terms/> "
-			+ "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
-			+ "PREFIX acc: <http://purl.org/accurator/NS/> "
+			+ "PREFIX rmaterms: <http://purl.org/collections/nl/rma/terms/> " + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
+			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX acc: <http://purl.org/accurator/NS/> "
 			+ "PREFIX rev: <http://purl.org/stuff/rev#>";
 
-			
-	private Config(){}
-	
-	public static String getAssignStrategy(){
+	private Config() {}
+
+	public static String getAssignStrategy() {
 		return assignComponentStrategy;
 	}
-	
-	public static String getAssignComponentURL(){
-		return assignComponentURL;		
+
+	public static String getAssignComponentURL() {
+		return assignComponentURL;
 	}
-	
-	public static String getAnnotationComponentURL(){
+
+	public static String getAnnotationComponentURL() {
 		return annotationComponentURL;
 	}
-	public static String getSparqlEndpoint(){
+
+	public static String getSparqlEndpoint() {
 		return sparqlEndpoint;
 	}
 
@@ -74,10 +72,6 @@ public class Config {
 		return logoutURL;
 	}
 
-	public static String getLoginCheckURL() {
-		return loginCheckURL;
-	}
-
 	public static String getAdminUsername() {
 		return adminUsername;
 	}
@@ -104,5 +98,9 @@ public class Config {
 
 	public static String getRecommendationComponentSearchURL() {
 		return recommendationComponentSearchURL;
+	}
+
+	public static String getAnnotationComponentChangePreferenceURL() {
+		return annotationComponentChangePreferenceURL;
 	}
 }

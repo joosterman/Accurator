@@ -2,7 +2,6 @@ package org.sealinc.accurator.client.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import org.sealinc.accurator.shared.Annotation;
 import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Review;
@@ -21,7 +20,5 @@ public interface UserComponentServiceAsync {
 	void getTotalAnnotatedPrints(String user, Date annotatedSince, AsyncCallback<Integer> callback);
 
 	void getLastAnnotatedItems(String user, int nrItems, AsyncCallback<List<CollectionItem>> callback);
-
-	void getExpertise(String user, AsyncCallback<Map<String,Integer>> callback);
 
 }

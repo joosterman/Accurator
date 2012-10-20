@@ -43,7 +43,22 @@ public class ItemComponentServiceImpl extends RemoteServiceServlet implements It
 					}
 				}
 				return cis;
+		}		
+	}
+
+	@Override
+	public String getTopic(String resourceURI) {
+		String sparql = String.format("%1$s SELECT ?x WHERE { {<%2$s> dcterms:description ?x} UNION {<%2$s> dcterms:title ?x}	}", Config.getRDFPrefixes(), resourceURI);
+		List<Literal> descriptions =  Utility.getLiteralValue(sparql);
+		for(Literal l:descriptions){
+			String desc = l.getString().toLowerCase();
+			if(desc.contains("bloem")){
+				return "flora";
+			}
+			else if(desc.contains("kasteel")){
+				return "castle";
+			}
 		}
-		
+		return null;
 	}
 }

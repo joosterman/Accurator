@@ -11,7 +11,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.NamedFrame;
@@ -27,12 +26,12 @@ public class AnnotateScreen extends Composite {
 	NamedFrame annotationFrame;
 	Accurator accurator;
 
-	public void loadResource(final String resourceURI) {
+	public void loadResource(final String resourceURI, String url) {
 		// store that the user has viewed the resource
 		View view = new View();
 		view.date = new Date();
 		view.fromRecommendation = false;
-		view.viewer = Config.getUserComponentUserURI() + Utility.getUser();
+		view.viewer = Config.getUserComponentUserURI() + Utility.getStoredUsername();
 		Utility.userService.setViewed(resourceURI, view, new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
@@ -43,22 +42,20 @@ public class AnnotateScreen extends Composite {
 			public void onFailure(Throwable caught) {}
 		});
 		// set the url of the frame to the correct url
-		String stylesheet = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/css/jacconator.css";
-		String ui = accurator.getUIFieldsParam(resourceURI);
-		String url = Config.getAnnotationComponentURL() + "?target=" + resourceURI + "&stylesheet=" + stylesheet + ui;
 		annotationFrame.setUrl(url);
 	}
 
 	private void setNextItemToAnnotate() {
-		List<String> uri = accurator.getNextPrintsToAnnotate(1);
-		if (uri.size() > 0) {
-			loadResource(uri.get(0));
+		List<String> uris = accurator.getNextPrintsToAnnotate(1);
+		if (uris.size() > 0) {
+			String resourceURI = uris.get(0);
+			accurator.annotate(resourceURI);
 		}
 		else {
 			Timer t = new Timer() {
 				@Override
 				public void run() {
-						setNextItemToAnnotate();
+					setNextItemToAnnotate();
 				}
 			};
 			t.schedule(200);
@@ -76,11 +73,10 @@ public class AnnotateScreen extends Composite {
 		setNextItemToAnnotate();
 	}
 
-	public AnnotateScreen(Accurator acc, String resourceURI) {
+	public AnnotateScreen(Accurator acc, String resourceURI, String url) {
 		initWidget(uiBinder.createAndBindUi(this));
 		accurator = acc;
-		loadResource(resourceURI);
-
+		loadResource(resourceURI, url);
 	}
 
 }

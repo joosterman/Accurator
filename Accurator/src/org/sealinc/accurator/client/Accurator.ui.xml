@@ -55,6 +55,10 @@
 				</fieldset>
 			</form>
 		</div>
+		<div id="dialog-about" class="dialog" title="About Accurator">
+			<ui:attribute name="title" description="About Accurator" />
+			<p>License information</p>		
+		</div>
 		<div class="header">
 			<img id="headerImage" src="/images/Accurator-header.png" alt="Accurator" />
 			<div class="navbar">
@@ -76,41 +80,45 @@
 
 		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
 		<div class="footer">
-			<div class="group">
-				<span class="title">Project</span>
-				<div>
-					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
-						class="logo">
-						<ui:attribute name="alt" description="Alt text COMMIT logo" />
-					</img>
-					<img src="/images/SEALINCMedia.png" alt="Logo of the SEALINCMedia project"
-						class="logo">
-						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
-					</img>
+			<div class="menu">
+				<g:Anchor ui:field="lnkAboutAccurator"><ui:msg description="About Accurator">About Accurator</ui:msg></g:Anchor>
+			</div>
+			<div class="logos">
+				<div class="group">
+					<span class="title">Project</span>
+					<div>
+						<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text COMMIT logo" />
+						</img>
+						<img src="/images/SEALINCMedia.png" alt="Logo of the SEALINCMedia project"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+						</img>
+					</div>
+				</div>
+				<div class="group">
+					<span class="title">Partners</span>
+					<div>
+						<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text RMA logo" />
+						</img>
+						<img src="/images/TUD.png" alt="Logo of Delft University of Technology"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text DUT logo" />
+						</img>
+						<img src="/images/VU.png" alt="Logo of the Free University Amsterdam"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text VU logo" />
+						</img>
+						<img src="/images/CWI.png"
+							alt="Logo of the CWI Centrum voor Wiskunde en Informatica" class="logo">
+							<ui:attribute name="alt" description="Alt text CWI logo" />
+						</img>
+					</div>
 				</div>
 			</div>
-			<div class="group">
-				<span class="title">Partners</span>
-				<div>
-					<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
-						class="logo">
-						<ui:attribute name="alt" description="Alt text RMA logo" />
-					</img>
-					<img src="/images/TUD.png" alt="Logo of Delft University of Technology"
-						class="logo">
-						<ui:attribute name="alt" description="Alt text DUT logo" />
-					</img>
-					<img src="/images/VU.png" alt="Logo of the Free University Amsterdam"
-						class="logo">
-						<ui:attribute name="alt" description="Alt text VU logo" />
-					</img>
-					<img src="/images/CWI.png" alt="Logo of the CWI Centrum voor Wiskunde en Informatica"
-						class="logo">
-						<ui:attribute name="alt" description="Alt text CWI logo" />
-					</img>
-				</div>
-			</div>
-
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -16,7 +16,6 @@ package org.sealinc.accurator.client.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import org.sealinc.accurator.shared.Annotation;
 import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Review;
@@ -33,7 +32,6 @@ public interface UserComponentService extends RemoteService {
 	public boolean setViewed(String resourceURI, View view);
 	public boolean setReview(String annotationURI, Review review);
 	public int getTotalAnnotatedPrints(String user,Date annotatedSince);
-	public Map<String,Integer> getExpertise(String user);
 	
 	/**
 	 * Utility class for simplifying access to the instance of async service.

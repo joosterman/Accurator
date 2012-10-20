@@ -8,4 +8,6 @@ public interface ItemComponentServiceAsync {
 	void getItems(List<String> resourceURIs,
 			AsyncCallback<List<CollectionItem>> callback);
 
+	void getTopic(String resourceURI, AsyncCallback<String> callback);
+
 }

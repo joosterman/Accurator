@@ -82,7 +82,7 @@ public class QualityScreen extends Composite {
 			@Override
 			public void update(int index, Annotation object, String value) {
 				Review rev = new Review();
-				rev.reviewer = Config.getUserComponentUserURI() + Utility.getUser();
+				rev.reviewer = Config.getUserComponentUserURI() + Utility.getStoredUsername();
 				rev.approved = true;
 				rev.date = new Date();
 				Utility.userService.setReview(object.uri, rev, new AsyncCallback<Boolean>() {
@@ -112,7 +112,7 @@ public class QualityScreen extends Composite {
 			@Override
 			public void update(int index, Annotation object, String value) {
 				Review rev = new Review();
-				rev.reviewer = Config.getUserComponentUserURI() + Utility.getUser();
+				rev.reviewer = Config.getUserComponentUserURI() + Utility.getStoredUsername();
 				rev.approved = false;
 				rev.date = new Date();
 				Utility.userService.setReview(object.uri, rev, new AsyncCallback<Boolean>() {

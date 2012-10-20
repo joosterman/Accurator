@@ -29,6 +29,20 @@
 			</h3>
 			<div id="castleSlider" class="expertiseSlider"></div>
 		</fieldset>
+		<fieldset class="infoblock">
+			<legend>
+				<ui:msg description="Preferences">Preferences</ui:msg>
+			</legend>
+			<h3><ui:msg description="Language">Language</ui:msg></h3>
+			<div id="language">
+				<input type="radio" id="languageEN" name="language" class="languageButton" checked="checked"
+					value="en" />
+				<label for="languageEN"><ui:msg description="English">English</ui:msg></label>
+				<input type="radio" id="languageNL" value="nl" name="language" class="languageButton"  />
+				<label for="languageNL"><ui:msg description="Dutch">Dutch</ui:msg></label>
+				<p><em><ui:msg description="Message to indicate pagereload">Will reload the page</ui:msg></em></p>
+			</div>
+		</fieldset>
 	</g:HTMLPanel>
 
 </ui:UiBinder>

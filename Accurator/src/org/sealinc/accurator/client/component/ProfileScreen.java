@@ -2,17 +2,20 @@ package org.sealinc.accurator.client.component;
 
 import java.util.List;
 import org.sealinc.accurator.client.Accurator;
+import org.sealinc.accurator.client.JsUserProfileEntry;
 import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.CollectionItem;
+import org.sealinc.accurator.shared.Config;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Window;
@@ -37,9 +40,24 @@ public class ProfileScreen extends Composite {
 
 	DateTimeFormat df = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
+	RequestCallback noopCallback = new RequestCallback() {
+
+		@Override
+		public void onResponseReceived(Request request, Response response) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onError(Request request, Throwable exception) {
+			// TODO Auto-generated method stub
+
+		}
+	};
+
 	public void loadData() {
 		// total number of annotated prints
-		Utility.userService.getTotalAnnotatedPrints(Utility.getUser(), null, new AsyncCallback<Integer>() {
+		Utility.userService.getTotalAnnotatedPrints(Utility.getStoredUsername(), null, new AsyncCallback<Integer>() {
 
 			@Override
 			public void onSuccess(Integer result) {
@@ -52,7 +70,7 @@ public class ProfileScreen extends Composite {
 		});
 
 		// get annotated prints
-		Utility.userService.getLastAnnotatedItems(Utility.getUser(), 10, new AsyncCallback<List<CollectionItem>>() {
+		Utility.userService.getLastAnnotatedItems(Utility.getStoredUsername(), 10, new AsyncCallback<List<CollectionItem>>() {
 
 			@Override
 			public void onSuccess(List<CollectionItem> result) {
@@ -78,85 +96,116 @@ public class ProfileScreen extends Composite {
 		});
 	}
 
-	
-	private static native void loadExpertiseSlider(String topic,String json)	/*-{
-		$wnd.jQuery("#"+topic+"Slider").slider("value",eval(json));
+	private native void setExpertiseSlider(String topic, String json) /*-{
+		$wnd.jQuery("#" + topic + "Slider").slider("value", eval(json));
 	}-*/;
-		
-	private static void getExpertise(final String topic){
-		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
-		String data = "user=" + Utility.getUser() + "&type=expertise&topic=" + topic;
-		
-		RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, loc+data);
-		rb.setRequestData("");
-		rb.setCallback(new RequestCallback() {
-			
+
+	private void getExpertise(final String topic) {
+		RequestCallback callback = new RequestCallback() {
+
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				loadExpertiseSlider(topic, response.getText());				
+				setExpertiseSlider(topic, response.getText());
 			}
-			
+
 			@Override
 			public void onError(Request request, Throwable exception) {
 				// TODO Auto-generated method stub
-				
+
 			}
-		});
-		try {
-			rb.send();
-		}
-		catch (RequestException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		};
+		Utility.getUserProfileEntry(Utility.getStoredUsername(), "expertise", topic, callback);
 	}
-	
-	private static void storeExpertise(String topic, int value) {
-		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
-		String data = "user=" + Utility.getUser() + "&type=expertise&topic=" + topic + "&value=" + value;		
-		RequestBuilder rb = new RequestBuilder(RequestBuilder.PUT, loc+data);
-		rb.setRequestData("");
-		rb.setCallback(new RequestCallback() {
-			
-			@Override
-			public void onResponseReceived(Request request, Response response) {		
-				
-			}
-			
-			@Override
-			public void onError(Request request, Throwable exception) {				
-			}
-		});
-		try {
-			rb.send();
-		}
-		catch (RequestException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-	}
-		
-	public native void loadUIThemeElements()/*-{
-		$wnd.jQuery("#floraSlider").slider({
-			min : 0,
-			max : 10,
-			range : "min",
-			slide : function(event, ui) {
-				@org.sealinc.accurator.client.component.ProfileScreen::storeExpertise(Ljava/lang/String;I)("flora",ui.value);
-			},
-		});
-		@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("flora");
-		
-		$wnd.jQuery("#castleSlider").slider({
-			min : 0,
-			max : 10,
-			range : "min",
-			slide : function(event, ui) {
-				@org.sealinc.accurator.client.component.ProfileScreen::storeExpertise(Ljava/lang/String;I)("castle",ui.value);
-			},
-		});
-		@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("castle");
+
+	private native void updateLanguageButtons(String language) /*-{
+		$wnd.jQuery("#language" + language.toUpperCase()).attr("checked", true);
+		$wnd.jQuery("#language").buttonset("refresh");
 	}-*/;
+
+	private void getLanguage() {
+		RequestCallback callback = new RequestCallback() {
+
+			@Override
+			public void onResponseReceived(Request request, Response response) {
+				String json = response.getText();
+				JsArray<JsUserProfileEntry> entries = parseUserProfileEntry(json);
+				if (entries.length() > 0) {
+					String language = entries.get(0).getValueAsString();
+					updateLanguageButtons(language);
+					// set the annotation component to the locale
+					RequestBuilder req = new RequestBuilder(RequestBuilder.GET, Config.getAnnotationComponentChangePreferenceURL() + "?user:lang="
+							+ language);
+					req.setRequestData("");
+					req.setCallback(noopCallback);
+					try {
+						req.send();
+					}
+					catch (Exception ex) {}
+				}
+			}
+
+			@Override
+			public void onError(Request request, Throwable exception) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+		Utility.getUserProfileEntry(Utility.getStoredUsername(), "languagePreference", null, callback);
+	}
+
+	public native void loadUIThemeElements()/*-{
+		var pscreen = this;
+
+		var user = @org.sealinc.accurator.client.Utility::getStoredUsername()();
+
+		//Load flora slider
+		$wnd
+			.jQuery("#floraSlider")
+			.slider({
+				min : 0,
+				max : 1,
+				step : 0.1,
+				range : "min",
+				change : function(event, ui) {
+					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise","flora",""+ui.value);
+				},
+			});
+		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("flora");
+
+		//load castle slider
+		$wnd
+			.jQuery("#castleSlider")
+			.slider({
+				min : 0,
+				max : 1,
+				step : 0.1,
+				range : "min",
+				change : function(event, ui) {
+					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise","castle",""+ui.value);
+				},
+			});
+		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("castle");
+
+		//load language buttons
+		$wnd.jQuery("#language").buttonset();
+		$wnd.jQuery(".languageButton").click(function() {
+			var val = $wnd.jQuery(this).val();
+			pscreen.@org.sealinc.accurator.client.component.ProfileScreen::setLanguagePreference(Ljava/lang/String;)(val);
+		});
+		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getLanguage()();
+	}-*/;
+
+	private native final JsArray<JsUserProfileEntry> parseUserProfileEntry(String json)/*-{
+		return eval(json);
+	}-*/;
+
+	private void setLanguagePreference(String preference) {
+		// store the new preference
+		Utility.storeUserProfileEntry(Utility.getStoredUsername(), "languagePreference", null, preference);
+		// load Accurator with the new locale
+		String newURL = Window.Location.createUrlBuilder().setParameter(LocaleInfo.getLocaleQueryParam(), preference).buildString();
+		Window.Location.replace(newURL);
+	}
 
 	public ProfileScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));

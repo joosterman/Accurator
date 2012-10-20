@@ -24,6 +24,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface ItemComponentService extends RemoteService {
 
 	public List<CollectionItem> getItems(List<String> resourceURIs);
+	public String getTopic(String resourceURI);
 	
 	/**
 	 * Utility class for simplifying access to the instance of async service.

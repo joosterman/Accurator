@@ -10,7 +10,14 @@ import org.sealinc.accurator.client.service.QualityComponentService;
 import org.sealinc.accurator.client.service.QualityComponentServiceAsync;
 import org.sealinc.accurator.client.service.UserComponentService;
 import org.sealinc.accurator.client.service.UserComponentServiceAsync;
+import org.sealinc.accurator.shared.Config;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.i18n.client.AccuratorConstants;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Window;
 
@@ -20,14 +27,22 @@ public class Utility {
 	public static ItemComponentServiceAsync itemService = (ItemComponentServiceAsync) GWT.create(ItemComponentService.class);
 	public static QualityComponentServiceAsync qualityService = (QualityComponentServiceAsync) GWT.create(QualityComponentService.class);
 	public static AdminComponentServiceAsync adminService = (AdminComponentServiceAsync) GWT.create(AdminComponentService.class);
+	public static AccuratorConstants constants = GWT.create(AccuratorConstants.class);
+
+	private static final String username = "username";
+	private static final String password = "password";
 
 	private Utility() {}
 
-	public static boolean setUser(String username, String password) {
+	public static String getLocalString(String toTranslate) {
+		return constants.getString(toTranslate);
+	}
+
+	public static boolean setUser(String user, String pass) {
 		Storage localStorage = Storage.getLocalStorageIfSupported();
 		if (localStorage != null) {
-			localStorage.setItem("username", username);
-			localStorage.setItem("password", password);
+			localStorage.setItem(username, user);
+			localStorage.setItem(password, pass);
 			return true;
 		}
 		else {
@@ -35,22 +50,98 @@ public class Utility {
 		}
 	}
 
-	public static String getUser() {
+	public static String getQualifiedUsername() {
 		Storage localStorage = Storage.getLocalStorageIfSupported();
 		if (localStorage != null) {
-			return localStorage.getItem("username");
+			return Config.getUserComponentUserURI() + localStorage.getItem(username);
 		}
 		else {
 			return null;
 		}
 	}
-	
-	public static void deleteUser(){
+
+	public static String getStoredUsername() {
 		Storage localStorage = Storage.getLocalStorageIfSupported();
-		if(localStorage!=null){
-			localStorage.removeItem("username");
-			localStorage.removeItem("password");
+		if (localStorage != null) {
+			return localStorage.getItem(username);
 		}
-		Window.Location.reload();
+		else {
+			return null;
+		}
+	}
+
+	public static String getStoredPassword() {
+		Storage localStorage = Storage.getLocalStorageIfSupported();
+		if (localStorage != null) {
+			return localStorage.getItem(password);
+		}
+		else {
+			return null;
+		}
+	}
+
+	public static void deleteStoredUserCredentials() {
+		Storage localStorage = Storage.getLocalStorageIfSupported();
+		if (localStorage != null) {
+			localStorage.removeItem(username);
+			localStorage.removeItem(password);
+		}
+	}
+
+	public static void storeUserProfileEntry(String user, String type, String topic, String value) {
+		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
+		String data = "user=" + Utility.getStoredUsername() + "&type="+type+"&value=" + value;
+		if(topic!=null){
+			data+="&topic=" + topic;
+		}
+		RequestBuilder rb = new RequestBuilder(RequestBuilder.PUT, loc + data);
+		rb.setRequestData("");
+		rb.setCallback(new RequestCallback() {
+
+			@Override
+			public void onResponseReceived(Request request, Response response) {}
+
+			@Override
+			public void onError(Request request, Throwable exception) {}
+		});
+		try {
+			rb.send();
+		}
+		catch (RequestException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void getUserProfileEntry(String user, String type, String topic,RequestCallback callback){
+		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
+		String data = "user=" + Utility.getStoredUsername() + "&type="+type;
+		if(topic!=null){
+			data+="&topic=" + topic;
+		}
+		RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, loc + data);
+		rb.setRequestData("");
+		rb.setCallback(callback);
+		try {
+			rb.send();
+		}
+		catch (RequestException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static String getResourceTopic(String resourceURI){
+		Storage localStorage = Storage.getLocalStorageIfSupported();
+		if (localStorage != null) {
+			return localStorage.getItem(resourceURI+"_topic");
+		}
+		else{
+			return null;
+		}
+	}
+	public static void setResourceTopic(String resourceURI, String topic){
+		Storage localStorage = Storage.getLocalStorageIfSupported();
+		if (localStorage != null && topic!=null) {
+			localStorage.setItem(resourceURI+"_topic", topic);
+		}	
 	}
 }

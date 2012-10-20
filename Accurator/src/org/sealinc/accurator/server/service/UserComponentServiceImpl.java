@@ -10,14 +10,11 @@
  *******************************************************************************/
 package org.sealinc.accurator.server.service;
 
-import static com.googlecode.objectify.ObjectifyService.begin;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 import org.sealinc.accurator.client.service.UserComponentService;
 import org.sealinc.accurator.server.Utility;
@@ -26,7 +23,6 @@ import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.NS;
 import org.sealinc.accurator.shared.Review;
-import org.sealinc.accurator.shared.UserProfileEntry;
 import org.sealinc.accurator.shared.View;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -143,15 +139,5 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 			items = Utility.getObjectsByURI(filtered, CollectionItem.class);
 
 			return items;
-	}
-
-	@Override
-	public Map<String,Integer> getExpertise(String user) {
-		Map<String,Integer> exps = new HashMap<String, Integer>();
-		for(UserProfileEntry entry :begin().load().type(UserProfileEntry.class).filter("user", user).filter("type", "expertise").list()){
-			exps.put(entry.topic, ((Long)entry.value).intValue());
-		}
-		
-		return exps;
 	}
 }
