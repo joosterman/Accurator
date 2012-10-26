@@ -4,12 +4,20 @@
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
 
+	<filter>
+		<filter-name>ServletFilter</filter-name>
+		<filter-class>org.sealinc.accurator.server.ServletFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ServletFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<listener>
 		<listener-class>org.sealinc.accurator.server.ServletListener</listener-class>
 	</listener>
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>Accurator.html</welcome-file>
+		<welcome-file>Accurator.jsp</welcome-file>
 	</welcome-file-list>
 	<servlet>
 		<servlet-name>ItemComponentService</servlet-name>

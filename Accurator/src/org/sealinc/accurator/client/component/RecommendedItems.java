@@ -30,7 +30,7 @@ public class RecommendedItems extends Composite {
 	Accurator accurator;
 
 	@UiField
-	Label lblCreator1, lblTitle1, lblCreator2, lblTitle2, lblCreator3, lblTitle3;
+	Label lblCreator1, lblTitle1, lblCreator2, lblTitle2, lblCreator3, lblTitle3, lblPrintmaker1,lblPrintmaker2,lblPrintmaker3;
 	@UiField
 	Image img1, img2, img3;
 	@UiField
@@ -41,6 +41,7 @@ public class RecommendedItems extends Composite {
 	Label[] titles;
 	Label[] creators;
 	Image[] images;
+	Label[] printmakers;
 	List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
 
 	@UiHandler("imgNext")
@@ -79,6 +80,7 @@ public class RecommendedItems extends Composite {
 				titles[i].setText(ci.title);
 				images[i].setUrl(ci.imageURL + "&aria/maxwidth_288");
 				images[i].setVisible(true);
+				printmakers[i].setVisible(true);
 				regs.add(images[i].addClickHandler(new ClickHandler() {
 
 					@Override
@@ -92,6 +94,8 @@ public class RecommendedItems extends Composite {
 				creators[i].setText("");
 				titles[i].setText("");
 				images[i].setVisible(false);
+				printmakers[i].setVisible(false);
+				
 			}
 		}
 	}
@@ -102,6 +106,7 @@ public class RecommendedItems extends Composite {
 			creators[i].setText("");
 			titles[i].setText("");
 			images[i].setVisible(false);
+			printmakers[i].setVisible(false);
 		}
 
 		// Get the recommended items
@@ -137,6 +142,7 @@ public class RecommendedItems extends Composite {
 		titles = new Label[] { lblTitle1, lblTitle2, lblTitle3 };
 		creators = new Label[] { lblCreator1, lblCreator2, lblCreator3 };
 		images = new Image[] { img1, img2, img3 };
+		printmakers = new Label[] {lblPrintmaker1,lblPrintmaker2,lblPrintmaker3};
 		loadRecommendations();
 	}
 

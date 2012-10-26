@@ -5,7 +5,11 @@ body{
 }
 #media .resource img
 {
-	max-height: 500px;	
+	max-height: 480px;
+}
+#media .resource
+{
+	margin-right:100px;
 }
 
 #layout{
@@ -15,6 +19,7 @@ body{
 {
 	top: 32px;
 	position: relative;
+	margin-left:0;
 }
 
 a {

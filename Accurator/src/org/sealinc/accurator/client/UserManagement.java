@@ -8,11 +8,10 @@ public class UserManagement {
 	private Accurator acc;
 	Timer renewLoginTimer = null;
 	private Storage localStorage;
-	
-	protected UserManagement(Accurator acc){
-		this.acc = acc;		
+
+	protected UserManagement(Accurator acc) {
+		this.acc = acc;
 	}
-	
 
 	private void loginSuccessful(String username, String password) {
 		// check if this is the first login
@@ -21,7 +20,7 @@ public class UserManagement {
 		if (renewLoginTimer == null) {
 			Utility.setUser(username, password);
 			acc.loadCurrentHistory();
-			
+
 			renewLoginTimer = new Timer() {
 				@Override
 				public void run() {
@@ -36,9 +35,9 @@ public class UserManagement {
 	}
 
 	private void loginFailed() {
-			acc.lblLoginMessage.setText(Utility.constants.loginFailed());
-			Utility.deleteStoredUserCredentials();
-			openLogin();
+		acc.lblLoginMessage.setText(Utility.constants.loginFailed());
+		Utility.deleteStoredUserCredentials();
+		openLogin();
 	}
 
 	protected native void logout()/*-{
@@ -58,41 +57,44 @@ public class UserManagement {
 		});
 	}-*/;
 
-	protected void login(){
+	protected void login() {
 		String user = Utility.getStoredUsername();
 		String pass = Utility.getStoredPassword();
-		if(user!=null && pass!=null){
-			login(user,pass);
+		if (user != null && pass != null) {
+			login(user, pass);
 		}
-		else{
+		else {
 			openLogin();
 		}
 	}
+
 	private native void login(String username, String password)/*-{
 		var management = this;
-		loginURL = @org.sealinc.accurator.shared.Config::getLoginURL()();
-		$wnd.jQuery.ajax({
-			type : 'GET',
-			url : loginURL,
-			dataType : 'jsonp',
-			data : {
-				"user" : username,
-				"password" : password
-			},
-			timeout : 5000,
-			error : function(xhr, ajaxOptions, thrownError) {
-				if (xhr.status === 200) {
-					try {
-						$wnd.jQuery("#dialog-login").dialog("close");
-					} catch (err) {
+		var loginURL = @org.sealinc.accurator.shared.Config::getLoginURL()();
+		//this works for all browser execpt IE
+		$wnd.jQuery
+			.ajax({
+				type : 'GET',
+				url : loginURL,
+				dataType : 'jsonp',
+				data : {
+					"user" : username,
+					"password" : password
+				},
+				timeout : 10000,
+				error : function(xhr, ajaxOptions, thrownError) {
+					if (xhr.status === 200) {
+						try {
+							$wnd.jQuery("#dialog-login").dialog("close");
+						} catch (err) {
+						}
+						management.@org.sealinc.accurator.client.UserManagement::loginSuccessful(Ljava/lang/String;Ljava/lang/String;)(username,password);
+					} else {
+						//show failed!
+						management.@org.sealinc.accurator.client.UserManagement::loginFailed()();
 					}
-					management.@org.sealinc.accurator.client.UserManagement::loginSuccessful(Ljava/lang/String;Ljava/lang/String;)(username,password);
-				} else {
-					//show failed!
-					management.@org.sealinc.accurator.client.UserManagement::loginFailed()();
 				}
-			}
-		});
+			});
 	}-*/;
 
 	protected native void closeLogin()/*-{
@@ -110,7 +112,7 @@ public class UserManagement {
 			}
 		}
 	}
-	
+
 	private native void openLogin()/*-{
 		var management = this;
 		var logIn = @org.sealinc.accurator.client.Utility::getLocalString(Ljava/lang/String;)("logIn");

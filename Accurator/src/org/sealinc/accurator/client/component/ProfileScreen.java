@@ -40,21 +40,6 @@ public class ProfileScreen extends Composite {
 
 	DateTimeFormat df = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
-	RequestCallback noopCallback = new RequestCallback() {
-
-		@Override
-		public void onResponseReceived(Request request, Response response) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onError(Request request, Throwable exception) {
-			// TODO Auto-generated method stub
-
-		}
-	};
-
 	public void loadData() {
 		// total number of annotated prints
 		Utility.userService.getTotalAnnotatedPrints(Utility.getStoredUsername(), null, new AsyncCallback<Integer>() {
@@ -96,16 +81,20 @@ public class ProfileScreen extends Composite {
 		});
 	}
 
-	private native void setExpertiseSlider(String topic, String json) /*-{
-		$wnd.jQuery("#" + topic + "Slider").slider("value", eval(json));
+	private native void setExpertiseSlider(String topic, double value) /*-{
+		$wnd.jQuery("#" + topic + "Slider").slider("value", value);
 	}-*/;
 
 	private void getExpertise(final String topic) {
 		RequestCallback callback = new RequestCallback() {
-
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				setExpertiseSlider(topic, response.getText());
+				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
+				double expertise = 0;
+				if (entries.length() > 0) {
+					expertise = entries.get(0).getValueAsDouble();					
+				}
+				initSlider(topic, expertise);
 			}
 
 			@Override
@@ -114,21 +103,17 @@ public class ProfileScreen extends Composite {
 
 			}
 		};
-		Utility.getUserProfileEntry(Utility.getStoredUsername(), "expertise", topic, callback);
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise", topic, Utility.getQualifiedUsername(), callback);
 	}
 
-	private native void updateLanguageButtons(String language) /*-{
-		$wnd.jQuery("#language" + language.toUpperCase()).attr("checked", true);
-		$wnd.jQuery("#language").buttonset("refresh");
-	}-*/;
-
 	private void getLanguage() {
+		// create callback function
 		RequestCallback callback = new RequestCallback() {
 
 			@Override
 			public void onResponseReceived(Request request, Response response) {
 				String json = response.getText();
-				JsArray<JsUserProfileEntry> entries = parseUserProfileEntry(json);
+				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(json);
 				if (entries.length() > 0) {
 					String language = entries.get(0).getValueAsString();
 					updateLanguageButtons(language);
@@ -136,7 +121,7 @@ public class ProfileScreen extends Composite {
 					RequestBuilder req = new RequestBuilder(RequestBuilder.GET, Config.getAnnotationComponentChangePreferenceURL() + "?user:lang="
 							+ language);
 					req.setRequestData("");
-					req.setCallback(noopCallback);
+					req.setCallback(Utility.noopCallback);
 					try {
 						req.send();
 					}
@@ -150,40 +135,36 @@ public class ProfileScreen extends Composite {
 
 			}
 		};
-		Utility.getUserProfileEntry(Utility.getStoredUsername(), "languagePreference", null, callback);
+		// Execute the call
+		Utility.getUserProfileEntry(Utility.getStoredUsername(), "languagePreference", null, null, callback);
 	}
 
+	private native void updateLanguageButtons(String language) /*-{
+		$wnd.jQuery("#language" + language.toUpperCase()).attr("checked", true);
+		$wnd.jQuery("#language").buttonset("refresh");
+	}-*/;
+
+	
+	private native void initSlider(String topic, double value)/*-{
+		var user = @org.sealinc.accurator.client.Utility::getQualifiedUsername()();
+		$wnd
+			.jQuery("#"+topic+"Slider")
+			.slider({
+				min : 0,
+				max : 1,
+				step : 0.1,
+				range : "min",
+				value : value,
+				change : function(event, ui) {
+					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise",topic,user,""+ui.value,"double");
+				},
+			});
+	}-*/;
+	
 	public native void loadUIThemeElements()/*-{
 		var pscreen = this;
 
-		var user = @org.sealinc.accurator.client.Utility::getStoredUsername()();
-
-		//Load flora slider
-		$wnd
-			.jQuery("#floraSlider")
-			.slider({
-				min : 0,
-				max : 1,
-				step : 0.1,
-				range : "min",
-				change : function(event, ui) {
-					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise","flora",""+ui.value);
-				},
-			});
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("flora");
-
-		//load castle slider
-		$wnd
-			.jQuery("#castleSlider")
-			.slider({
-				min : 0,
-				max : 1,
-				step : 0.1,
-				range : "min",
-				change : function(event, ui) {
-					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise","castle",""+ui.value);
-				},
-			});
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("castle");
 
 		//load language buttons
@@ -195,13 +176,10 @@ public class ProfileScreen extends Composite {
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getLanguage()();
 	}-*/;
 
-	private native final JsArray<JsUserProfileEntry> parseUserProfileEntry(String json)/*-{
-		return eval(json);
-	}-*/;
-
 	private void setLanguagePreference(String preference) {
 		// store the new preference
-		Utility.storeUserProfileEntry(Utility.getStoredUsername(), "languagePreference", null, preference);
+		Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), preference,
+				null);
 		// load Accurator with the new locale
 		String newURL = Window.Location.createUrlBuilder().setParameter(LocaleInfo.getLocaleQueryParam(), preference).buildString();
 		Window.Location.replace(newURL);

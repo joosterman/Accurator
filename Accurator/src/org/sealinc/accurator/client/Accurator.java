@@ -49,7 +49,7 @@ public class Accurator implements EntryPoint {
 	@UiField
 	Button btnDone, btnAnnotate, btnProfile;
 	@UiField
-	Anchor lnkLogout,lnkAboutAccurator;
+	Anchor lnkLogout, lnkAboutAccurator;
 
 	private Map<String, Double> expertise;
 	private Queue<String> castlesURIs;
@@ -65,10 +65,10 @@ public class Accurator implements EntryPoint {
 	};
 
 	@UiHandler("lnkAboutAccurator")
-	void lnkAboutClick(ClickEvent e){
+	void lnkAboutClick(ClickEvent e) {
 		openAboutDialog();
 	}
-	
+
 	private native void openAboutDialog() /*-{
 		$wnd.jQuery("#dialog-about").dialog({
 			autoOpen : false,
@@ -78,8 +78,7 @@ public class Accurator implements EntryPoint {
 		});
 		$wnd.jQuery("#dialog-about").dialog("open");
 	}-*/;
-	
-			
+
 	@UiHandler("lnkLogout")
 	void lnkLogoutClick(ClickEvent e) {
 		// delete stored credentials
@@ -113,9 +112,9 @@ public class Accurator implements EntryPoint {
 	}
 
 	private native void loadUIThemeElements()/*-{
-																						$wnd.jQuery("button").button();
-																						$wnd.jQuery(".button").button();
-																						}-*/;
+		$wnd.jQuery("button").button();
+		$wnd.jQuery(".button").button();
+	}-*/;
 
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get();
@@ -208,12 +207,11 @@ public class Accurator implements EntryPoint {
 	}
 
 	private final native JsArray<JsUserProfileEntry> parseExpertise(String json) /*-{
-																																								return eval(json);
-																																								}-*/;
+		return eval(json);
+	}-*/;
 
 	protected void loadExpertise() {
 		RequestCallback callback = new RequestCallback() {
-
 			@Override
 			public void onResponseReceived(Request request, Response response) {
 				String json = response.getText();
@@ -222,7 +220,7 @@ public class Accurator implements EntryPoint {
 				for (int i = 0; i < entries.length(); i++) {
 					JsUserProfileEntry entry = entries.get(i);
 					double value = entry.getValueAsDouble();
-					expertise.put(entry.getTopic(), value);
+					expertise.put(entry.getScope(), value);
 				}
 			}
 
@@ -230,7 +228,7 @@ public class Accurator implements EntryPoint {
 			public void onError(Request request, Throwable exception) {}
 		};
 		// get all expertises
-		Utility.getUserProfileEntry(Utility.getStoredUsername(), "expertise", null, callback);
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise",null, null, callback);
 	}
 
 	public List<String> getNextPrintsToAnnotate(int nrPrints) {
@@ -243,22 +241,20 @@ public class Accurator implements EntryPoint {
 		double floraExp = 0;
 		if (expertise.containsKey("castle")) castleExp = expertise.get("castle");
 		if (expertise.containsKey("flora")) floraExp = expertise.get("flora");
-		//scale the expertises to sum to 1
-		double upperbound= castleExp + floraExp;
-		if(upperbound>0.1){
-			castleExp/=upperbound;
-			floraExp/=upperbound;
+		// scale the expertises to sum to 1
+		double upperbound = castleExp + floraExp;
+		if (upperbound > 0.1) {
+			castleExp /= upperbound;
+			floraExp /= upperbound;
 		}
 		if (castlesURIs != null && floraURIs != null) {
 			for (int i = 0; i < nrPrints; i++) {
 				boolean addFlora = false;
 				// random number if needed
 				double r = Random.nextDouble();
-				if(r<castleExp)
-					addFlora = false;
-				else
-					addFlora = true;
-				
+				if (r < castleExp) addFlora = false;
+				else addFlora = true;
+
 				if (addFlora) {
 					uris.add(floraURIs.poll());
 

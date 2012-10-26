@@ -12,22 +12,20 @@ html body {
 }
 
 .imageButton:hover {
-	opacity: 0.4; 
-	cursor: pointer;
+	opacity: 0.4; cursor: pointer;
 }
 
 a {
 	color: brown;
 }
+
 a:hover {
-	color: chocolate;
-	cursor: pointer;
+	color: chocolate; cursor: pointer;
 }
 
 /* Header */
 .header {
-	background-color: #F0E4CE;
-	border-bottom: 3px solid brown;
+	background-color: #F0E4CE; border-bottom: 3px solid brown;
 }
 
 .logoutLink {
@@ -47,7 +45,8 @@ a:hover {
 }
 
 .header .done {
-	position: absolute; right: 18px; top: 120px; z-index: 10;
+	position: absolute; top: 120px; z-index: 10;
+	right: 18px; 
 }
 
 /* Footer */
@@ -75,7 +74,7 @@ a:hover {
 }
 
 .footer .logo {
-	max-width: 150px; max-height: 70%; margin-right: 10px;
+	max-width: 150px; max-height: 40px; margin-right: 10px;
 	margin-left: 10px; vertical-align: bottom;
 }
 /* Login and registration */
@@ -100,6 +99,11 @@ a:hover {
 /* Recommendation screen  */
 .recommendation {
 	margin-left: auto; margin-right: auto; width: 95%;
+}
+.recommendation h2
+{
+	text-align: center;
+	width:100%;
 }
 
 .recommendation .previous,.recommendation .next {
@@ -126,12 +130,19 @@ a:hover {
 
 .recommendationItem {
 	position: relative; float: left; text-align: center; width: 29%;
-	height: 100%; margin-right: 10px; margin-bottom: 10px;
+	height: 100%; margin:8px;
 }
 
 .recommendationItem img {
-	max-height: 450px; max-width: 100%; postition: relative;
+	max-height: 450px; width: 90%; postition: relative;
 	margin-right: auto; margin-left: auto;
+}
+
+.recTitle
+{
+	font-size: 1.1em;
+	font-weight: bold;
+	
 }
 
 /* Profile  */

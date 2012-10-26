@@ -12,6 +12,7 @@ import org.sealinc.accurator.client.service.UserComponentService;
 import org.sealinc.accurator.client.service.UserComponentServiceAsync;
 import org.sealinc.accurator.shared.Config;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -31,6 +32,18 @@ public class Utility {
 
 	private static final String username = "username";
 	private static final String password = "password";
+
+	public static final RequestCallback noopCallback = new RequestCallback() {
+
+		@Override
+		public void onResponseReceived(Request request, Response response) {}
+
+		@Override
+		public void onError(Request request, Throwable exception) {
+			System.err.println("Noop callback encountered error.");
+			exception.printStackTrace();
+		}
+	};
 
 	private Utility() {}
 
@@ -88,22 +101,22 @@ public class Utility {
 		}
 	}
 
-	public static void storeUserProfileEntry(String user, String type, String topic, String value) {
+	public static void storeUserProfileEntry(String user, String dimension, String scope, String provider, String value, String valueType) {
+		// value cannot be null
+		if (value == null) return;
+
 		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
-		String data = "user=" + Utility.getStoredUsername() + "&type="+type+"&value=" + value;
-		if(topic!=null){
-			data+="&topic=" + topic;
-		}
+		String data = "user=" + user;
+		if (dimension != null) data += "&dimension=" + dimension;
+		if (scope != null) data += "&scope=" + scope;
+		if (provider != null) data += "&provider=" + provider;
+		if (valueType != null) data += "&valueType=" + valueType;
+		// always add value
+		data += "&value=" + value;
+
 		RequestBuilder rb = new RequestBuilder(RequestBuilder.PUT, loc + data);
 		rb.setRequestData("");
-		rb.setCallback(new RequestCallback() {
-
-			@Override
-			public void onResponseReceived(Request request, Response response) {}
-
-			@Override
-			public void onError(Request request, Throwable exception) {}
-		});
+		rb.setCallback(noopCallback);
 		try {
 			rb.send();
 		}
@@ -111,13 +124,16 @@ public class Utility {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void getUserProfileEntry(String user, String type, String topic,RequestCallback callback){
+
+	public static void getUserProfileEntry(String user, String dimension, String scope, String provider, RequestCallback callback) {
 		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
-		String data = "user=" + Utility.getStoredUsername() + "&type="+type;
-		if(topic!=null){
-			data+="&topic=" + topic;
+		String data = "user=" + user;
+		if (dimension != null) data += "&dimension=" + dimension;
+		if (scope != null) data += "&scope=" + scope;
+		if (provider != null) {
+			data += "&provider=" + provider;
 		}
+
 		RequestBuilder rb = new RequestBuilder(RequestBuilder.GET, loc + data);
 		rb.setRequestData("");
 		rb.setCallback(callback);
@@ -128,20 +144,25 @@ public class Utility {
 			e.printStackTrace();
 		}
 	}
-	
-	public static String getResourceTopic(String resourceURI){
+
+	public static native final JsArray<JsUserProfileEntry> parseUserProfileEntry(String json)/*-{
+		return eval(json);
+	}-*/;
+
+	public static String getResourceTopic(String resourceURI) {
 		Storage localStorage = Storage.getLocalStorageIfSupported();
 		if (localStorage != null) {
-			return localStorage.getItem(resourceURI+"_topic");
+			return localStorage.getItem(resourceURI + "_topic");
 		}
-		else{
+		else {
 			return null;
 		}
 	}
-	public static void setResourceTopic(String resourceURI, String topic){
+
+	public static void setResourceTopic(String resourceURI, String topic) {
 		Storage localStorage = Storage.getLocalStorageIfSupported();
-		if (localStorage != null && topic!=null) {
-			localStorage.setItem(resourceURI+"_topic", topic);
-		}	
+		if (localStorage != null && topic != null) {
+			localStorage.setItem(resourceURI + "_topic", topic);
+		}
 	}
 }

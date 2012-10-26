@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <datastore-indexes autoGenerate="true">
-	<datastore-index kind="UserProfileEntry" ancestor="false">
-        <property name="user" direction="asc" />
-        <property name="type" direction="asc" />
-        <property name="topic" direction="asc" />
+	<datastore-index kind="UserProfileEntry" ancestor="true">
+        <property name="dimension" direction="asc" />
+        <property name="scope" direction="asc" />
+        <property name="provider" direction="asc" />        
     </datastore-index>
-    <datastore-index kind="UserProfileEntry" ancestor="false">
-        <property name="user" direction="asc" />
-        <property name="type" direction="asc" />
+    	<datastore-index kind="UserProfileEntry" ancestor="true">
+        <property name="dimension" direction="asc" />
+        <property name="scope" direction="asc" />       
+    </datastore-index>
+    <datastore-index kind="UserProfileEntry" ancestor="true">
+        <property name="dimension" direction="asc" />
     </datastore-index>
 </datastore-indexes> 
 

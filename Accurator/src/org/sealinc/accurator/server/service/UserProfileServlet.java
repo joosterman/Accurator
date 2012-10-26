@@ -2,15 +2,20 @@ package org.sealinc.accurator.server.service;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.sealinc.accurator.server.User;
+import org.sealinc.accurator.server.UserProfileEntry;
 import org.sealinc.accurator.server.Utility;
-import org.sealinc.accurator.shared.UserProfileEntry;
 import com.google.gson.Gson;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.Query;
 
 public class UserProfileServlet extends HttpServlet {
@@ -21,94 +26,140 @@ public class UserProfileServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		Utility.setNoCacheJSON(response);
-		if (!isValidRequest(request)) response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Required parameters not provided");
-
-		String user = request.getParameter("user");
-		String type = request.getParameter("type");
-		String topic = request.getParameter("topic");
-
-		// get list if values from all from all topics
-		if (topic == null) {
-			Query<UserProfileEntry> q = ofy().load().type(UserProfileEntry.class).filter("user", user).filter("type", type);
-			List<UserProfileEntry> entries = q.list();
-			response.getWriter().write(gson.toJson(entries));
+		if (!isValidRequest(request)) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Required parameters not provided");
+			return;
 		}
-		// get for the one topic
-		else {
-			Query<UserProfileEntry> q = ofy().load().type(UserProfileEntry.class).filter("user", user).filter("type", type).filter("topic", topic);
-			Ref<UserProfileEntry> ref = q.first();
-			if (ref.getValue() == null) response.getWriter().write(gson.toJson(null));
-			else {
-				response.getWriter().write(gson.toJson(ref.getValue().value));
-			}
+
+		final String user = request.getParameter("user");
+		final String dimension = request.getParameter("dimension");
+		final String scope = request.getParameter("scope");
+		final String provider = request.getParameter("provider");
+
+		// get the user
+		Ref<User> u = ofy().load().type(User.class).filter("URI", user).first();
+		// if the user does not exist, send an empty list
+		if (u.getValue() == null) {
+			response.getWriter().write(gson.toJson(new UserProfileEntry[] {}));
+			return;
 		}
+
+		// build the query
+		Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(u.getKey());
+		// if the dimension is given
+		if (dimension != null) query = query.filter("dimension", dimension);
+		if (scope != null) query = query.filter("scope", scope);
+		if (provider != null) query = query.filter("provider", provider);
+
+		// execute the query
+		List<UserProfileEntry> entries = query.list();
+
+		// output the list as JSON
+		response.getWriter().write(gson.toJson(entries));
 	}
 
 	@Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		if (!isValidRequest(request)) response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Required parameters not provided");
-		String user = request.getParameter("user");
-		String type = request.getParameter("type");
-		String topic = request.getParameter("topic");
+		// do we have all the required parameters?
+		if (!isValidRequest(request)) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, String.format("Required parameters not provided"));
+			return;
+		}
+
+		// get the params
+		final String user = request.getParameter("user");
+		final String dimension = request.getParameter("dimension");
+		final String scope = request.getParameter("scope");
+		final String provider = request.getParameter("provider");
 		String value = request.getParameter("value");
+		final String valueType = request.getParameter("valueType");
 
-		// check if exists
-		Query<UserProfileEntry> q;
-		if (topic == null) {
-			q = ofy().load().type(UserProfileEntry.class).filter("user", user).filter("type", type);
+		// convert the value to the correct value (via HTTP PUT starts always as
+		// string)
+		Object o = null;
+		try {
+			// if a type is not given, store as string
+			if (valueType == null) {
+				o = value;
+			}
+			else if ("int".equals(valueType)) {
+				int i = Integer.parseInt(value);
+				o = i;
+			}
+			else if ("double".equals(valueType)) {
+				double d = Double.parseDouble(value);
+				o = d;
+			}
+			else if ("date".equals(valueType)) {
+				Date d = SimpleDateFormat.getDateTimeInstance().parse(value);
+				o = d;
+			}
+		}
+		catch (Exception ex) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+					String.format("Could not convert value '%s' as %s. Value not saved. Exception: %s", value, valueType, ex.toString()));
+			return;
+		}
+		final Object typedVal = o;
+
+		// get the user if it exists
+		Ref<User> refu = ofy().load().type(User.class).filter("URI =", user).first();
+		final Key<User> keyu;
+		// if user does not exist, create the user
+		User u = refu.getValue();
+		if (u != null) {
+			keyu = refu.getKey();
 		}
 		else {
-			q = ofy().load().type(UserProfileEntry.class).filter("user", user).filter("type", type).filter("topic", topic);
+			u = new User();
+			u.URI = user;
+			keyu = ofy().save().entity(u).now();
 		}
-		List<UserProfileEntry> entries = q.list();
-		// Do not put if there are more than 1 of these entities
-		if (entries.size() > 1) {
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Could not update. Multiple entities found this user and type.");
-		}
-		else {
-			UserProfileEntry entry = null;
-			// update or create
-			if (entries.isEmpty()) {
-				entry = new UserProfileEntry();
-				entry.user = user;
-				entry.topic = topic;
-				entry.type = type;
-			}
-			else {
-				entry = entries.get(0);
-			}
+		// keyu now contains the correct user
 
-			// determine type based on up-type
-			Object typedVal = value;
+		// Value is converted, start transaction
+		ofy().transact(new VoidWork() {
 
-			if ("expertise".equals(type)) {
-				typedVal = Double.parseDouble(value);
+			@Override
+			public void vrun() {
+
+				// check if the UPE already exists and create otherwise
+				Ref<UserProfileEntry> refentry = ofy().load().type(UserProfileEntry.class).ancestor(keyu).filter("dimension", dimension).filter(
+						"scope", scope).filter("provider", provider).first();
+				UserProfileEntry entry = refentry.getValue();
+				if (entry == null) {
+					entry = new UserProfileEntry();
+					entry.user = keyu;
+					entry.dimension = dimension;
+					entry.provider = provider;
+					entry.scope = scope;
+				}
+				// set the value
+				entry.value = typedVal;
+
+				// (re)save the entity
+				ofy().save().entity(entry).now();
 			}
-			entry.value = typedVal;
-			// asynchronous save
-			ofy().save().entity(entry);
-			response.setStatus(HttpServletResponse.SC_OK);
-		}
+		});
 	}
 
 	/**
-	 * Returns the message to output to the user if the request was not valid or
-	 * null if the request was not valid
+	 * Returns whether the request valid
 	 * 
 	 * @param request
 	 * @return
 	 */
 	private boolean isValidRequest(HttpServletRequest request) {
 		String user = request.getParameter("user");
-		String type = request.getParameter("type");
+		String dimension = request.getParameter("dimension");
 		String value = request.getParameter("value");
 
 		String method = request.getMethod();
 		if ("GET".equals(method)) {
-			return user != null && type != null;
+			return user != null && dimension != null;
 		}
 		else if ("PUT".equals(method)) {
-			return user != null && type != null && value != null && !value.isEmpty();
+			return user != null && dimension != null && value != null;
 		}
 		else {
 			return false;

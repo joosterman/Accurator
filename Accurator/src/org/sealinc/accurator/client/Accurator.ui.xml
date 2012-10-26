@@ -77,7 +77,6 @@
 				<ui:msg description="Done">Done</ui:msg>
 			</g:Button>
 		</div>
-
 		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
 		<div class="footer">
 			<div class="menu">
