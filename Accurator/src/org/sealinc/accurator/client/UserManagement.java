@@ -32,6 +32,8 @@ public class UserManagement {
 			System.out.println("First login");
 			acc.lnkLogout.setVisible(true);
 		}
+		//needs to be refreshed every new session
+		acc.updateLanguageForAnnotationComponent();
 	}
 
 	private void loginFailed() {

@@ -46,7 +46,15 @@ public class Utility {
 	};
 
 	private Utility() {}
-
+	
+	public static native void hitURLWithJsonp(String urlToHit)/*-{
+		$wnd.jQuery.ajax({
+			type : 'GET',
+			url : urlToHit,
+			dataType : 'jsonp',
+		});
+	}-*/;
+	
 	public static String getLocalString(String toTranslate) {
 		return constants.getString(toTranslate);
 	}

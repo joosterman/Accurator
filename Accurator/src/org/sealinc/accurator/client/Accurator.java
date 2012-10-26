@@ -58,7 +58,31 @@ public class Accurator implements EntryPoint {
 	private AnnotateScreen annotateScreen;
 	private ProfileScreen profileScreen;
 	private RecommendedItems recommendationScreen;
-	private UserManagement management = new UserManagement(this);
+	private UserManagement management;
+	
+	private AnnotateScreen getAnnotateScreen() {
+		if(annotateScreen==null)
+			annotateScreen = new AnnotateScreen(this);
+		return annotateScreen;
+	}
+
+	private ProfileScreen getProfileScreen() {
+		if(profileScreen == null)
+			profileScreen = new ProfileScreen(this);
+		return profileScreen;
+	}
+
+	private RecommendedItems getRecommendationScreen() {
+		if(recommendationScreen == null)
+			recommendationScreen = new RecommendedItems(this);
+		return recommendationScreen;
+	}
+
+	private UserManagement getManagement() {
+		if(management == null)
+			management = new UserManagement(this);
+		return management;
+	}
 
 	private enum State {
 		Annotate, Profile, Quality, Admin, Recommendation
@@ -84,7 +108,7 @@ public class Accurator implements EntryPoint {
 		// delete stored credentials
 		Utility.deleteStoredUserCredentials();
 		// logout the annotation component
-		management.logout();
+		getManagement().logout();
 		// refresh the page to show the loginpage again and reset GWT state.
 		Window.Location.reload();
 	}
@@ -107,8 +131,8 @@ public class Accurator implements EntryPoint {
 
 	@UiHandler("lnkRegister")
 	void registerClickHandler(ClickEvent e) {
-		management.closeLogin();
-		management.openRegister();
+		getManagement().closeLogin();
+		getManagement().openRegister();
 	}
 
 	private native void loadUIThemeElements()/*-{
@@ -116,6 +140,26 @@ public class Accurator implements EntryPoint {
 		$wnd.jQuery(".button").button();
 	}-*/;
 
+	public void updateLanguageForAnnotationComponent(){
+		RequestCallback callback = new RequestCallback() {
+			
+			@Override
+			public void onResponseReceived(Request request, Response response) {
+				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
+				if(entries.length()>0)
+				{
+					String language = entries.get(0).getValueAsString();
+					getAnnotateScreen().setLanguage(language);
+				}
+			}
+			
+			@Override
+			public void onError(Request request, Throwable exception) {				
+			}
+		};
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), callback);
+	}
+	
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get();
 		Widget w = uiBinder.createAndBindUi(this);
@@ -155,7 +199,7 @@ public class Accurator implements EntryPoint {
 			}
 		});
 
-		management.login();
+		getManagement().login();
 	}
 
 	private void annotate(String resourceURI, String topic) {
@@ -172,12 +216,7 @@ public class Accurator implements EntryPoint {
 		// complete url for the iframe containing the annotation component
 		url += ui;
 		// create or load the frame with the
-		if (annotateScreen == null) {
-			annotateScreen = new AnnotateScreen(this, resourceURI, url);
-		}
-		else {
-			annotateScreen.loadResource(resourceURI, url);
-		}
+		getAnnotateScreen().loadResource(resourceURI, url);
 		// show the annotation page
 		if (!History.getToken().equals(State.Annotate.toString())) {
 			History.newItem(State.Annotate.toString());
@@ -284,23 +323,19 @@ public class Accurator implements EntryPoint {
 				case Annotate:
 					btnDone.setVisible(true);
 					loadExpertise();
-					if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
-					content.add(annotateScreen);
+					content.add(getAnnotateScreen());
 					break;
 				case Profile:
-					if (profileScreen == null) profileScreen = new ProfileScreen(this);
-					content.add(profileScreen);
-					profileScreen.loadUIThemeElements();
-					profileScreen.loadData();
+					content.add(getProfileScreen());
+					getProfileScreen().loadUIThemeElements();
+					getProfileScreen().loadData();
 					break;
 				case Quality:
 					break;
 				case Admin:
 					break;
 				case Recommendation:
-					if (recommendationScreen == null) recommendationScreen = new RecommendedItems(this);
-					content.add(recommendationScreen);
-
+					content.add(getRecommendationScreen());
 					break;
 			}
 			loadUIThemeElements();

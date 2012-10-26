@@ -4,7 +4,7 @@ public class Config {
 	private static final String baseURL = "http://eculture.cs.vu.nl/sealinc/";
 	private static final String sparqlEndpoint = baseURL + "sparql/";
 	private static final String annotationComponentURL = baseURL + "annotate";
-	private static final String annotationComponentChangePreferenceURL = baseURL +"admin/changePreference";
+	private static final String annotationComponentChangePreferenceURL = baseURL +"admin/changePreferences";
 	private static final String assignComponentURL = baseURL + "assign";
 	private static final String assignComponentStrategy = "literal_matching";
 	private static final int assignComponentNrItems = 3;

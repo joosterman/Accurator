@@ -67,6 +67,11 @@ public class AnnotateScreen extends Composite {
 		return new NamedFrame(annotationFrameName);
 	}
 
+	public void setLanguage(String language) {
+		String urlToHit = Config.getAnnotationComponentChangePreferenceURL() + "?lang=" + language;
+		Utility.hitURLWithJsonp(urlToHit);
+	}
+
 	public AnnotateScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));
 		accurator = acc;
