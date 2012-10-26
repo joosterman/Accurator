@@ -26,6 +26,7 @@ public class UserProfileServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		Utility.setNoCacheJSON(response);
+		// do we have all the required parameters?
 		if (!isValidRequest(request)) {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Required parameters not provided");
 			return;
@@ -47,9 +48,9 @@ public class UserProfileServlet extends HttpServlet {
 		// build the query
 		Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(u.getKey());
 		// if the dimension is given
-		if (dimension != null) query = query.filter("dimension", dimension);
-		if (scope != null) query = query.filter("scope", scope);
-		if (provider != null) query = query.filter("provider", provider);
+		if (dimension != null) query = query.filter("dimension =", dimension);
+		if (scope != null) query = query.filter("scope =", scope);
+		if (provider != null) query = query.filter("provider =", provider);
 
 		// execute the query
 		List<UserProfileEntry> entries = query.list();
@@ -79,7 +80,7 @@ public class UserProfileServlet extends HttpServlet {
 		Object o = null;
 		try {
 			// if a type is not given, store as string
-			if (valueType == null) {
+			if (valueType == null || "string".equals(valueType)) {
 				o = value;
 			}
 			else if ("int".equals(valueType)) {
@@ -93,6 +94,11 @@ public class UserProfileServlet extends HttpServlet {
 			else if ("date".equals(valueType)) {
 				Date d = SimpleDateFormat.getDateTimeInstance().parse(value);
 				o = d;
+			}
+			else {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+						String.format("Value type unknown: '%s'. Value not saved.", valueType));
+				return;
 			}
 		}
 		catch (Exception ex) {
@@ -124,8 +130,14 @@ public class UserProfileServlet extends HttpServlet {
 			public void vrun() {
 
 				// check if the UPE already exists and create otherwise
-				Ref<UserProfileEntry> refentry = ofy().load().type(UserProfileEntry.class).ancestor(keyu).filter("dimension", dimension).filter(
-						"scope", scope).filter("provider", provider).first();
+				//	build the query
+				Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(keyu);
+				if (dimension != null) query = query.filter("dimension =", dimension);
+				if (scope != null) query = query.filter("scope =", scope);
+				if (provider != null) query = query.filter("provider =", provider);
+				
+				//execute the query
+				Ref<UserProfileEntry> refentry = query.first();
 				UserProfileEntry entry = refentry.getValue();
 				if (entry == null) {
 					entry = new UserProfileEntry();

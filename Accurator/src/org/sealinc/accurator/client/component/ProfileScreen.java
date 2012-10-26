@@ -179,7 +179,7 @@ public class ProfileScreen extends Composite {
 	private void setLanguagePreference(String preference) {
 		// store the new preference
 		Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), preference,
-				null);
+				"string");
 		// load Accurator with the new locale
 		String newURL = Window.Location.createUrlBuilder().setParameter(LocaleInfo.getLocaleQueryParam(), preference).buildString();
 		Window.Location.replace(newURL);
