@@ -135,6 +135,8 @@ public class ProfileScreen extends Composite {
 
 	private native void initSlider(String topic, double value)/*-{
 		var user = @org.sealinc.accurator.client.Utility::getQualifiedUsername()();
+		var pscreen = this;
+		var acc = pscreen.@org.sealinc.accurator.client.component.ProfileScreen::accurator;
 		$wnd
 			.jQuery("#" + topic + "Slider")
 			.slider({
@@ -145,6 +147,8 @@ public class ProfileScreen extends Composite {
 				value : value,
 				stop : function(event, ui) {
 					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise",topic,user,""+ui.value,"double");
+					acc.@org.sealinc.accurator.client.Accurator::updateExpertise(Ljava/lang/String;Ljava/lang/Double;)(topic,ui.value);
+					acc.@org.sealinc.accurator.client.Accurator::userPropertyChanged(Ljava/lang/String;)("expertise");
 				},
 			});
 	}-*/;
@@ -153,24 +157,16 @@ public class ProfileScreen extends Composite {
 		var pscreen = this;
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("flora");
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("castle");
+		var acc= pscreen.@org.sealinc.accurator.client.component.ProfileScreen::accurator;
 
 		//load language buttons
 		$wnd.jQuery("#language").buttonset();
 		$wnd.jQuery(".languageButton").click(function() {
 			var val = $wnd.jQuery(this).val();
-			pscreen.@org.sealinc.accurator.client.component.ProfileScreen::setLanguagePreference(Ljava/lang/String;)(val);
+			acc.@org.sealinc.accurator.client.Accurator::changeLanguage(Ljava/lang/String;)(val);
 		});
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getLanguage()();
 	}-*/;
-
-	private void setLanguagePreference(String preference) {
-		// store the new preference
-		Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), preference,
-				"string");
-		// load Accurator with the new locale
-		String newURL = Window.Location.createUrlBuilder().setParameter(LocaleInfo.getLocaleQueryParam(), preference).buildString();
-		Window.Location.replace(newURL);
-	}
 
 	public ProfileScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));

@@ -18,6 +18,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -59,28 +60,24 @@ public class Accurator implements EntryPoint {
 	private ProfileScreen profileScreen;
 	private RecommendedItems recommendationScreen;
 	private UserManagement management;
-	
+
 	private AnnotateScreen getAnnotateScreen() {
-		if(annotateScreen==null)
-			annotateScreen = new AnnotateScreen(this);
+		if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
 		return annotateScreen;
 	}
 
 	private ProfileScreen getProfileScreen() {
-		if(profileScreen == null)
-			profileScreen = new ProfileScreen(this);
+		if (profileScreen == null) profileScreen = new ProfileScreen(this);
 		return profileScreen;
 	}
 
 	private RecommendedItems getRecommendationScreen() {
-		if(recommendationScreen == null)
-			recommendationScreen = new RecommendedItems(this);
+		if (recommendationScreen == null) recommendationScreen = new RecommendedItems(this);
 		return recommendationScreen;
 	}
 
 	private UserManagement getManagement() {
-		if(management == null)
-			management = new UserManagement(this);
+		if (management == null) management = new UserManagement(this);
 		return management;
 	}
 
@@ -140,26 +137,24 @@ public class Accurator implements EntryPoint {
 		$wnd.jQuery(".button").button();
 	}-*/;
 
-	public void updateLanguageForAnnotationComponent(){
+	public void updateLanguageForAnnotationComponent() {
 		RequestCallback callback = new RequestCallback() {
-			
+
 			@Override
 			public void onResponseReceived(Request request, Response response) {
 				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
-				if(entries.length()>0)
-				{
+				if (entries.length() > 0) {
 					String language = entries.get(0).getValueAsString();
 					getAnnotateScreen().setLanguage(language);
 				}
 			}
-			
+
 			@Override
-			public void onError(Request request, Throwable exception) {				
-			}
+			public void onError(Request request, Throwable exception) {}
 		};
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), callback);
 	}
-	
+
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get();
 		Widget w = uiBinder.createAndBindUi(this);
@@ -170,6 +165,12 @@ public class Accurator implements EntryPoint {
 
 		loadUIThemeElements();
 		initHistorySupport();
+		loadExpertise();
+		loadPrints();
+		getManagement().login();
+	}
+
+	private void loadPrints() {
 		// load prints
 		Utility.assignService.getNextItemsToAnnotate(100, "kasteel", new AsyncCallback<List<String>>() {
 
@@ -198,8 +199,15 @@ public class Accurator implements EntryPoint {
 
 			}
 		});
+	}
 
-		getManagement().login();
+	public void changeLanguage(String language) {
+		// store the new preference
+		Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), language,
+				"string");
+		// load Accurator with the new locale
+		String newURL = Window.Location.createUrlBuilder().setParameter(LocaleInfo.getLocaleQueryParam(), language).buildString();
+		Window.Location.replace(newURL);
 	}
 
 	private void annotate(String resourceURI, String topic) {
@@ -220,6 +228,12 @@ public class Accurator implements EntryPoint {
 		// show the annotation page
 		if (!History.getToken().equals(State.Annotate.toString())) {
 			History.newItem(State.Annotate.toString());
+		}
+	}
+
+	public void userPropertyChanged(String dimension) {
+		if ("expertise".equals(dimension)) {
+			getRecommendationScreen().loadRecommendations();
 		}
 	}
 
@@ -249,6 +263,10 @@ public class Accurator implements EntryPoint {
 		return eval(json);
 	}-*/;
 
+	public void updateExpertise(String topic, Double value) {
+		if (expertise != null) expertise.put(topic, value);
+	}
+
 	protected void loadExpertise() {
 		RequestCallback callback = new RequestCallback() {
 			@Override
@@ -267,7 +285,7 @@ public class Accurator implements EntryPoint {
 			public void onError(Request request, Throwable exception) {}
 		};
 		// get all expertises
-		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise",null, null, callback);
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise", null, null, callback);
 	}
 
 	public List<String> getNextPrintsToAnnotate(int nrPrints) {
@@ -322,7 +340,6 @@ public class Accurator implements EntryPoint {
 
 				case Annotate:
 					btnDone.setVisible(true);
-					loadExpertise();
 					content.add(getAnnotateScreen());
 					break;
 				case Profile:

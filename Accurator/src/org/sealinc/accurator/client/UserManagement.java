@@ -1,7 +1,12 @@
 package org.sealinc.accurator.client;
 
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class UserManagement {
@@ -14,26 +19,63 @@ public class UserManagement {
 	}
 
 	private void loginSuccessful(String username, String password) {
-		// check if this is the first login
-		// new login
-		acc.lblLoginMessage.setText("");
-		if (renewLoginTimer == null) {
-			Utility.setUser(username, password);
-			acc.loadCurrentHistory();
-
-			renewLoginTimer = new Timer() {
-				@Override
-				public void run() {
-					renewLogin();
+		// store the credentials
+		Utility.setUser(username, password);
+		//get the current (URL) locale
+		final String locale =  Window.Location.getParameter("locale");
+		// get the users language preference
+		RequestCallback callback = new RequestCallback() {
+			@Override
+			public void onResponseReceived(Request request, Response response) {
+				String json = response.getText();
+				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(json);
+				String language= null;
+				if (entries.length() > 0) {
+					language = entries.get(0).getValueAsString();	
 				}
-			};
-			// renew login every 4 minutes
-			renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
-			System.out.println("First login");
-			acc.lnkLogout.setVisible(true);
-		}
-		//needs to be refreshed every new session
-		acc.updateLanguageForAnnotationComponent();
+				//if the user has a preference
+				if(language!=null && !language.isEmpty()){
+					//if the current URL locale does not match the user preference --> change
+					//Reason: either not a match or missing URL param
+					if(language.equals(locale)){
+						//change to the users preference
+						acc.changeLanguage(language);
+					}
+					else{
+						//now we can follow the normal login procedure
+						//either a renewed login or a first login
+						
+						//clear login status message
+						acc.lblLoginMessage.setText("");
+						if (renewLoginTimer == null) {
+							//first login	
+							acc.loadCurrentHistory();
+							renewLoginTimer = new Timer() {
+								@Override
+								public void run() {
+									renewLogin();
+								}
+							};
+							// renew login every 4 minutes
+							renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
+							//now we are logged in show the logout button
+							acc.lnkLogout.setVisible(true);
+						}
+						// needs to be refreshed every new session/login
+						acc.updateLanguageForAnnotationComponent();
+						
+					}
+				}
+			}
+
+			@Override
+			public void onError(Request request, Throwable exception) {
+				// TODO Auto-generated method stub
+
+			}
+		};
+		// Execute the call
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), callback);
 	}
 
 	private void loginFailed() {
