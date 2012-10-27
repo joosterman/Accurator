@@ -13,10 +13,8 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
@@ -114,7 +112,7 @@ public class ProfileScreen extends Composite {
 				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(json);
 				if (entries.length() > 0) {
 					String language = entries.get(0).getValueAsString();
-					updateLanguageButtons(language);				
+					updateLanguageButtons(language);
 				}
 			}
 
@@ -133,10 +131,15 @@ public class ProfileScreen extends Composite {
 		$wnd.jQuery("#language").buttonset("refresh");
 	}-*/;
 
-	private native void initSlider(String topic, double value)/*-{
+	private void updateExpertise(String topic, Double value){
+		accurator.updateExpertise(topic, value);
+	}
+	private void userPropertyChanged(String dimension){
+		accurator.userPropertyChanged(dimension);
+	}
+	private native void initSlider(String topic, double val)/*-{
 		var user = @org.sealinc.accurator.client.Utility::getQualifiedUsername()();
 		var pscreen = this;
-		var acc = pscreen.@org.sealinc.accurator.client.component.ProfileScreen::accurator;
 		$wnd
 			.jQuery("#" + topic + "Slider")
 			.slider({
@@ -144,26 +147,29 @@ public class ProfileScreen extends Composite {
 				max : 1,
 				step : 0.1,
 				range : "min",
-				value : value,
+				value : val,
 				stop : function(event, ui) {
 					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise",topic,user,""+ui.value,"double");
-					acc.@org.sealinc.accurator.client.Accurator::updateExpertise(Ljava/lang/String;Ljava/lang/Double;)(topic,ui.value);
-					acc.@org.sealinc.accurator.client.Accurator::userPropertyChanged(Ljava/lang/String;)("expertise");
+					acc.@org.sealinc.accurator.client.component.ProfileScreen::updateExpertise(Ljava/lang/String;Ljava/lang/Double;)(topic,ui.value);
+					acc.@org.sealinc.accurator.client.component.ProfileScreen::userPropertyChanged(Ljava/lang/String;)("expertise");
 				},
 			});
 	}-*/;
 
+	private void changeLanguage(String language){
+		accurator.changeLanguage(language);
+	}
+	
 	public native void loadUIThemeElements()/*-{
 		var pscreen = this;
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("flora");
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("castle");
-		var acc= pscreen.@org.sealinc.accurator.client.component.ProfileScreen::accurator;
 
 		//load language buttons
 		$wnd.jQuery("#language").buttonset();
 		$wnd.jQuery(".languageButton").click(function() {
 			var val = $wnd.jQuery(this).val();
-			acc.@org.sealinc.accurator.client.Accurator::changeLanguage(Ljava/lang/String;)(val);
+			pscreen.@org.sealinc.accurator.client.component.ProfileScreen::changeLanguage(Ljava/lang/String;)(val);
 		});
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getLanguage()();
 	}-*/;
