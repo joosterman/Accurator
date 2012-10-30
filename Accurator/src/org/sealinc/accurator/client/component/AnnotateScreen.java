@@ -45,23 +45,6 @@ public class AnnotateScreen extends Composite {
 		annotationFrame.setUrl(url);
 	}
 
-	private void setNextItemToAnnotate() {
-		List<String> uris = accurator.getNextPrintsToAnnotate(1);
-		if (uris.size() > 0) {
-			String resourceURI = uris.get(0);
-			accurator.annotate(resourceURI);
-		}
-		else {
-			Timer t = new Timer() {
-				@Override
-				public void run() {
-					setNextItemToAnnotate();
-				}
-			};
-			t.schedule(200);
-		}
-	}
-
 	@UiFactory
 	NamedFrame makeNamedFrame() {
 		return new NamedFrame(annotationFrameName);
@@ -75,13 +58,5 @@ public class AnnotateScreen extends Composite {
 	public AnnotateScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));
 		accurator = acc;
-		setNextItemToAnnotate();
 	}
-
-	public AnnotateScreen(Accurator acc, String resourceURI, String url) {
-		initWidget(uiBinder.createAndBindUi(this));
-		accurator = acc;
-		loadResource(resourceURI, url);
-	}
-
 }

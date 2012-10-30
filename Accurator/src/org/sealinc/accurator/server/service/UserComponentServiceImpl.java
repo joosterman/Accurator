@@ -50,6 +50,8 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 
 	@Override
 	public boolean setViewed(String resourceURI, View view) {
+		if(resourceURI==null)
+			return false;
 		logger.info(view.viewer +" viewed "+resourceURI);
 		// create the view URI
 		String uri = String.format("%sview/%s-%s-%s", Config.getAdminComponentBaseURI(), resourceURI.hashCode(),

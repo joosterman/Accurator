@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.storage.client.Storage;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -22,7 +23,7 @@ public class UserManagement {
 		// store the credentials
 		Utility.setUser(username, password);
 		//get the current (URL) locale
-		final String locale =  Window.Location.getParameter("locale");
+		final String locale =  Window.Location.getParameter(LocaleInfo.getLocaleQueryParam());
 		// get the users language preference
 		RequestCallback callback = new RequestCallback() {
 			@Override
@@ -37,7 +38,7 @@ public class UserManagement {
 				if(language!=null && !language.isEmpty()){
 					//if the current URL locale does not match the user preference --> change
 					//Reason: either not a match or missing URL param
-					if(language.equals(locale)){
+					if(!language.equals(locale)){
 						//change to the users preference
 						acc.changeLanguage(language);
 					}

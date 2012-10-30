@@ -1,5 +1,6 @@
 package org.sealinc.accurator.client.component;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.sealinc.accurator.client.Accurator;
 import org.sealinc.accurator.client.JsUserProfileEntry;
@@ -9,6 +10,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
@@ -33,6 +35,7 @@ public class ProfileScreen extends Composite {
 	Label lblTotalAnnotated;
 
 	Accurator accurator;
+	List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
 
 	DateTimeFormat df = DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT);
 
@@ -55,18 +58,25 @@ public class ProfileScreen extends Composite {
 
 			@Override
 			public void onSuccess(List<CollectionItem> result) {
+				//clear all handlers
+				for(HandlerRegistration reg:regs){
+					reg.removeHandler();
+				}
+				regs.clear();
+				
 				pnlAnnotated.clear();
 				Anchor a;
 				// load prints annotated
 				for (final CollectionItem ci : result) {
 					a = new Anchor(ci.title);
-					a.addClickHandler(new ClickHandler() {
+					HandlerRegistration reg =  a.addClickHandler(new ClickHandler() {
 
 						@Override
 						public void onClick(ClickEvent event) {
 							accurator.annotate(ci.uri);
 						}
 					});
+					regs.add(reg);
 					pnlAnnotated.add(a);
 				}
 
@@ -131,7 +141,7 @@ public class ProfileScreen extends Composite {
 		$wnd.jQuery("#language").buttonset("refresh");
 	}-*/;
 
-	private void updateExpertise(String topic, Double value){
+	private void updateExpertise(String topic, double value){
 		accurator.updateExpertise(topic, value);
 	}
 	private void userPropertyChanged(String dimension){
@@ -150,8 +160,8 @@ public class ProfileScreen extends Composite {
 				value : val,
 				stop : function(event, ui) {
 					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise",topic,user,""+ui.value,"double");
-					acc.@org.sealinc.accurator.client.component.ProfileScreen::updateExpertise(Ljava/lang/String;Ljava/lang/Double;)(topic,ui.value);
-					acc.@org.sealinc.accurator.client.component.ProfileScreen::userPropertyChanged(Ljava/lang/String;)("expertise");
+					pscreen.@org.sealinc.accurator.client.component.ProfileScreen::updateExpertise(Ljava/lang/String;D)(topic,ui.value);
+					pscreen.@org.sealinc.accurator.client.component.ProfileScreen::userPropertyChanged(Ljava/lang/String;)("expertise");
 				},
 			});
 	}-*/;

@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import org.mortbay.log.Log;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.Namespace;
 import org.sealinc.accurator.shared.RDFObject;
@@ -544,7 +545,7 @@ public class Utility {
 			}
 		}
 		// notify of fields that do not exist
-		System.err.println("Class " + clazz.getName() + " does not have the following fields (accessable): \n" + unknownFields.toString());
+		logger.info("Class " + clazz.getName() + " does not have the following fields (accessable): \n" + unknownFields.toString());
 		return objs;
 	}
 

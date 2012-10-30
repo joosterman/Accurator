@@ -15,6 +15,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
@@ -24,6 +25,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -52,6 +54,7 @@ public class Accurator implements EntryPoint {
 	@UiField
 	Anchor lnkLogout, lnkAboutAccurator;
 
+	private List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
 	private Map<String, Double> expertise;
 	private Queue<String> castlesURIs;
 	private Queue<String> floraURIs;
@@ -60,6 +63,7 @@ public class Accurator implements EntryPoint {
 	private ProfileScreen profileScreen;
 	private RecommendedItems recommendationScreen;
 	private UserManagement management;
+	private int nrInitialPrints = 50;
 
 	private AnnotateScreen getAnnotateScreen() {
 		if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
@@ -172,7 +176,7 @@ public class Accurator implements EntryPoint {
 
 	private void loadPrints() {
 		// load prints
-		Utility.assignService.getNextItemsToAnnotate(100, "kasteel", new AsyncCallback<List<String>>() {
+		Utility.assignService.getNextItemsToAnnotate(nrInitialPrints, "kasteel", new AsyncCallback<List<String>>() {
 
 			@Override
 			public void onSuccess(List<String> result) {
@@ -185,7 +189,7 @@ public class Accurator implements EntryPoint {
 				// TODO Auto-generated method stub
 			}
 		});
-		Utility.assignService.getNextItemsToAnnotate(100, "bloem", new AsyncCallback<List<String>>() {
+		Utility.assignService.getNextItemsToAnnotate(nrInitialPrints, "bloem", new AsyncCallback<List<String>>() {
 
 			@Override
 			public void onSuccess(List<String> result) {
@@ -226,9 +230,9 @@ public class Accurator implements EntryPoint {
 		// create or load the frame with the
 		getAnnotateScreen().loadResource(resourceURI, url);
 		// show the annotation page
-		if (!History.getToken().equals(State.Annotate.toString())) {
+		/*if (!History.getToken().equals(State.Annotate.toString())) {
 			History.newItem(State.Annotate.toString());
-		}
+		}*/
 	}
 
 	public void userPropertyChanged(String dimension) {
@@ -263,7 +267,7 @@ public class Accurator implements EntryPoint {
 		return eval(json);
 	}-*/;
 
-	public void updateExpertise(String topic, Double value) {
+	public void updateExpertise(String topic, double value) {
 		if (expertise != null) expertise.put(topic, value);
 	}
 
@@ -288,6 +292,33 @@ public class Accurator implements EntryPoint {
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise", null, null, callback);
 	}
 
+	private void annotateNextPrint() {
+		// if we did not yet load the flowers and castles, wait and try again
+		if (castlesURIs == null || floraURIs == null || expertise == null) {
+			Timer t = new Timer() {
+				@Override
+				public void run() {
+					annotateNextPrint();
+				}
+			};
+			t.schedule(300);
+		}
+		else {
+			// we have the prints and expertise
+			List<String> uris = getNextPrintsToAnnotate(1);
+			if (uris.size() > 0) annotate(uris.get(0));
+			else System.err.println("Could not annotate next print. No print available. Waiting and trying again...");
+		}
+
+	}
+
+	/**
+	 * Assumes that all data has been loaded (prints and expertise). If not it
+	 * return an empty list
+	 * 
+	 * @param nrPrints
+	 * @return
+	 */
 	public List<String> getNextPrintsToAnnotate(int nrPrints) {
 		List<String> uris = new ArrayList<String>();
 		if (expertise == null || castlesURIs == null || floraURIs == null) {
@@ -365,23 +396,20 @@ public class Accurator implements EntryPoint {
 
 	protected void loadCurrentHistory() {
 		String token = History.getToken();
-		if (token != null && token.length() > 0) {
-			LoadState(token);
+		if (token == null || token.isEmpty()) {
+			token = State.Annotate.toString();
 		}
-		else {
-			LoadState(State.Annotate.toString());
-		}
+		LoadState(token);
+		annotateNextPrint();
 	}
 
 	private void initHistorySupport() {
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
-
 			@Override
 			public void onValueChange(ValueChangeEvent<String> event) {
 				String token = event.getValue();
 				LoadState(token);
 			}
 		});
-
 	}
 }
