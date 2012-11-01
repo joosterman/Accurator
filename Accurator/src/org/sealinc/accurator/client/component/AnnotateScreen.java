@@ -1,7 +1,6 @@
 package org.sealinc.accurator.client.component;
 
 import java.util.Date;
-import java.util.List;
 import org.sealinc.accurator.client.Accurator;
 import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.Config;
@@ -10,7 +9,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.NamedFrame;

@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-import org.mortbay.log.Log;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.Namespace;
 import org.sealinc.accurator.shared.RDFObject;
@@ -472,18 +471,15 @@ public class Utility {
 	public static <T extends RDFObject> List<T> getObjectsByURI(List<String> uris, Class<T> clazz) {
 		// generate sparql
 		StringBuilder sb = new StringBuilder();
-		String comparison1 = "?subject = ";
-		String union = " || ";
 		String lt = "<";
 		String gt = ">";
 		for (String uri : uris) {
-			if (sb.length() != 0) sb.append(union);
-			sb.append(comparison1);
 			sb.append(lt);
 			sb.append(uri);
 			sb.append(gt);
+			sb.append(" ");
 		}
-		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . FILTER( %s )}",
+		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . VALUES ?subject { %s }}",
 				Config.getRDFPrefixes(), sb.toString());
 		List<T> cis = Utility.getObjects(sparql, clazz);
 		return cis;

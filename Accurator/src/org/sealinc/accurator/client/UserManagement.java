@@ -22,51 +22,52 @@ public class UserManagement {
 	private void loginSuccessful(String username, String password) {
 		// store the credentials
 		Utility.setUser(username, password);
-		//get the current (URL) locale
-		final String locale =  Window.Location.getParameter(LocaleInfo.getLocaleQueryParam());
+		// get the current (URL) locale
+		final String locale = Window.Location.getParameter(LocaleInfo.getLocaleQueryParam());
 		// get the users language preference
 		RequestCallback callback = new RequestCallback() {
 			@Override
 			public void onResponseReceived(Request request, Response response) {
 				String json = response.getText();
 				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(json);
-				String language= null;
+				String language = null;
 				if (entries.length() > 0) {
-					language = entries.get(0).getValueAsString();	
+					language = entries.get(0).getValueAsString();
 				}
-				//if the user has a preference
-				if(language!=null && !language.isEmpty()){
-					//if the current URL locale does not match the user preference --> change
-					//Reason: either not a match or missing URL param
-					if(!language.equals(locale)){
-						//change to the users preference
+
+				if (language != null && !language.isEmpty()) {
+					// the user has a preference
+					// check if that is the same as the current language
+					if (!language.equals(locale)) {
+						// change to the users preference (page is reloaded)
 						acc.changeLanguage(language);
-					}
-					else{
-						//now we can follow the normal login procedure
-						//either a renewed login or a first login
-						
-						//clear login status message
-						acc.lblLoginMessage.setText("");
-						if (renewLoginTimer == null) {
-							//first login	
-							acc.loadCurrentHistory();
-							renewLoginTimer = new Timer() {
-								@Override
-								public void run() {
-									renewLogin();
-								}
-							};
-							// renew login every 4 minutes
-							renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
-							//now we are logged in show the logout button
-							acc.lnkLogout.setVisible(true);
-						}
-						// needs to be refreshed every new session/login
-						acc.updateLanguageForAnnotationComponent();
-						
+						return;
 					}
 				}
+				// either the user does not have a preference or the preference matches
+				// the current locale
+				// normal login procedure: either a renewed login or a first login
+
+				// clear login status message
+				acc.lblLoginMessage.setText("");
+				if (renewLoginTimer == null) {
+					// first login
+					acc.loadCurrentHistory();
+					// renew login every 4 minutes
+					renewLoginTimer = new Timer() {
+						@Override
+						public void run() {
+							renewLogin();
+						}
+					};
+
+					renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
+					// now we are logged in show the logout button
+					acc.lnkLogout.setVisible(true);
+				}
+				// needs to be refreshed every new session/login
+				acc.updateLanguageForAnnotationComponent();
+
 			}
 
 			@Override

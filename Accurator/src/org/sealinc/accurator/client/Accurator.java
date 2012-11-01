@@ -205,6 +205,10 @@ public class Accurator implements EntryPoint {
 		});
 	}
 
+	/**
+	 * Reloads the complete page with the new language. All GWT state is lost.
+	 * @param language
+	 */
 	public void changeLanguage(String language) {
 		// store the new preference
 		Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), language,
