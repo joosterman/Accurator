@@ -364,8 +364,8 @@ public class Accurator implements EntryPoint {
 			for (int i = 0; i < nrPrints; i++) {
 				if (castleExp > 0.9 && predefinedCastleURIs.size() > i) uris.add(predefinedCastleURIs.get(i));
 				else if (floraExp > 0.9 && predefinedFloraURIs.size() > i) uris.add(predefinedFloraURIs.get(i));
-				else {
-					// uris.add(recommendedItems.removeFirst().getURI());
+				else if(recommendedItems!=null && recommendedItems.size()>0) {
+					uris.add(recommendedItems.removeFirst().getURI());
 				}
 			}
 		}
