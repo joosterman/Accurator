@@ -6,8 +6,8 @@ public class Config {
 	private static final String annotationComponentURL = baseURL + "annotate";
 	private static final String annotationComponentChangePreferenceURL = baseURL +"admin/changePreferences";
 	private static final String assignComponentURL = baseURL + "assign";
-	private static final String assignComponentStrategy = "literal_matching";
-	private static final int assignComponentNrItems = 3;
+	private static final String assignComponentStrategy = "user";
+	private static final int assignComponentNrItems = 30;
 	private static final int qualityComponentNrRecentAnnotations = 10;
 	private static final String qualityComponentTrustworthinessURL = baseURL + "quality";
 	private static String qualityComponentTrustworthinessStrategy = "valid";
@@ -44,7 +44,7 @@ public class Config {
 		return sparqlEndpoint;
 	}
 
-	public static int getAssigncomponentNrItems() {
+	public static int getAssignComponentNrItems() {
 		return assignComponentNrItems;
 	}
 

@@ -25,7 +25,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -57,8 +56,7 @@ public class Accurator implements EntryPoint {
 
 	private List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
 	private Map<String, Double> expertise;
-	private LinkedList<String> castlesURIs;
-	private LinkedList<String> floraURIs;
+	private LinkedList<JsRecommendedItem> recommendedItems;
 
 	private LinkedList<String> predefinedCastleURIs = new LinkedList<String>();
 	private LinkedList<String> predefinedFloraURIs = new LinkedList<String>();
@@ -175,39 +173,28 @@ public class Accurator implements EntryPoint {
 		btnDone.setVisible(false);
 
 		rootPanel.add(w);
-
 		loadUIThemeElements();
 		initHistorySupport();
-		loadExpertise();
-		loadPrints();
+		
 		getManagement().login();
 	}
 
-	private void loadPrints() {
-		// load prints
-		Utility.assignService.getNextItemsToAnnotate(nrInitialPrints, "kasteel", new AsyncCallback<List<String>>() {
-
+	protected void loadRecommendations() {
+		String url = Config.getAssignComponentURL()+"?"+"strategy="+Config.getAssignStrategy()+"&nritems="+Config.getAssignComponentNrItems()+"&user="+Utility.getQualifiedUsername();
+		Utility.adminService.getJSON(url, new AsyncCallback<String>() {
+			
 			@Override
-			public void onSuccess(List<String> result) {
-				castlesURIs = new LinkedList<String>(result);
+			public void onSuccess(String json) {
+				recommendedItems = new LinkedList<JsRecommendedItem>();
+				JsArray<JsRecommendedItem> recs = parseRecommendations(json);
+				for(int i=0;i<recs.length();i++){
+					recommendedItems.add(recs.get(i));
+				}
 			}
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-			}
-		});
-		Utility.assignService.getNextItemsToAnnotate(nrInitialPrints, "bloem", new AsyncCallback<List<String>>() {
-
-			@Override
-			public void onSuccess(List<String> result) {
-				floraURIs = new LinkedList<String>(result);
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
+				System.err.println(caught.toString());				
 			}
 		});
 	}
@@ -249,7 +236,7 @@ public class Accurator implements EntryPoint {
 		String[] flowers;
 		if ("user1".equals(user)) {
 			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-342588",
-					"http://purl.org/collections/nl/rma/collection/r-348117"};
+					"http://purl.org/collections/nl/rma/collection/r-348117" };
 			predefinedCastleURIs.addAll(Arrays.asList(castles));
 			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-122307",
 					"http://purl.org/collections/nl/rma/collection/r-132364" };
@@ -269,6 +256,7 @@ public class Accurator implements EntryPoint {
 
 	public void userPropertyChanged(String dimension) {
 		if ("expertise".equals(dimension)) {
+			loadRecommendations();
 			getRecommendationScreen().loadNextRecommendations();
 		}
 	}
@@ -299,6 +287,10 @@ public class Accurator implements EntryPoint {
 		return eval(json);
 	}-*/;
 
+	private final native JsArray<JsRecommendedItem> parseRecommendations(String json) /*-{
+		return eval(json);
+	}-*/;
+
 	public void updateExpertise(String topic, double value) {
 		if (expertise != null) expertise.put(topic, value);
 	}
@@ -326,7 +318,7 @@ public class Accurator implements EntryPoint {
 
 	protected void loadFirstPrintForAnnotation() {
 		// if we did not yet load the flowers and castles, wait and try again
-		if (castlesURIs == null || floraURIs == null || expertise == null) {
+		if (recommendedItems==null || expertise == null) {
 			Timer t = new Timer() {
 				@Override
 				public void run() {
@@ -362,51 +354,29 @@ public class Accurator implements EntryPoint {
 		if (expertise == null) {
 			return uris;
 		}
-		double castleExp = 0;
-		double floraExp = 0;
-		if (expertise.containsKey("castle")) castleExp = expertise.get("castle");
-		if (expertise.containsKey("flora")) floraExp = expertise.get("flora");
 		// either a static order based on the person or based on UP and
 		// recommendation
 		if (hasPredefinedAnnotationOrder) {
+			double castleExp = 0;
+			double floraExp = 0;
+			if (expertise.containsKey("castle")) castleExp = expertise.get("castle");
+			if (expertise.containsKey("flora")) floraExp = expertise.get("flora");
 			for (int i = 0; i < nrPrints; i++) {
 				if (castleExp > 0.9 && predefinedCastleURIs.size() > i) uris.add(predefinedCastleURIs.get(i));
 				else if (floraExp > 0.9 && predefinedFloraURIs.size() > i) uris.add(predefinedFloraURIs.get(i));
-				else{
-					/*double r = Random.nextDouble();
-					if(r>0.5)
-						uris.add(floraURIs.removeFirst());
-					else
-						uris.add(castlesURIs.removeFirst());*/
+				else {
+					// uris.add(recommendedItems.removeFirst().getURI());
 				}
 			}
 		}
 		else {
-			if (castlesURIs == null || floraURIs == null) {
+			if (recommendedItems == null) {
 				return uris;
 			}
-
-			// scale the expertises to sum to 1
-			double upperbound = castleExp + floraExp;
-			if (upperbound > 0.1) {
-				castleExp /= upperbound;
-				floraExp /= upperbound;
-			}
 			for (int i = 0; i < nrPrints; i++) {
-				boolean addFlora = false;
-				// random number if needed
-				double r = Random.nextDouble();
-				if (r < castleExp) addFlora = false;
-				else addFlora = true;
-				String elem;
-				if (addFlora) {
-					elem = floraURIs.removeFirst();
-					uris.add(elem);
-				}
-				else {
-					elem = castlesURIs.removeFirst();
-					uris.add(elem);
-				}
+				JsRecommendedItem rec = recommendedItems.removeFirst();
+				Utility.setResourceTopic(rec.getURI(), rec.getScope());
+				uris.add(rec.getURI());
 			}
 		}
 		return uris;

@@ -69,15 +69,14 @@ public class RecommendedItems extends Composite {
 			}
 
 			@Override
-			public void onFailure(Throwable caught) {
-			}
+			public void onFailure(Throwable caught) {}
 		});
 	}
 
 	public void addFirstSeenPrint(String uri) {
 		seenPrints.addFirst(uri);
-		System.out.println("SeenPrints: "+seenPrints);
-		System.out.println("Backlog: "+backlog);
+		System.out.println("SeenPrints: " + seenPrints);
+		System.out.println("Backlog: " + backlog);
 	}
 
 	public void loadItems(List<CollectionItem> items) {
@@ -114,8 +113,10 @@ public class RecommendedItems extends Composite {
 	}
 
 	public void loadPreviousRecommendations() {
-		clearRecommendation();
+		//check if we can go back
+		if (seenPrints.size() <=3) return;
 
+		clearRecommendation();
 		// put the currently visible prints in the backlog
 		for (int i = 0; i < 3 && seenPrints.size() > 0; i++) {
 			backlog.addFirst(seenPrints.removeLast());
@@ -139,8 +140,6 @@ public class RecommendedItems extends Composite {
 				System.err.println(caught.toString());
 			}
 		});
-		System.out.println("SeenPrints: "+seenPrints);
-		System.out.println("Backlog: "+backlog);
 	}
 
 	public void loadNextRecommendations() {
@@ -187,8 +186,6 @@ public class RecommendedItems extends Composite {
 				System.err.println(caught.toString());
 			}
 		});
-		System.out.println("SeenPrints: "+seenPrints);
-		System.out.println("Backlog: "+backlog);
 	}
 
 	private void clearRecommendation() {

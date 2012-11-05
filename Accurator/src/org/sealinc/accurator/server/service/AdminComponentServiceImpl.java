@@ -14,4 +14,9 @@ public class AdminComponentServiceImpl extends RemoteServiceServlet implements A
 		return success;
 	}
 
+	@Override
+	public String getJSON(String url) {
+		return Utility.getHTMLContent(url);
+	}
+
 }

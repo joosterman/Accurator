@@ -52,6 +52,8 @@ public class UserManagement {
 				acc.lblLoginMessage.setText("");
 				if (renewLoginTimer == null) {
 					// first login
+					acc.loadExpertise();
+					acc.loadRecommendations();
 					acc.setPredefinedOrderPrints();
 					acc.loadFirstPrintForAnnotation();					
 					acc.loadCurrentHistory();
@@ -70,7 +72,6 @@ public class UserManagement {
 				}
 				// needs to be refreshed every new session/login
 				acc.updateLanguageForAnnotationComponent();
-
 			}
 
 			@Override
@@ -89,7 +90,13 @@ public class UserManagement {
 		openLogin();
 	}
 
+	private void resetLoginTimer(){
+		if(renewLoginTimer!=null)
+			renewLoginTimer.cancel();
+	}
 	protected native void logout()/*-{
+		var um = this;
+		this.@org.sealinc.accurator.client.UserManagement::resetLoginTimer();
 		logoutURL = @org.sealinc.accurator.shared.Config::getLogoutURL();
 		$wnd.jQuery.ajax({
 			type : 'GET',

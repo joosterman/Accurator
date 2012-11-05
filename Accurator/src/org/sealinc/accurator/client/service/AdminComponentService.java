@@ -21,6 +21,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("AdminComponentService")
 public interface AdminComponentService extends RemoteService {
 	boolean register(String user,String password,String realName);
+	String getJSON(String url);
 	
 	/**
 	 * Utility class for simplifying access to the instance of async service.
