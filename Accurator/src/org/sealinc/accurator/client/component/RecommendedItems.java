@@ -1,6 +1,7 @@
 package org.sealinc.accurator.client.component;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import org.sealinc.accurator.client.Accurator;
 import org.sealinc.accurator.client.Utility;
@@ -12,6 +13,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -30,7 +32,7 @@ public class RecommendedItems extends Composite {
 	Accurator accurator;
 
 	@UiField
-	Label lblCreator1, lblTitle1, lblCreator2, lblTitle2, lblCreator3, lblTitle3, lblPrintmaker1,lblPrintmaker2,lblPrintmaker3;
+	Label lblCreator1, lblTitle1, lblCreator2, lblTitle2, lblCreator3, lblTitle3, lblPrintmaker1, lblPrintmaker2, lblPrintmaker3;
 	@UiField
 	Image img1, img2, img3;
 	@UiField
@@ -43,10 +45,17 @@ public class RecommendedItems extends Composite {
 	Image[] images;
 	Label[] printmakers;
 	List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
+	LinkedList<String> seenPrints = new LinkedList<String>();
+	LinkedList<String> backlog = new LinkedList<String>();
 
 	@UiHandler("imgNext")
 	void nextClick(ClickEvent e) {
-		loadRecommendations();
+		loadNextRecommendations();
+	}
+
+	@UiHandler("imgPrevious")
+	void previousClick(ClickEvent e) {
+		loadPreviousRecommendations();
 	}
 
 	@UiHandler("btnSearch")
@@ -61,14 +70,18 @@ public class RecommendedItems extends Composite {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 	}
 
+	public void addFirstSeenPrint(String uri) {
+		seenPrints.addFirst(uri);
+		System.out.println("SeenPrints: "+seenPrints);
+		System.out.println("Backlog: "+backlog);
+	}
+
 	public void loadItems(List<CollectionItem> items) {
-		for(HandlerRegistration reg:regs){
+		for (HandlerRegistration reg : regs) {
 			reg.removeHandler();
 		}
 		regs.clear();
@@ -82,11 +95,11 @@ public class RecommendedItems extends Composite {
 				images[i].setVisible(true);
 				printmakers[i].setVisible(true);
 				regs.add(images[i].addClickHandler(new ClickHandler() {
-
 					@Override
 					public void onClick(ClickEvent event) {
 						accurator.annotate(ci.uri);
-						loadRecommendations();
+						History.newItem(Accurator.State.Annotate.toString());
+						loadNextRecommendations();
 					}
 				}));
 			}
@@ -95,44 +108,96 @@ public class RecommendedItems extends Composite {
 				titles[i].setText("");
 				images[i].setVisible(false);
 				printmakers[i].setVisible(false);
-				
+
 			}
 		}
 	}
 
-	public void loadRecommendations() {
+	public void loadPreviousRecommendations() {
+		clearRecommendation();
+
+		// put the currently visible prints in the backlog
+		for (int i = 0; i < 3 && seenPrints.size() > 0; i++) {
+			backlog.addFirst(seenPrints.removeLast());
+		}
+
+		// get the last three from the seen items
+		List<String> uris = new ArrayList<String>();
+		for (int i = 0; i < 3 && seenPrints.size() > i; i++) {
+			int index = seenPrints.size() - i - 1;
+			uris.add(seenPrints.get(index));
+		}
+
+		Utility.itemService.getItems(uris, new AsyncCallback<List<CollectionItem>>() {
+			@Override
+			public void onSuccess(List<CollectionItem> result) {
+				loadItems(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println(caught.toString());
+			}
+		});
+		System.out.println("SeenPrints: "+seenPrints);
+		System.out.println("Backlog: "+backlog);
+	}
+
+	public void loadNextRecommendations() {
+		clearRecommendation();
+		// Either get the recommended items form the backlog or, when empty, new
+		// ones
+		List<String> uris = new ArrayList<String>();
+		if (backlog.size() > 0) {
+			uris = new ArrayList<String>();
+			for (int i = 0; i < 3 && backlog.size() > 0; i++) {
+				String elem = backlog.removeLast();
+				uris.add(elem);
+				seenPrints.addLast(elem);
+			}
+		}
+		else {
+			uris = accurator.getNextPrintsToAnnotate(3);
+			// retry if there are at this moment no next prints
+			if (uris.size() == 0) {
+				Timer t = new Timer() {
+					@Override
+					public void run() {
+						loadNextRecommendations();
+					}
+				};
+				t.schedule(200);
+				return;
+			}
+			// store that we have seen these items
+			for (int i = 0; i < uris.size(); i++) {
+				int index = uris.size() - i - 1;
+				seenPrints.addLast(uris.get(index));
+			}
+		}
+		// get the data and show the items
+		Utility.itemService.getItems(uris, new AsyncCallback<List<CollectionItem>>() {
+			@Override
+			public void onSuccess(List<CollectionItem> result) {
+				loadItems(result);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				System.err.println(caught.toString());
+			}
+		});
+		System.out.println("SeenPrints: "+seenPrints);
+		System.out.println("Backlog: "+backlog);
+	}
+
+	private void clearRecommendation() {
 		// clear the existing items
 		for (int i = 0; i < titles.length; i++) {
 			creators[i].setText("");
 			titles[i].setText("");
 			images[i].setVisible(false);
 			printmakers[i].setVisible(false);
-		}
-
-		// Get the recommended items
-		List<String> uris = accurator.getNextPrintsToAnnotate(3);
-		if (uris.size() == 0) {
-			Timer t = new Timer() {
-				@Override
-				public void run() {
-					loadRecommendations();
-				}
-			};
-			t.schedule(200);
-		}
-		else {
-			Utility.itemService.getItems(uris, new AsyncCallback<List<CollectionItem>>() {
-
-				@Override
-				public void onSuccess(List<CollectionItem> result) {
-					loadItems(result);
-				}
-
-				@Override
-				public void onFailure(Throwable caught) {
-
-				}
-			});
 		}
 	}
 
@@ -142,8 +207,8 @@ public class RecommendedItems extends Composite {
 		titles = new Label[] { lblTitle1, lblTitle2, lblTitle3 };
 		creators = new Label[] { lblCreator1, lblCreator2, lblCreator3 };
 		images = new Image[] { img1, img2, img3 };
-		printmakers = new Label[] {lblPrintmaker1,lblPrintmaker2,lblPrintmaker3};
-		loadRecommendations();
+		printmakers = new Label[] { lblPrintmaker1, lblPrintmaker2, lblPrintmaker3 };
+		loadNextRecommendations();
 	}
 
 }

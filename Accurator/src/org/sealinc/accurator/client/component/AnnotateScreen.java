@@ -23,6 +23,7 @@ public class AnnotateScreen extends Composite {
 	@UiField
 	NamedFrame annotationFrame;
 	Accurator accurator;
+	public String resourceURI; 
 
 	public void loadResource(final String resourceURI, String url) {
 		// store that the user has viewed the resource
@@ -41,6 +42,7 @@ public class AnnotateScreen extends Composite {
 		});
 		// set the url of the frame to the correct url
 		annotationFrame.setUrl(url);
+		this.resourceURI = resourceURI;
 	}
 
 	@UiFactory

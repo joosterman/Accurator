@@ -52,7 +52,10 @@ public class UserManagement {
 				acc.lblLoginMessage.setText("");
 				if (renewLoginTimer == null) {
 					// first login
+					acc.setPredefinedOrderPrints();
+					acc.loadFirstPrintForAnnotation();					
 					acc.loadCurrentHistory();
+					
 					// renew login every 4 minutes
 					renewLoginTimer = new Timer() {
 						@Override

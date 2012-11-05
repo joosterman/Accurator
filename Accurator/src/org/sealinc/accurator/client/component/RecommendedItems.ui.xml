@@ -10,6 +10,12 @@
 				<g:TextBox ui:field="tbSearch" styleName="searchBox"></g:TextBox>
 				<g:Button ui:field="btnSearch" text="Zoeken"></g:Button>
 			</div>
+			<div class="previous">
+				<g:Image ui:field="imgPrevious" styleName="imageButton" altText="Previous recommendations"
+					url="/images/arrowPrevious.png">
+					<ui:attribute name="altText" description="Next recommendation" />
+				</g:Image>
+			</div>
 			<div class="recommendationItem">
 
 				<g:Image ui:field="img1" styleName="recImage imageButton"></g:Image>
@@ -35,7 +41,7 @@
 			</div>
 			<div class="next">
 				<g:Image ui:field="imgNext" styleName="imageButton" altText="Next recommendations"
-					url="/images/arrow.png">
+					url="/images/arrowNext.png">
 					<ui:attribute name="altText" description="Next recommendation" />
 				</g:Image>
 			</div>

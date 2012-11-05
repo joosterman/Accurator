@@ -1,10 +1,11 @@
 package org.sealinc.accurator.client;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import org.sealinc.accurator.client.component.AnnotateScreen;
 import org.sealinc.accurator.client.component.ProfileScreen;
 import org.sealinc.accurator.client.component.RecommendedItems;
@@ -56,14 +57,18 @@ public class Accurator implements EntryPoint {
 
 	private List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
 	private Map<String, Double> expertise;
-	private Queue<String> castlesURIs;
-	private Queue<String> floraURIs;
+	private LinkedList<String> castlesURIs;
+	private LinkedList<String> floraURIs;
+
+	private LinkedList<String> predefinedCastleURIs = new LinkedList<String>();
+	private LinkedList<String> predefinedFloraURIs = new LinkedList<String>();
 
 	private AnnotateScreen annotateScreen;
 	private ProfileScreen profileScreen;
 	private RecommendedItems recommendationScreen;
 	private UserManagement management;
 	private int nrInitialPrints = 50;
+	private boolean hasPredefinedAnnotationOrder = false;
 
 	private AnnotateScreen getAnnotateScreen() {
 		if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
@@ -85,7 +90,7 @@ public class Accurator implements EntryPoint {
 		return management;
 	}
 
-	private enum State {
+	public enum State {
 		Annotate, Profile, Quality, Admin, Recommendation
 	};
 
@@ -126,7 +131,11 @@ public class Accurator implements EntryPoint {
 
 	@UiHandler("btnDone")
 	void btnDoneClick(ClickEvent e) {
-		// load as page
+		// remove the item from the to predefined order
+		String uri = annotateScreen.resourceURI;
+		predefinedCastleURIs.remove(uri);
+		predefinedFloraURIs.remove(uri);
+		// load recommendation
 		History.newItem(State.Recommendation.toString());
 	}
 
@@ -180,8 +189,7 @@ public class Accurator implements EntryPoint {
 
 			@Override
 			public void onSuccess(List<String> result) {
-				castlesURIs = new java.util.PriorityQueue<String>();
-				castlesURIs.addAll(result);
+				castlesURIs = new LinkedList<String>(result);
 			}
 
 			@Override
@@ -193,8 +201,7 @@ public class Accurator implements EntryPoint {
 
 			@Override
 			public void onSuccess(List<String> result) {
-				floraURIs = new java.util.PriorityQueue<String>();
-				floraURIs.addAll(result);
+				floraURIs = new LinkedList<String>(result);
 			}
 
 			@Override
@@ -207,6 +214,7 @@ public class Accurator implements EntryPoint {
 
 	/**
 	 * Reloads the complete page with the new language. All GWT state is lost.
+	 * 
 	 * @param language
 	 */
 	public void changeLanguage(String language) {
@@ -231,17 +239,37 @@ public class Accurator implements EntryPoint {
 		}
 		// complete url for the iframe containing the annotation component
 		url += ui;
-		// create or load the frame with the
 		getAnnotateScreen().loadResource(resourceURI, url);
-		// show the annotation page
-		/*if (!History.getToken().equals(State.Annotate.toString())) {
-			History.newItem(State.Annotate.toString());
-		}*/
+	}
+
+	protected void setPredefinedOrderPrints() {
+		String user = Utility.getStoredUsername();
+		hasPredefinedAnnotationOrder = true;
+		String[] castles;
+		String[] flowers;
+		if ("user1".equals(user)) {
+			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-342588",
+					"http://purl.org/collections/nl/rma/collection/r-348117"};
+			predefinedCastleURIs.addAll(Arrays.asList(castles));
+			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-122307",
+					"http://purl.org/collections/nl/rma/collection/r-132364" };
+			predefinedFloraURIs.addAll(Arrays.asList(flowers));
+		}
+		else if ("user2".equals(user)) {}
+		else if ("user3".equals(user)) {
+
+		}
+		else if ("user4".equals(user)) {
+
+		}
+		else {
+			hasPredefinedAnnotationOrder = false;
+		}
 	}
 
 	public void userPropertyChanged(String dimension) {
 		if ("expertise".equals(dimension)) {
-			getRecommendationScreen().loadRecommendations();
+			getRecommendationScreen().loadNextRecommendations();
 		}
 	}
 
@@ -296,21 +324,27 @@ public class Accurator implements EntryPoint {
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise", null, null, callback);
 	}
 
-	private void annotateNextPrint() {
+	protected void loadFirstPrintForAnnotation() {
 		// if we did not yet load the flowers and castles, wait and try again
 		if (castlesURIs == null || floraURIs == null || expertise == null) {
 			Timer t = new Timer() {
 				@Override
 				public void run() {
-					annotateNextPrint();
+					loadFirstPrintForAnnotation();
 				}
 			};
-			t.schedule(300);
+			t.schedule(400);
 		}
 		else {
 			// we have the prints and expertise
 			List<String> uris = getNextPrintsToAnnotate(1);
-			if (uris.size() > 0) annotate(uris.get(0));
+			if (uris.size() > 0) {
+				String uri = uris.get(0);
+				// manually add the first print seen the to the seen list in the
+				// recommendation screen
+				getRecommendationScreen().addFirstSeenPrint(uri);
+				annotate(uri);
+			}
 			else System.err.println("Could not annotate next print. No print available. Waiting and trying again...");
 		}
 
@@ -325,34 +359,53 @@ public class Accurator implements EntryPoint {
 	 */
 	public List<String> getNextPrintsToAnnotate(int nrPrints) {
 		List<String> uris = new ArrayList<String>();
-		if (expertise == null || castlesURIs == null || floraURIs == null) {
+		if (expertise == null) {
 			return uris;
 		}
-
 		double castleExp = 0;
 		double floraExp = 0;
 		if (expertise.containsKey("castle")) castleExp = expertise.get("castle");
 		if (expertise.containsKey("flora")) floraExp = expertise.get("flora");
-		// scale the expertises to sum to 1
-		double upperbound = castleExp + floraExp;
-		if (upperbound > 0.1) {
-			castleExp /= upperbound;
-			floraExp /= upperbound;
+		// either a static order based on the person or based on UP and
+		// recommendation
+		if (hasPredefinedAnnotationOrder) {
+			for (int i = 0; i < nrPrints; i++) {
+				if (castleExp > 0.9 && predefinedCastleURIs.size() > i) uris.add(predefinedCastleURIs.get(i));
+				else if (floraExp > 0.9 && predefinedFloraURIs.size() > i) uris.add(predefinedFloraURIs.get(i));
+				else{
+					/*double r = Random.nextDouble();
+					if(r>0.5)
+						uris.add(floraURIs.removeFirst());
+					else
+						uris.add(castlesURIs.removeFirst());*/
+				}
+			}
 		}
-		if (castlesURIs != null && floraURIs != null) {
+		else {
+			if (castlesURIs == null || floraURIs == null) {
+				return uris;
+			}
+
+			// scale the expertises to sum to 1
+			double upperbound = castleExp + floraExp;
+			if (upperbound > 0.1) {
+				castleExp /= upperbound;
+				floraExp /= upperbound;
+			}
 			for (int i = 0; i < nrPrints; i++) {
 				boolean addFlora = false;
 				// random number if needed
 				double r = Random.nextDouble();
 				if (r < castleExp) addFlora = false;
 				else addFlora = true;
-
+				String elem;
 				if (addFlora) {
-					uris.add(floraURIs.poll());
-
+					elem = floraURIs.removeFirst();
+					uris.add(elem);
 				}
 				else {
-					uris.add(castlesURIs.poll());
+					elem = castlesURIs.removeFirst();
+					uris.add(elem);
 				}
 			}
 		}
@@ -404,7 +457,6 @@ public class Accurator implements EntryPoint {
 			token = State.Annotate.toString();
 		}
 		LoadState(token);
-		annotateNextPrint();
 	}
 
 	private void initHistorySupport() {
