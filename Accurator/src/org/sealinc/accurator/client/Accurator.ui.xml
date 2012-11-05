@@ -60,7 +60,7 @@
 			<p>License information</p>		
 		</div>
 		<div class="header">
-			<img id="headerImage" src="/images/Accurator-header.png" alt="Accurator" />
+			<img id="headerImage" src="/images/Accurator.png" alt="Accurator" />
 			<div class="navbar">
 				<g:Button ui:field="btnProfile">
 					<ui:msg description="MyProfile">MyProfile</ui:msg>

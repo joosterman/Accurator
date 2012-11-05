@@ -33,7 +33,7 @@ a:hover {
 }
 
 #headerImage {
-	height: 100px; left: 100px; position: relative; margin: 5px 0px 5px 0px;
+	height: 70px; left: 100px; position: relative; margin: 5px 0px 5px 0px;
 }
 
 .navbar {
@@ -45,8 +45,7 @@ a:hover {
 }
 
 .header .done {
-	position: absolute; top: 120px; z-index: 10;
-	right: 18px; 
+	position: absolute; top: 120px; z-index: 10; right: 18px;
 }
 
 /* Footer */
@@ -100,10 +99,9 @@ a:hover {
 .recommendation {
 	margin-left: auto; margin-right: auto; width: 95%;
 }
-.recommendation h2
-{
-	text-align: center;
-	width:100%;
+
+.recommendation h2 {
+	text-align: center; width: 100%;
 }
 
 .recommendation .previous,.recommendation .next {
@@ -130,19 +128,16 @@ a:hover {
 
 .recommendationItem {
 	position: relative; float: left; text-align: center; width: 28%;
-	height: 100%; margin:8px;
+	height: 100%; margin: 8px;
 }
 
 .recommendationItem img {
-	max-height: 450px; width: 90%; postition: relative;
-	margin-right: auto; margin-left: auto;
+	max-height: 450px; width: 90%; postition: relative; margin-right: auto;
+	margin-left: auto;
 }
 
-.recTitle
-{
-	font-size: 1.1em;
-	font-weight: bold;
-	
+.recTitle {
+	font-size: 1.1em; font-weight: bold;
 }
 
 /* Profile  */
