@@ -205,7 +205,6 @@ public class RecommendedItems extends Composite {
 		creators = new Label[] { lblCreator1, lblCreator2, lblCreator3 };
 		images = new Image[] { img1, img2, img3 };
 		printmakers = new Label[] { lblPrintmaker1, lblPrintmaker2, lblPrintmaker3 };
-		loadNextRecommendations();
 	}
 
 }

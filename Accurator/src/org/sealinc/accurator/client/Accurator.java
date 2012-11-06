@@ -133,6 +133,7 @@ public class Accurator implements EntryPoint {
 		String uri = annotateScreen.resourceURI;
 		predefinedCastleURIs.remove(uri);
 		predefinedFloraURIs.remove(uri);
+		getRecommendationScreen().loadNextRecommendations();
 		// load recommendation
 		History.newItem(State.Recommendation.toString());
 	}
@@ -175,26 +176,28 @@ public class Accurator implements EntryPoint {
 		rootPanel.add(w);
 		loadUIThemeElements();
 		initHistorySupport();
-		
+
 		getManagement().login();
 	}
 
 	protected void loadRecommendations() {
-		String url = Config.getAssignComponentURL()+"?"+"strategy="+Config.getAssignStrategy()+"&nritems="+Config.getAssignComponentNrItems()+"&user="+Utility.getQualifiedUsername();
+		String url = Config.getAssignComponentURL() + "?" + "strategy=" + Config.getAssignStrategy() + "&nritems="
+				+ Config.getAssignComponentNrItems() + "&user=" + Utility.getQualifiedUsername();
 		Utility.adminService.getJSON(url, new AsyncCallback<String>() {
-			
+
 			@Override
 			public void onSuccess(String json) {
 				recommendedItems = new LinkedList<JsRecommendedItem>();
 				JsArray<JsRecommendedItem> recs = parseRecommendations(json);
-				for(int i=0;i<recs.length();i++){
+				for (int i = 0; i < recs.length(); i++) {
 					recommendedItems.add(recs.get(i));
 				}
+				getRecommendationScreen().loadNextRecommendations();
 			}
-			
+
 			@Override
 			public void onFailure(Throwable caught) {
-				System.err.println(caught.toString());				
+				System.err.println(caught.toString());
 			}
 		});
 	}
@@ -235,19 +238,45 @@ public class Accurator implements EntryPoint {
 		String[] castles;
 		String[] flowers;
 		if ("user1".equals(user)) {
-			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-342588",
-					"http://purl.org/collections/nl/rma/collection/r-348117" };
+			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-51204",
+					"http://purl.org/collections/nl/rma/collection/r-75847", "http://purl.org/collections/nl/rma/collection/r-51214",
+					"http://purl.org/collections/nl/rma/collection/r-60314", "http://purl.org/collections/nl/rma/collection/r-60350", };
 			predefinedCastleURIs.addAll(Arrays.asList(castles));
-			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-122307",
-					"http://purl.org/collections/nl/rma/collection/r-132364" };
+			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-138755",
+					"http://purl.org/collections/nl/rma/collection/r-150004", "http://purl.org/collections/nl/rma/collection/r-55603",
+					"http://purl.org/collections/nl/rma/collection/r-417077", "http://purl.org/collections/nl/rma/collection/r-305471", };
 			predefinedFloraURIs.addAll(Arrays.asList(flowers));
 		}
-		else if ("user2".equals(user)) {}
+		else if ("user2".equals(user)) {
+			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-63828",
+					"http://purl.org/collections/nl/rma/collection/r-54265", "http://purl.org/collections/nl/rma/collection/r-51291",
+					"http://purl.org/collections/nl/rma/collection/r-59875", "http://purl.org/collections/nl/rma/collection/r-59127" };
+			predefinedCastleURIs.addAll(Arrays.asList(castles));
+			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-242635",
+					"http://purl.org/collections/nl/rma/collection/r-436862", "http://purl.org/collections/nl/rma/collection/r-63923",
+					"http://purl.org/collections/nl/rma/collection/r-242628", "http://purl.org/collections/nl/rma/collection/r-234811", };
+			predefinedFloraURIs.addAll(Arrays.asList(flowers));
+		}
 		else if ("user3".equals(user)) {
+			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-51204",
+					"http://purl.org/collections/nl/rma/collection/r-75847", "http://purl.org/collections/nl/rma/collection/r-51214",
+					"http://purl.org/collections/nl/rma/collection/r-60314", "http://purl.org/collections/nl/rma/collection/r-60350", };
+			predefinedCastleURIs.addAll(Arrays.asList(castles));
+			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-138755",
+					"http://purl.org/collections/nl/rma/collection/r-150004", "http://purl.org/collections/nl/rma/collection/r-55603",
+					"http://purl.org/collections/nl/rma/collection/r-417077", "http://purl.org/collections/nl/rma/collection/r-305471", };
+			predefinedFloraURIs.addAll(Arrays.asList(flowers));
 
 		}
 		else if ("user4".equals(user)) {
-
+			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-63828",
+					"http://purl.org/collections/nl/rma/collection/r-54265", "http://purl.org/collections/nl/rma/collection/r-51291",
+					"http://purl.org/collections/nl/rma/collection/r-59875", "http://purl.org/collections/nl/rma/collection/r-59127" };
+			predefinedCastleURIs.addAll(Arrays.asList(castles));
+			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-242635",
+					"http://purl.org/collections/nl/rma/collection/r-436862", "http://purl.org/collections/nl/rma/collection/r-63923",
+					"http://purl.org/collections/nl/rma/collection/r-242628", "http://purl.org/collections/nl/rma/collection/r-234811", };
+			predefinedFloraURIs.addAll(Arrays.asList(flowers));
 		}
 		else {
 			hasPredefinedAnnotationOrder = false;
@@ -257,7 +286,6 @@ public class Accurator implements EntryPoint {
 	public void userPropertyChanged(String dimension) {
 		if ("expertise".equals(dimension)) {
 			loadRecommendations();
-			getRecommendationScreen().loadNextRecommendations();
 		}
 	}
 
@@ -318,7 +346,7 @@ public class Accurator implements EntryPoint {
 
 	protected void loadFirstPrintForAnnotation() {
 		// if we did not yet load the flowers and castles, wait and try again
-		if (recommendedItems==null || expertise == null) {
+		if (recommendedItems == null || expertise == null) {
 			Timer t = new Timer() {
 				@Override
 				public void run() {
@@ -364,7 +392,7 @@ public class Accurator implements EntryPoint {
 			for (int i = 0; i < nrPrints; i++) {
 				if (castleExp > 0.9 && predefinedCastleURIs.size() > i) uris.add(predefinedCastleURIs.get(i));
 				else if (floraExp > 0.9 && predefinedFloraURIs.size() > i) uris.add(predefinedFloraURIs.get(i));
-				else if(recommendedItems!=null && recommendedItems.size()>0) {
+				else if (recommendedItems != null && recommendedItems.size() > 0) {
 					uris.add(recommendedItems.removeFirst().getURI());
 				}
 			}
