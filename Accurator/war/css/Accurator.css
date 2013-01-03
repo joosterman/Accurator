@@ -23,13 +23,32 @@ a:hover {
 	color: chocolate; cursor: pointer;
 }
 
+.spaceRight{
+	padding-right: 7px;
+}
+.spaceLeft{
+	padding-left: 7px;
+}
+
 /* Header */
 .header {
 	background-color: #F0E4CE; border-bottom: 3px solid brown;
 }
 
-.logoutLink {
-	clear: both; font-size: 50%;
+.logoutBlock {
+	clear: both;
+	text-align: right;
+}
+.logoutBlock .logoutLink
+{
+	font-size: 50%;
+}
+.logoutBlock .username
+{
+	position: relative;
+	top:1px;
+	right:10px;	
+	font-size: 80%;
 }
 
 #headerImage {
@@ -76,6 +95,8 @@ a:hover {
 	max-width: 150px; max-height: 40px; margin-right: 10px;
 	margin-left: 10px; vertical-align: bottom;
 }
+
+
 /* Login and registration */
 .dialog {
 	display: none;
@@ -89,11 +110,14 @@ a:hover {
 	padding: 0; border: 0; margin-top: 25px;
 }
 
+
 /* Annotation screen */
 .annotationFrame {
 	position: relative; float: left; border: none; width: 100%;
 	height: 650px;
 }
+
+
 
 /* Recommendation screen  */
 .recommendation {
@@ -132,7 +156,7 @@ a:hover {
 }
 
 .recommendationItem img {
-	max-height: 450px; width: 90%; postition: relative; margin-right: auto;
+	max-height: 100%; max-width: 90%; postition: relative; margin-right: auto;
 	margin-left: auto;
 }
 

@@ -29,7 +29,6 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-
 public class UserComponentServiceImpl extends RemoteServiceServlet implements UserComponentService {
 
 	private static final long serialVersionUID = 4303074923419143275L;
@@ -39,22 +38,21 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 	public List<Annotation> getAnnotations(String user, int nrAnnotations) {
 		String userURI = Config.getUserComponentUserURI() + user;
 		String sparql = String.format(
-				"%s SELECT ?subject WHERE { ?subject rdf:type oa:Annotation . ?subject oa:annotated ?date . ?subject oa:annotator <%s> } ORDER BY DESC(?date) LIMIT %s"
-				,Config.getRDFPrefixes(), userURI, nrAnnotations);
-		List<String> uris = Utility.getURIs(sparql);		
+				"%s SELECT ?subject WHERE { ?subject rdf:type oa:Annotation . ?subject oa:annotated ?date . ?subject oa:annotator <%s> } ORDER BY DESC(?date) LIMIT %s",
+				Config.getRDFPrefixes(), userURI, nrAnnotations);
+		List<String> uris = Utility.getURIs(sparql);
 		List<Annotation> anns = null;
-		anns = Utility.getObjectsByURI(uris, Annotation.class,Annotation.rdfType);
+		anns = Utility.getObjectsByURI(uris, Annotation.class, Annotation.rdfType);
 		return anns;
 	}
 
 	@Override
 	public boolean setViewed(String resourceURI, View view) {
-		if(resourceURI==null)
-			return false;
-		logger.info(view.viewer +" viewed "+resourceURI);
+		if (resourceURI == null) return false;
+		logger.info(view.viewer + " viewed " + resourceURI);
 		// create the view URI
-		String uri = String.format("%sview/%s-%s-%s", Config.getAdminComponentBaseURI(), resourceURI.hashCode(),
-				view.viewer.hashCode(), GregorianCalendar.getInstance().get(Calendar.DAY_OF_YEAR));
+		String uri = String.format("%sview/%s-%s-%s", Config.getAdminComponentBaseURI(), resourceURI.hashCode(), view.viewer.hashCode(),
+				GregorianCalendar.getInstance().get(Calendar.DAY_OF_YEAR));
 		view.uri = uri;
 		// create new model
 		Model m = ModelFactory.createDefaultModel();
@@ -75,7 +73,7 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 
 	@Override
 	public boolean setReview(String annotationURI, Review review) {
-		logger.info(review.reviewer +" reviewed "+annotationURI);
+		logger.info(review.reviewer + " reviewed " + annotationURI);
 		// create the review URI
 		String uri = String.format("%sreview/%s-%s-%s", Config.getAdminComponentBaseURI(), annotationURI.hashCode(),
 				review.reviewer.hashCode(), GregorianCalendar.getInstance().get(Calendar.DAY_OF_YEAR));
@@ -97,29 +95,28 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 		return Utility.uploadData(m);
 	}
 
-
 	@Override
 	public int getTotalAnnotatedPrints(String user, Date annotatedSince) {
 		String userURI = Config.getUserComponentUserURI() + user;
 		String sparql = String.format(
 				"%s SELECT DISTINCT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> . ?target rdf:type <%s> }",
-				Config.getRDFPrefixes(), userURI,CollectionItem.rdfType);
-		
-		//count unique uris
+				Config.getRDFPrefixes(), userURI, CollectionItem.rdfType);
+
+		// count unique uris
 		List<String> uris = Utility.getURIs(sparql);
 		return uris.size();
 	}
-	
+
 	@Override
 	public List<CollectionItem> getLastAnnotatedItems(String user, int nrItems) {
-			//get all
-			String userURI = Config.getUserComponentUserURI() + user;
-			String sparql = String.format(
-					"%s SELECT DISTINCT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:annotated ?date . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> . ?target rdf:type <%s> } ORDER BY DESC(?date)",
-					Config.getRDFPrefixes(), userURI, CollectionItem.rdfType);
-			List<String> uris = Utility.getURIs(sparql);
-			uris = uris.subList(0, nrItems);
-			List<CollectionItem> items = Utility.getObjectsByURI(uris, CollectionItem.class,CollectionItem.rdfType);
-			return items;
+		// get all
+		String userURI = Config.getUserComponentUserURI() + user;
+		String sparql = String.format(
+				"%s SELECT DISTINCT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:annotated ?date . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> . ?target rdf:type <%s> } ORDER BY DESC(?date)",
+				Config.getRDFPrefixes(), userURI, CollectionItem.rdfType);
+		List<String> uris = Utility.getURIs(sparql);
+		if (uris.size() > nrItems) uris = uris.subList(0, nrItems);
+		List<CollectionItem> items = Utility.getObjectsByURI(uris, CollectionItem.class, CollectionItem.rdfType);
+		return items;
 	}
 }

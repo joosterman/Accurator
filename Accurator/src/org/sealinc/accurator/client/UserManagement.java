@@ -74,7 +74,8 @@ public class UserManagement {
 
 					renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
 					// now we are logged in show the logout button
-					acc.lnkLogout.setVisible(true);
+					acc.dvlogoutBlock.setVisible(true);
+					acc.lblLoginName.setText(username);
 				}
 				// needs to be refreshed every new session/login
 				acc.updateLanguageForAnnotationComponent();

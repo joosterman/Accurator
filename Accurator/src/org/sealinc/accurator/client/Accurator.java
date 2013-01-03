@@ -30,6 +30,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -44,11 +45,13 @@ public class Accurator implements EntryPoint {
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
 	@UiField
+	HTMLPanel dvlogoutBlock;
+	@UiField
 	Panel content;
 	@UiField
 	Anchor lnkRegister;
 	@UiField
-	Label lblLoginMessage, lblRegisterMessage;
+	Label lblLoginMessage, lblRegisterMessage, lblLoginName;
 	@UiField
 	Button btnDone, btnAnnotate, btnProfile;
 	@UiField
@@ -173,7 +176,7 @@ public class Accurator implements EntryPoint {
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get();
 		Widget w = uiBinder.createAndBindUi(this);
-		lnkLogout.setVisible(false);
+		dvlogoutBlock.setVisible(false);
 		btnDone.setVisible(false);
 
 		rootPanel.add(w);
@@ -275,7 +278,7 @@ public class Accurator implements EntryPoint {
 			loadRecommendations();
 		}
 	}
-	
+
 	private void annotate(String resourceURI, String topic) {
 		// extra stylesheet for annotation component
 		String stylesheet = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/css/jacconator.css";

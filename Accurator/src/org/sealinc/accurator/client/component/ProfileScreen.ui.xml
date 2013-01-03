@@ -7,9 +7,13 @@
 			<legend>
 				<ui:msg description="Prints annotated">Prints annotated</ui:msg>
 			</legend>
-			<ui:msg description="Total prints annotated">Total prints annotated:</ui:msg> <g:InlineLabel ui:field="lblTotalAnnotated"></g:InlineLabel>
-			<br /><br />
-			<strong><ui:msg description="Latest annotated prints">Latest annotated prints</ui:msg></strong>
+			<ui:msg description="Total prints annotated">Total prints annotated:</ui:msg>
+			<g:InlineLabel ui:field="lblTotalAnnotated"></g:InlineLabel>
+			<br />
+			<br />
+			<strong>
+				<ui:msg description="Latest annotated prints">Latest annotated prints</ui:msg>
+			</strong>
 			<g:Grid ui:field="grAnnotatedPrints"></g:Grid>
 		</fieldset>
 		<fieldset class="infoblock">
@@ -19,24 +23,60 @@
 			<h3>
 				<ui:msg description="Flora expertise">Flora expertise</ui:msg>
 			</h3>
-			<div id="floraSlider" class="expertiseSlider"></div>
+			<g:Grid>
+				<g:row>
+					<g:cell styleName="spaceRight">
+						<ui:msg description="Lay">Lay</ui:msg>
+					</g:cell>
+					<g:cell>
+						<div id="floraSlider" class="expertiseSlider"></div>
+					</g:cell>
+					<g:cell styleName="spaceLeft">
+						<ui:msg description="Expert">Expert</ui:msg>
+					</g:cell>
+				</g:row>
+			</g:Grid>
+
 			<h3>
 				<ui:msg description="Castle expertise">Castle expertise</ui:msg>
 			</h3>
-			<div id="castleSlider" class="expertiseSlider"></div>
+			<g:Grid>
+				<g:row>
+					<g:cell styleName="spaceRight">
+						<ui:msg description="Lay">Lay</ui:msg>
+					</g:cell>
+					<g:cell>
+						<div id="castleSlider" class="expertiseSlider"></div>
+					</g:cell>
+					<g:cell styleName="spaceLeft">
+						<ui:msg description="Expert">Expert</ui:msg>
+					</g:cell>
+				</g:row>
+			</g:Grid>
 		</fieldset>
 		<fieldset class="infoblock">
 			<legend>
 				<ui:msg description="Preferences">Preferences</ui:msg>
 			</legend>
-			<h3><ui:msg description="Language">Language</ui:msg></h3>
+			<h3>
+				<ui:msg description="Language">Language</ui:msg>
+			</h3>
 			<div id="language">
-				<input type="radio" id="languageEN" name="language" class="languageButton" checked="checked"
-					value="en" />
-				<label for="languageEN"><ui:msg description="English">English</ui:msg></label>
-				<input type="radio" id="languageNL" value="nl" name="language" class="languageButton"  />
-				<label for="languageNL"><ui:msg description="Dutch">Dutch</ui:msg></label>
-				<p><em><ui:msg description="Message to indicate pagereload">Will reload the page</ui:msg></em></p>
+				<input type="radio" id="languageEN" name="language" class="languageButton"
+					checked="checked" value="en" />
+				<label for="languageEN">
+					<ui:msg description="English">English</ui:msg>
+				</label>
+				<input type="radio" id="languageNL" value="nl" name="language"
+					class="languageButton" />
+				<label for="languageNL">
+					<ui:msg description="Dutch">Dutch</ui:msg>
+				</label>
+				<p>
+					<em>
+						<ui:msg description="Message to indicate pagereload">Will reload the page</ui:msg>
+					</em>
+				</p>
 			</div>
 		</fieldset>
 	</g:HTMLPanel>

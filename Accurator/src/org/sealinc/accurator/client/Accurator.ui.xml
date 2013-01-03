@@ -57,7 +57,7 @@
 		</div>
 		<div id="dialog-about" class="dialog" title="About Accurator">
 			<ui:attribute name="title" description="About Accurator" />
-			<p>License information</p>		
+			<p>License information</p>
 		</div>
 		<div class="header">
 			<img id="headerImage" src="/images/Accurator.png" alt="Accurator" />
@@ -68,9 +68,15 @@
 				<g:Button ui:field="btnAnnotate">
 					<ui:msg description="Annotate">Annotate</ui:msg>
 				</g:Button>
-				<g:Anchor ui:field="lnkLogout" styleName="logoutLink button">
-					<ui:msg description="Logout">Log out</ui:msg>
-				</g:Anchor>
+				<g:HTMLPanel styleName="logoutBlock" ui:field="dvlogoutBlock">
+					<span class="username">
+						<ui:msg description="Welcome">Welcome</ui:msg>,
+						<g:InlineLabel ui:field="lblLoginName"></g:InlineLabel>
+					</span>
+					<g:Anchor ui:field="lnkLogout" styleName="button logoutLink">
+						<ui:msg description="Logout">Log out</ui:msg>
+					</g:Anchor>
+				</g:HTMLPanel>
 			</div>
 
 			<g:Button ui:field="btnDone" styleName="done button">
@@ -80,7 +86,9 @@
 		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
 		<div class="footer">
 			<div class="menu">
-				<g:Anchor ui:field="lnkAboutAccurator"><ui:msg description="About Accurator">About Accurator</ui:msg></g:Anchor>
+				<g:Anchor ui:field="lnkAboutAccurator">
+					<ui:msg description="About Accurator">About Accurator</ui:msg>
+				</g:Anchor>
 			</div>
 			<div class="logos">
 				<div class="group">
