@@ -14,6 +14,8 @@
  *******************************************************************************/
 package org.sealinc.accurator.client.service;
 
+import java.util.Map;
+import org.sealinc.accurator.shared.ConfigurationSetting;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -22,6 +24,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface AdminComponentService extends RemoteService {
 	boolean register(String user,String password,String realName);
 	String getJSON(String url);
+	Map<String,ConfigurationSetting> getConfiguration(String version);
 	
 	/**
 	 * Utility class for simplifying access to the instance of async service.

@@ -40,6 +40,6 @@ public class AssignComponentServiceImpl extends RemoteServiceServlet implements 
 	public List<CollectionItem> search(String text) {
 		String url = String.format("%s&string=%s",Config.getRecommendationComponentSearchURL(),text);
 		List<String> items = Utility.getParsedJSONFromURL(url);
-		return Utility.getObjectsByURI(items, CollectionItem.class);
+		return Utility.getObjectsByURI(items, CollectionItem.class,CollectionItem.rdfType);
 	}
 }

@@ -32,7 +32,7 @@ public class ItemComponentServiceImpl extends RemoteServiceServlet implements It
 		else if (resourceURIs.size()==0)
 			return new ArrayList<CollectionItem>();
 		else{
-			List<CollectionItem> cis =  Utility.getObjectsByURI(resourceURIs, CollectionItem.class);
+			List<CollectionItem> cis =  Utility.getObjectsByURI(resourceURIs, CollectionItem.class,CollectionItem.rdfType);
 			//get the makers
 				for(CollectionItem ci :cis){
 					String sparql = String.format("%s SELECT ?x WHERE { <%s> rma:maker ?y . ?y rdf:value ?z . ?z rma:name ?x . }" , Config.getRDFPrefixes(), ci.uri);

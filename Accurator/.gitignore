@@ -9,6 +9,8 @@ war/accurator/
 gwt-unitCache/
 test-classes/
 www-test/
+.gwt/
+.settings/
 
 # boilerplate generated classes #
 .apt_generated/

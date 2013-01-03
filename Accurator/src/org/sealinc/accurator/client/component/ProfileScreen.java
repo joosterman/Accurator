@@ -17,20 +17,24 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ProfileScreen extends Composite {
 	interface MyUiBinder extends UiBinder<Widget, ProfileScreen> {}
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+	private int latestPrintColumns = 5;
+	private int nrLatestPrint = 10;
+	private int latestPrintRows = nrLatestPrint / latestPrintColumns + 1;
 
 	@UiField
-	VerticalPanel pnlAnnotated;
+	Grid grAnnotatedPrints;
 	@UiField
 	Label lblTotalAnnotated;
 
@@ -45,8 +49,7 @@ public class ProfileScreen extends Composite {
 
 			@Override
 			public void onSuccess(Integer result) {
-				lblTotalAnnotated.setText("Total: " + result);
-
+				lblTotalAnnotated.setText(result.toString());
 			}
 
 			@Override
@@ -58,28 +61,38 @@ public class ProfileScreen extends Composite {
 
 			@Override
 			public void onSuccess(List<CollectionItem> result) {
-				//clear all handlers
-				for(HandlerRegistration reg:regs){
+				// clear all handlers
+				for (HandlerRegistration reg : regs) {
 					reg.removeHandler();
 				}
 				regs.clear();
-				
-				pnlAnnotated.clear();
-				Anchor a;
+
+				grAnnotatedPrints.clear();
+				grAnnotatedPrints.resize(latestPrintRows, latestPrintColumns);
+				Image im;
+				int col = 0;
+				int row = 0;
 				// load prints annotated
-				for (final CollectionItem ci : result) {
-					a = new Anchor(ci.title);
-					HandlerRegistration reg =  a.addClickHandler(new ClickHandler() {
+				for (int i = 0; i < result.size() && i < nrLatestPrint; i++) {
+					final CollectionItem ci = result.get(i);
+					im = new Image(ci.thumbnailURL);
+					im.setStyleName("imageButton");
+					HandlerRegistration reg = im.addClickHandler(new ClickHandler() {
 
 						@Override
 						public void onClick(ClickEvent event) {
 							accurator.annotate(ci.uri);
+							History.newItem(Accurator.State.Annotate.toString());
 						}
 					});
-					regs.add(reg);
-					pnlAnnotated.add(a);
+					regs.add(reg);					
+					grAnnotatedPrints.setWidget(row,col, im);
+					col++;
+					if(col==latestPrintColumns){
+						col=0;
+						row++;
+					}
 				}
-
 			}
 
 			@Override
@@ -141,12 +154,14 @@ public class ProfileScreen extends Composite {
 		$wnd.jQuery("#language").buttonset("refresh");
 	}-*/;
 
-	private void updateExpertise(String topic, double value){
+	private void updateExpertise(String topic, double value) {
 		accurator.updateExpertise(topic, value);
 	}
-	private void userPropertyChanged(String dimension){
+
+	private void userPropertyChanged(String dimension) {
 		accurator.userPropertyChanged(dimension);
 	}
+
 	private native void initSlider(String topic, double val)/*-{
 		var user = @org.sealinc.accurator.client.Utility::getQualifiedUsername()();
 		var pscreen = this;
@@ -166,10 +181,10 @@ public class ProfileScreen extends Composite {
 			});
 	}-*/;
 
-	private void changeLanguage(String language){
+	private void changeLanguage(String language) {
 		accurator.changeLanguage(language);
 	}
-	
+
 	public native void loadUIThemeElements()/*-{
 		var pscreen = this;
 		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getExpertise(Ljava/lang/String;)("flora");
@@ -187,6 +202,5 @@ public class ProfileScreen extends Composite {
 	public ProfileScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.accurator = acc;
-		loadData();
 	}
 }

@@ -13,9 +13,10 @@ public class CollectionItem extends RDFObject {
 	public List<String> maker;
 	public List<String> contentClassification;
 	
+	public static final String rdfType = "http://purl.org/collections/nl/rma/schema#Work";
+	
 	public CollectionItem(){
 		contentClassification = new ArrayList<String>();
 		maker = new ArrayList<String>();
 	}
-
 }

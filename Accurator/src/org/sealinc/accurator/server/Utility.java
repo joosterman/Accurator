@@ -282,6 +282,7 @@ public class Utility {
 				builder.append(line);
 				line = reader.readLine();
 			}
+			reader.close();
 			return builder.toString();
 		}
 		catch (MalformedURLException e) {
@@ -458,17 +459,17 @@ public class Utility {
 		return m;
 	}
 
-	public static <T extends RDFObject> T getObjectByURI(String uri, Class<T> clazz){
+	public static <T extends RDFObject> T getObjectByURI(String uri, Class<T> clazz,String rdfType){
 		List<String> uris = new ArrayList<String>();
 		uris.add(uri);
-		List<T> objs = getObjectsByURI(uris, clazz);
+		List<T> objs = getObjectsByURI(uris, clazz,rdfType);
 		if(objs.size()>0)
 			return objs.get(0);
 		else
 			return null;
 	}
 	
-	public static <T extends RDFObject> List<T> getObjectsByURI(List<String> uris, Class<T> clazz) {
+	public static <T extends RDFObject> List<T> getObjectsByURI(List<String> uris, Class<T> clazz, String rdfType) {
 		// generate sparql
 		StringBuilder sb = new StringBuilder();
 		String lt = "<";
@@ -479,8 +480,8 @@ public class Utility {
 			sb.append(gt);
 			sb.append(" ");
 		}
-		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . VALUES ?subject { %s }}",
-				Config.getRDFPrefixes(), sb.toString());
+		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . ?subject rdf:type <%s> . VALUES ?subject { %s }}",
+				Config.getRDFPrefixes(), rdfType, sb.toString());
 		List<T> cis = Utility.getObjects(sparql, clazz);
 		return cis;
 	}

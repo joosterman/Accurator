@@ -46,7 +46,7 @@ public class Utility {
 	};
 
 	private Utility() {}
-	
+
 	public static native void hitURLWithJsonp(String urlToHit)/*-{
 		$wnd.jQuery.ajax({
 			type : 'GET',
@@ -54,7 +54,7 @@ public class Utility {
 			dataType : 'jsonp',
 		});
 	}-*/;
-	
+
 	public static String getLocalString(String toTranslate) {
 		return constants.getString(toTranslate);
 	}
@@ -171,6 +171,13 @@ public class Utility {
 		Storage localStorage = Storage.getLocalStorageIfSupported();
 		if (localStorage != null && topic != null) {
 			localStorage.setItem(resourceURI + "_topic", topic);
+		}
+	}
+
+	public static void clearLocalStorage() {
+		Storage localStorage = Storage.getLocalStorageIfSupported();
+		if (localStorage != null) {
+			localStorage.clear();
 		}
 	}
 }

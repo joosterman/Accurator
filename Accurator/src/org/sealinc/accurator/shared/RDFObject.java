@@ -4,7 +4,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public abstract class RDFObject implements IsSerializable {
 	public String uri;
-	
+		
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof RDFObject)
@@ -22,4 +22,5 @@ public abstract class RDFObject implements IsSerializable {
 	public String toString(){
 		return uri;
 	}
+	
 }

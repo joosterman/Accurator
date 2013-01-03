@@ -68,6 +68,9 @@ public class Accurator implements EntryPoint {
 	private int nrInitialPrints = 50;
 	private boolean hasPredefinedAnnotationOrder = false;
 
+	private static final String castleTopic = "castle";
+	private static final String floraTopic = "flora";
+
 	private AnnotateScreen getAnnotateScreen() {
 		if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
 		return annotateScreen;
@@ -216,22 +219,6 @@ public class Accurator implements EntryPoint {
 		Window.Location.replace(newURL);
 	}
 
-	private void annotate(String resourceURI, String topic) {
-		// extra stylesheet for annotation component
-		String stylesheet = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/css/jacconator.css";
-		String url = Config.getAnnotationComponentURL() + "?target=" + resourceURI + "&stylesheet=" + stylesheet;
-		String ui = "";
-		if ("flora".equals(topic)) {
-			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorFlowerDemoUi";
-		}
-		else if ("castle".equals(topic)) {
-			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
-		}
-		// complete url for the iframe containing the annotation component
-		url += ui;
-		getAnnotateScreen().loadResource(resourceURI, url);
-	}
-
 	protected void setPredefinedOrderPrints() {
 		String user = Utility.getStoredUsername();
 		hasPredefinedAnnotationOrder = true;
@@ -288,23 +275,52 @@ public class Accurator implements EntryPoint {
 			loadRecommendations();
 		}
 	}
+	
+	private void annotate(String resourceURI, String topic) {
+		// extra stylesheet for annotation component
+		String stylesheet = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/css/jacconator.css";
+		String url = Config.getAnnotationComponentURL() + "?target=" + resourceURI + "&stylesheet=" + stylesheet;
+		String ui = "";
+		if (floraTopic.equals(topic)) {
+			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorFlowerDemoUi";
+		}
+		else if (castleTopic.equals(topic)) {
+			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
+		}
+		// complete url for the iframe containing the annotation component
+		url += ui;
+		getAnnotateScreen().loadResource(resourceURI, url);
+
+	}
 
 	public void annotate(final String resourceURI) {
 		// determine the topic of the resource
 		String topic = Utility.getResourceTopic(resourceURI);
 		// if not known, get it and store it
 		if (topic == null) {
-			Utility.itemService.getTopic(resourceURI, new AsyncCallback<String>() {
+			// check if the prints are in the predefined lists
+			if (predefinedCastleURIs != null && predefinedCastleURIs.contains(resourceURI)) {
+				Utility.setResourceTopic(resourceURI, castleTopic);
+				annotate(resourceURI, castleTopic);
+			}
+			else if (predefinedFloraURIs != null && predefinedFloraURIs.contains(resourceURI)) {
+				Utility.setResourceTopic(resourceURI, floraTopic);
+				annotate(resourceURI, floraTopic);
+			}
+			else {
+				// get the new one
+				Utility.itemService.getTopic(resourceURI, new AsyncCallback<String>() {
 
-				@Override
-				public void onSuccess(String topic) {
-					Utility.setResourceTopic(resourceURI, topic);
-					annotate(resourceURI, topic);
-				}
+					@Override
+					public void onSuccess(String topic) {
+						Utility.setResourceTopic(resourceURI, topic);
+						annotate(resourceURI, topic);
+					}
 
-				@Override
-				public void onFailure(Throwable caught) {}
-			});
+					@Override
+					public void onFailure(Throwable caught) {}
+				});
+			}
 		}
 		else {
 			annotate(resourceURI, topic);
@@ -390,8 +406,8 @@ public class Accurator implements EntryPoint {
 			if (expertise.containsKey("castle")) castleExp = expertise.get("castle");
 			if (expertise.containsKey("flora")) floraExp = expertise.get("flora");
 			for (int i = 0; i < nrPrints; i++) {
-				if (castleExp > 0.9 && predefinedCastleURIs.size() > i) uris.add(predefinedCastleURIs.get(i));
-				else if (floraExp > 0.9 && predefinedFloraURIs.size() > i) uris.add(predefinedFloraURIs.get(i));
+				if (castleExp > 0.6 && predefinedCastleURIs.size() > i) uris.add(predefinedCastleURIs.get(i));
+				else if (floraExp > 0.6 && predefinedFloraURIs.size() > i) uris.add(predefinedFloraURIs.get(i));
 				else if (recommendedItems != null && recommendedItems.size() > 0) {
 					uris.add(recommendedItems.removeFirst().getURI());
 				}

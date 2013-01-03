@@ -10,4 +10,6 @@ public class Annotation extends RDFObject{
 	public String annotationField;
 	public int typingTime;
 	public double trustworthiness;
+	
+	public static final String rdfType = "http://www.w3.org/ns/openannotation/core/Annotation";
 }

@@ -19,7 +19,7 @@ public class UserManagement {
 		this.acc = acc;
 	}
 
-	private void loginSuccessful(String username, String password) {
+	private void loginSuccessful(final String username, final String password) {
 		// store the credentials
 		Utility.setUser(username, password);
 		// get the current (URL) locale
@@ -52,6 +52,12 @@ public class UserManagement {
 				acc.lblLoginMessage.setText("");
 				if (renewLoginTimer == null) {
 					// first login
+					//clear the datastore
+					Utility.clearLocalStorage();
+					//re-add the username/password
+					Utility.setUser(username, password);
+					
+					
 					acc.loadExpertise();
 					acc.loadRecommendations();
 					acc.setPredefinedOrderPrints();

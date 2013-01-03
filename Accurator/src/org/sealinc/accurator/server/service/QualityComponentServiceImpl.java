@@ -41,7 +41,7 @@ public class QualityComponentServiceImpl extends RemoteServiceServlet implements
 				Config.getRDFPrefixes(), Config.getQualityComponentNrRecentAnnotations());
 		List<String> recentAnns = Utility.getRDFAndConvertToList(sparqlRecent);
 		// next get the full annotation for these URIs
-		List<Annotation> fullAnns = Utility.getObjectsByURI(recentAnns, Annotation.class);
+		List<Annotation> fullAnns = Utility.getObjectsByURI(recentAnns, Annotation.class,Annotation.rdfType);
 		Collections.sort(fullAnns, new CompAnnDate());
 		Collections.reverse(fullAnns);
 		return fullAnns;

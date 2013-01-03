@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.sealinc.accurator.server.service;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -44,7 +43,7 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 				,Config.getRDFPrefixes(), userURI, nrAnnotations);
 		List<String> uris = Utility.getURIs(sparql);		
 		List<Annotation> anns = null;
-		anns = Utility.getObjectsByURI(uris, Annotation.class);
+		anns = Utility.getObjectsByURI(uris, Annotation.class,Annotation.rdfType);
 		return anns;
 	}
 
@@ -103,21 +102,12 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 	public int getTotalAnnotatedPrints(String user, Date annotatedSince) {
 		String userURI = Config.getUserComponentUserURI() + user;
 		String sparql = String.format(
-				"%s SELECT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> }",
-				Config.getRDFPrefixes(), userURI);
+				"%s SELECT DISTINCT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> . ?target rdf:type <%s> }",
+				Config.getRDFPrefixes(), userURI,CollectionItem.rdfType);
 		
 		//count unique uris
 		List<String> uris = Utility.getURIs(sparql);
-		//delete duplicates
-		List<String> filtered = new ArrayList<String>();
-		int index = 0;
-		while(index<uris.size()){
-			if(!filtered.contains(uris.get(index))){
-				filtered.add(uris.get(index));
-			}
-			index++;
-		}
-		return filtered.size();
+		return uris.size();
 	}
 	
 	@Override
@@ -125,21 +115,11 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 			//get all
 			String userURI = Config.getUserComponentUserURI() + user;
 			String sparql = String.format(
-					"%s SELECT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:annotated ?date . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> } ORDER BY DESC(?date)",
-					Config.getRDFPrefixes(), userURI);
+					"%s SELECT DISTINCT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:annotated ?date . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> . ?target rdf:type <%s> } ORDER BY DESC(?date)",
+					Config.getRDFPrefixes(), userURI, CollectionItem.rdfType);
 			List<String> uris = Utility.getURIs(sparql);
-			//delete duplicates
-			List<String> filtered = new ArrayList<String>();
-			int index = 0;
-			while(filtered.size()<nrItems && index<uris.size()){
-				if(!filtered.contains(uris.get(index))){
-					filtered.add(uris.get(index));
-				}
-				index++;
-			}
-			List<CollectionItem> items = null;
-			items = Utility.getObjectsByURI(filtered, CollectionItem.class);
-
+			uris = uris.subList(0, nrItems);
+			List<CollectionItem> items = Utility.getObjectsByURI(uris, CollectionItem.class,CollectionItem.rdfType);
 			return items;
 	}
 }

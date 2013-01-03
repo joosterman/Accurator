@@ -7,14 +7,10 @@
 			<legend>
 				<ui:msg description="Prints annotated">Prints annotated</ui:msg>
 			</legend>
-			<h3>
-				<ui:msg description="Total prints annotated">Total prints annotated</ui:msg>
-			</h3>
-			<g:Label ui:field="lblTotalAnnotated"></g:Label>
-			<h3>
-				<ui:msg description="Latest (10) prints">Latest (10) prints</ui:msg>
-			</h3>
-			<g:VerticalPanel ui:field="pnlAnnotated"></g:VerticalPanel>
+			<ui:msg description="Total prints annotated">Total prints annotated:</ui:msg> <g:InlineLabel ui:field="lblTotalAnnotated"></g:InlineLabel>
+			<br /><br />
+			<strong><ui:msg description="Latest annotated prints">Latest annotated prints</ui:msg></strong>
+			<g:Grid ui:field="grAnnotatedPrints"></g:Grid>
 		</fieldset>
 		<fieldset class="infoblock">
 			<legend>
