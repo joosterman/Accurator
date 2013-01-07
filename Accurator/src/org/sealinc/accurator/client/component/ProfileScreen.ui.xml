@@ -7,7 +7,7 @@
 			<legend>
 				<ui:msg description="Prints annotated">Prints annotated</ui:msg>
 			</legend>
-			<ui:msg description="Total prints annotated">Total prints annotated:</ui:msg>
+			<ui:msg description="Total prints annotated">Total prints annotated</ui:msg>:
 			<g:InlineLabel ui:field="lblTotalAnnotated"></g:InlineLabel>
 			<br />
 			<br />
@@ -74,7 +74,7 @@
 				</label>
 				<p>
 					<em>
-						<ui:msg description="Message to indicate pagereload">Will reload the page</ui:msg>
+						<ui:msg description="Message to indicate pagereload">Changing this property reloads the page</ui:msg>
 					</em>
 				</p>
 			</div>

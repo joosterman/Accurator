@@ -25,7 +25,7 @@
 				</fieldset>
 				<p>
 					<g:Anchor ui:field="lnkRegister">
-						<ui:msg description="Register link">Or click here to register</ui:msg>
+						<ui:msg description="Register link">Or register</ui:msg>
 					</g:Anchor>
 				</p>
 			</form>
@@ -74,7 +74,7 @@
 						<g:InlineLabel ui:field="lblLoginName"></g:InlineLabel>
 					</span>
 					<g:Anchor ui:field="lnkLogout" styleName="button logoutLink">
-						<ui:msg description="Logout">Log out</ui:msg>
+						<ui:msg description="Logout">Logout</ui:msg>
 					</g:Anchor>
 				</g:HTMLPanel>
 			</div>
