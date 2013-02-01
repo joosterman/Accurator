@@ -28,7 +28,7 @@ public class QualityComponentServiceImpl extends RemoteServiceServlet implements
 
 	@Override
 	public double getTrustworthiness(String annotationURI) {
-		String url = String.format("%s?output=%s&strategy=%s&annotation=%s",Config.getQualityComponentTrustworthinessURL(),"json",Config.getQualityComponentTrustworthinessStrategy(),annotationURI);
+		String url = String.format("%s?output=%s&strategy=%s&annotation=%s",Config.qualityComponentTrustworthinessURL,"json",Config.qualityComponentTrustworthinessStrategy,annotationURI);
 		double value = Utility.getParsedJSONFromURL(url);
 		return value;
 	}
@@ -38,7 +38,7 @@ public class QualityComponentServiceImpl extends RemoteServiceServlet implements
 		// first get the most recent Annotation
 		// TODO: check that they are not yet reviewed
 		String sparqlRecent = String.format("%s SELECT ?subject WHERE {?subject oa:annotated ?dt .} ORDER BY DESC(?dt) LIMIT %d",
-				Config.getRDFPrefixes(), Config.getQualityComponentNrRecentAnnotations());
+				Config.sparqlPrefixes, Config.qualityComponentNrRecentAnnotations);
 		List<String> recentAnns = Utility.getRDFAndConvertToList(sparqlRecent);
 		// next get the full annotation for these URIs
 		List<Annotation> fullAnns = Utility.getObjectsByURI(recentAnns, Annotation.class,Annotation.rdfType);

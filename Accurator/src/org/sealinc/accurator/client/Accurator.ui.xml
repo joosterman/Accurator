@@ -4,92 +4,53 @@
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 	<g:HTMLPanel styleName="content">
-		<div id="dialog-login" class="dialog" title="Login">
-			<ui:attribute name="title" description="Login popup title" />
-			<p>
-				<g:Label ui:field="lblLoginMessage"></g:Label>
-			</p>
-
-			<form>
-				<fieldset>
-					<label for="name">
-						<ui:msg description="Username">Username</ui:msg>
-					</label>
-					<input type="text" class="text ui-widget-content ui-corner-all"
-						name="name" id="name" />
-					<label for="password">
-						<ui:msg description="Password">Password</ui:msg>
-					</label>
-					<input type="password" name="password" id="password" value=""
-						class="text ui-widget-content ui-corner-all" />
-				</fieldset>
-				<p>
-					<g:Anchor ui:field="lnkRegister">
-						<ui:msg description="Register link">Or register</ui:msg>
-					</g:Anchor>
-				</p>
-			</form>
-		</div>
-		<div id="dialog-register" class="dialog" title="Register">
-			<ui:attribute name="title" description="Register popup title" />
-			<p>
-				<g:Label ui:field="lblRegisterMessage"></g:Label>
-			</p>
-			<form>
-				<fieldset>
-					<label for="regname">
-						<ui:msg description="Username">Username</ui:msg>
-					</label>
-					<input type="text" class="text ui-widget-content ui-corner-all"
-						name="name" id="regname" />
-					<label for="regpassword">
-						<ui:msg description="Password">Password</ui:msg>
-					</label>
-					<input type="password" name="password" id="regpassword"
-						value="" class="text ui-widget-content ui-corner-all" />
-					<label for="regrealName">
-						<ui:msg description="Full name">Full name</ui:msg>
-					</label>
-					<input type="text" class="text ui-widget-content ui-corner-all"
-						name="realName" id="regrealName" />
-				</fieldset>
-			</form>
-		</div>
-		<div id="dialog-about" class="dialog" title="About Accurator">
-			<ui:attribute name="title" description="About Accurator" />
-			<p>License information</p>
-		</div>
-		<div class="header">
+		<g:HTMLPanel styleName="header" ui:field="header">
 			<img id="headerImage" src="/images/Accurator.png" alt="Accurator" />
 			<div class="navbar">
-				<g:Button ui:field="btnProfile">
-					<ui:msg description="MyProfile">MyProfile</ui:msg>
-				</g:Button>
-				<g:Button ui:field="btnAnnotate">
-					<ui:msg description="Annotate">Annotate</ui:msg>
-				</g:Button>
 				<g:HTMLPanel styleName="logoutBlock" ui:field="dvlogoutBlock">
 					<span class="username">
-						<ui:msg description="Welcome">Welcome</ui:msg>,
+						<ui:msg description="Welcome">Welcome</ui:msg>
+						,&#160;
 						<g:InlineLabel ui:field="lblLoginName"></g:InlineLabel>
 					</span>
-					<g:Anchor ui:field="lnkLogout" styleName="button logoutLink">
-						<ui:msg description="Logout">Logout</ui:msg>
-					</g:Anchor>
 				</g:HTMLPanel>
 			</div>
 
 			<g:Button ui:field="btnDone" styleName="done button">
 				<ui:msg description="Done">Done</ui:msg>
 			</g:Button>
-		</div>
+			<ul id="menu">
+				<li>
+					<a href="#">
+						<ui:msg description="Menu">Menu</ui:msg>
+					</a>
+					<ul>
+						<li>
+							<g:Anchor ui:field="lnkAbout">
+								<ui:msg description="About Accurator">About Accurator</ui:msg>
+							</g:Anchor>
+						</li>
+						<li>
+							<g:Hyperlink targetHistoryToken="Profile">
+								<ui:msg description="MyProfile">MyProfile</ui:msg>
+							</g:Hyperlink>
+						</li>
+						<li class="ui-state-disabled">
+							<g:Anchor ui:field="lnkLicenses">
+								<ui:msg description="Licenses">Licenses</ui:msg>
+							</g:Anchor>
+						</li>
+						<li>
+							<g:Anchor ui:field="lnkLogout">
+								<ui:msg description="Logout">Logout</ui:msg>
+							</g:Anchor>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</g:HTMLPanel>
 		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
-		<div class="footer">
-			<div class="menu">
-				<g:Anchor ui:field="lnkAboutAccurator">
-					<ui:msg description="About Accurator">About Accurator</ui:msg>
-				</g:Anchor>
-			</div>
+		<g:HTMLPanel styleName="footer" ui:field="footer">
 			<div class="logos">
 				<div class="group">
 					<span class="title">Project</span>
@@ -126,6 +87,73 @@
 					</div>
 				</div>
 			</div>
+		</g:HTMLPanel>
+		<div id="dialog-login" class="dialog" title="Login">
+			<ui:attribute name="title" description="Login popup title" />
+			<p>
+				<g:Label ui:field="lblLoginMessage"></g:Label>
+			</p>
+
+			<form>
+				<fieldset>
+					<label for="name">
+						<ui:msg description="Username">Username</ui:msg>
+					</label>
+					<input type="text" class="text ui-widget-content ui-corner-all"
+						name="name" id="name" />
+					<label for="password">
+						<ui:msg description="Password">Password</ui:msg>
+					</label>
+					<input type="password" name="password" id="password" value=""
+						class="text ui-widget-content ui-corner-all" />
+				</fieldset>
+				<p>
+					<g:Anchor ui:field="lnkRegister">
+						<ui:msg description="Or register">Or register</ui:msg>
+					</g:Anchor>
+				</p>
+			</form>
 		</div>
+		<div id="dialog-register" class="dialog" title="Register">
+			<ui:attribute name="title" description="Register popup title" />
+			<p>
+				<g:Label ui:field="lblRegisterMessage"></g:Label>
+			</p>
+			<form>
+				<fieldset>
+					<label for="regname">
+						<ui:msg description="Username">Username</ui:msg>
+					</label>
+					<input type="text" class="text ui-widget-content ui-corner-all"
+						name="name" id="regname" />
+					<label for="regpassword">
+						<ui:msg description="Password">Password</ui:msg>
+					</label>
+					<input type="password" name="password" id="regpassword"
+						value="" class="text ui-widget-content ui-corner-all" />
+					<label for="regrealName">
+						<ui:msg description="Full name">Full name</ui:msg>
+					</label>
+					<input type="text" class="text ui-widget-content ui-corner-all"
+						name="realName" id="regrealName" />
+				</fieldset>
+			</form>
+		</div>
+		<div id="dialog-about" class="dialog" title="About Accurator">
+			<ui:attribute name="title" description="About Accurator" />
+			<p>
+				<ui:msg description="About_welcome">About_welcome</ui:msg>
+			</p>
+			<p>
+				<ui:msg description="About_profile">About_profile</ui:msg>
+			</p>
+			<p>
+				<ui:msg description="About_done">About_done</ui:msg>
+			</p>
+			<p>
+				<ui:msg description="About_project">About_project</ui:msg>
+			</p>
+		</div>
+		<g:Image url="./images/ajax-loader.gif" styleName="loading"></g:Image>
 	</g:HTMLPanel>
 </ui:UiBinder>

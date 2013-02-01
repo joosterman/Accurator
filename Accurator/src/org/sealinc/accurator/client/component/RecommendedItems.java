@@ -72,6 +72,16 @@ public class RecommendedItems extends Composite {
 			public void onFailure(Throwable caught) {}
 		});
 	}
+	
+	public RecommendedItems(Accurator acc) {
+		initWidget(uiBinder.createAndBindUi(this));
+		accurator = acc;
+		titles = new Label[] { lblTitle1, lblTitle2, lblTitle3 };
+		creators = new Label[] { lblCreator1, lblCreator2, lblCreator3 };
+		images = new Image[] { img1, img2, img3 };
+		printmakers = new Label[] { lblPrintmaker1, lblPrintmaker2, lblPrintmaker3 };
+		clearRecommendation();
+	}
 
 	public void addFirstSeenPrint(String uri) {
 		seenPrints.addFirst(uri);
@@ -79,7 +89,7 @@ public class RecommendedItems extends Composite {
 		System.out.println("Backlog: " + backlog);
 	}
 
-	public void loadItems(List<CollectionItem> items) {
+	private void loadItems(List<CollectionItem> items) {
 		for (HandlerRegistration reg : regs) {
 			reg.removeHandler();
 		}
@@ -115,8 +125,9 @@ public class RecommendedItems extends Composite {
 	public void loadPreviousRecommendations() {
 		//check if we can go back
 		if (seenPrints.size() <=3) return;
-
+		
 		clearRecommendation();
+		accurator.showLoading(true);
 		// put the currently visible prints in the backlog
 		for (int i = 0; i < 3 && seenPrints.size() > 0; i++) {
 			backlog.addFirst(seenPrints.removeLast());
@@ -133,6 +144,7 @@ public class RecommendedItems extends Composite {
 			@Override
 			public void onSuccess(List<CollectionItem> result) {
 				loadItems(result);
+				accurator.showLoading(false);
 			}
 
 			@Override
@@ -144,6 +156,7 @@ public class RecommendedItems extends Composite {
 
 	public void loadNextRecommendations() {
 		clearRecommendation();
+		accurator.showLoading(true);
 		// Either get the recommended items form the backlog or, when empty, new
 		// ones
 		List<String> uris = new ArrayList<String>();
@@ -179,6 +192,7 @@ public class RecommendedItems extends Composite {
 			@Override
 			public void onSuccess(List<CollectionItem> result) {
 				loadItems(result);
+				accurator.showLoading(false);
 			}
 
 			@Override
@@ -196,15 +210,6 @@ public class RecommendedItems extends Composite {
 			images[i].setVisible(false);
 			printmakers[i].setVisible(false);
 		}
-	}
-
-	public RecommendedItems(Accurator acc) {
-		initWidget(uiBinder.createAndBindUi(this));
-		accurator = acc;
-		titles = new Label[] { lblTitle1, lblTitle2, lblTitle3 };
-		creators = new Label[] { lblCreator1, lblCreator2, lblCreator3 };
-		images = new Image[] { img1, img2, img3 };
-		printmakers = new Label[] { lblPrintmaker1, lblPrintmaker2, lblPrintmaker3 };
 	}
 
 }

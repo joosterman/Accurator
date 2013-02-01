@@ -60,6 +60,52 @@ public class UserProfileServlet extends HttpServlet {
 	}
 
 	@Override
+	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		// do we have all the required parameters?
+		if (!isValidRequest(request)) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, String.format("Required parameters not provided"));
+			return;
+		}
+		// get the params
+		final String user = request.getParameter("user");
+		final String dimension = request.getParameter("dimension");
+		final String scope = request.getParameter("scope");
+		final String provider = request.getParameter("provider");
+		final String value = request.getParameter("value");
+
+		// get the user if it exists
+		Ref<User> refu = ofy().load().type(User.class).filter("URI =", user).first();
+		final Key<User> keyu;
+		// if user does not exist, create the user
+		User u = refu.getValue();
+		if (u == null) {
+			// if the user does not exist the user profile entry can also not exist
+			return;
+		}
+		else {
+			keyu = refu.getKey();
+			// start deleting
+			ofy().transact(new VoidWork() {
+				@Override
+				public void vrun() {
+					// get existing UPE
+					Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(keyu);
+					if (dimension != null) query = query.filter("dimension =", dimension);
+					if (scope != null) query = query.filter("scope =", scope);
+					if (provider != null) query = query.filter("provider =", provider);
+					if (value != null) query = query.filter("value =", provider);
+
+					// remove entries
+					List<UserProfileEntry> entries = query.list();
+					if (entries.size() > 0) {
+						ofy().delete().entities(entries);
+					}
+				}
+			});
+		}
+	}
+
+	@Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		// do we have all the required parameters?
 		if (!isValidRequest(request)) {
@@ -130,13 +176,13 @@ public class UserProfileServlet extends HttpServlet {
 			public void vrun() {
 
 				// check if the UPE already exists and create otherwise
-				//	build the query
+				// build the query
 				Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(keyu);
 				if (dimension != null) query = query.filter("dimension =", dimension);
 				if (scope != null) query = query.filter("scope =", scope);
 				if (provider != null) query = query.filter("provider =", provider);
-				
-				//execute the query
+
+				// execute the query
 				Ref<UserProfileEntry> refentry = query.first();
 				UserProfileEntry entry = refentry.getValue();
 				if (entry == null) {
@@ -165,6 +211,7 @@ public class UserProfileServlet extends HttpServlet {
 		String user = request.getParameter("user");
 		String dimension = request.getParameter("dimension");
 		String value = request.getParameter("value");
+		String provider = request.getParameter("provider");
 
 		String method = request.getMethod();
 		if ("GET".equals(method)) {
@@ -172,6 +219,9 @@ public class UserProfileServlet extends HttpServlet {
 		}
 		else if ("PUT".equals(method)) {
 			return user != null && dimension != null && value != null;
+		}
+		else if ("DELETE".equals(method)) {
+			return user != null && dimension != null && provider != null && value!=null;
 		}
 		else {
 			return false;

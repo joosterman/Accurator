@@ -209,7 +209,7 @@ public class Utility {
 			return false;
 		}
 		
-		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.getAdminRegisterUserURL(), user, realname, password);
+		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.adminRegisterUserURL, user, realname, password);
 		int statusCode = getStatusCode(url);
 		if (statusCode == 200) {
 			return true;
@@ -231,7 +231,7 @@ public class Utility {
 			}
 		}
 		// get new cookie
-		String url = String.format("%s?user=%s&password=%s", Config.getLoginURL(), Config.getAdminUsername(), Config.getAdminPassword());
+		String url = String.format("%s?user=%s&password=%s", Config.loginURL, Config.adminUsername, Config.adminPassword);
 		int code = -1;
 		try {
 			URL u = new URL(url);
@@ -266,8 +266,7 @@ public class Utility {
 	 * @return If the logout was successful or was not logged on
 	 */
 	public static boolean logout() {
-		String url = Config.getLogoutURL();
-		Integer code = Utility.getStatusCode(url);
+		Integer code = Utility.getStatusCode(Config.logoutURL);
 		return code != null && code == 200;
 	}
 
@@ -320,8 +319,7 @@ public class Utility {
 
 	private static HttpURLConnection prepareDataUpload() throws IOException {
 		login();
-		String url = Config.getAdminComponentUploadDataURL();
-		URL u = new URL(url);
+		URL u = new URL(Config.adminComponentUploadDataURL);
 		HttpURLConnection con = (HttpURLConnection) u.openConnection();
 		// add cookie only on live server
 		if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
@@ -355,7 +353,7 @@ public class Utility {
 			con = prepareDataUpload();
 
 			out = new PrintStream(con.getOutputStream());
-			String s = String.format("baseURI=%s&data=", Config.getAdminComponentBaseURI());
+			String s = String.format("baseURI=%s&data=", Config.adminComponentBaseURI);
 			out.print(s);
 			logger.info("Uploading data at: " + con.getURL().toString() + s);
 			RDFWriter writer = m.getWriter("RDF/XML");
@@ -387,11 +385,12 @@ public class Utility {
 	 */
 	private static ResultSet getRDFFromEndpoint(String sparql) {
 		try {
-			URL url = new URL(String.format("%s?query=%s", Config.getSparqlEndpoint(), URLEncoder.encode(sparql, "UTF-8")));
+			URL url = new URL(String.format("%s?query=%s", Config.sparqlEndpoint, URLEncoder.encode(sparql, "UTF-8")));
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.addRequestProperty("Accept", "application/sparql-results+xml");
 			con.setReadTimeout(60000);
 			con.setRequestMethod("GET");
+			con.setUseCaches(false);
 			con.connect();
 			ResultSet rs;
 			InputStream stream = con.getInputStream();
@@ -481,7 +480,7 @@ public class Utility {
 			sb.append(" ");
 		}
 		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . ?subject rdf:type <%s> . VALUES ?subject { %s }}",
-				Config.getRDFPrefixes(), rdfType, sb.toString());
+				Config.sparqlPrefixes, rdfType, sb.toString());
 		List<T> cis = Utility.getObjects(sparql, clazz);
 		return cis;
 	}

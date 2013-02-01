@@ -1,11 +1,11 @@
 body{
 	background-color: white;
-	height: 600px;
-	max-height: 600px;
+	height:100px;
+	
 }
 #media .resource img
 {
-	max-height: 480px;
+	/*max-height: 480px;*/
 }
 #media .resource
 {

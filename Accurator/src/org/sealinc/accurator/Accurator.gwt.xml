@@ -5,9 +5,10 @@
 	<inherits name="com.google.gwt.http.HTTP" />
 	<inherits name="com.google.gwt.i18n.I18N" />
 
-	<extend-property name="locale" values="en" />
+	
 	<extend-property name="locale" values="nl" />
-	<set-property-fallback name="locale" value="en"/>
+	<extend-property name="locale" values="en" />
+	<set-property-fallback name="locale" value="nl"/>
 
 	<!-- Inherit the default GWT style sheet. You can change -->
 	<!-- the theme of your GWT application by uncommenting -->
@@ -20,6 +21,8 @@
 	<!-- Other module inherits -->
 	<inherits name="com.googlecode.objectify.Objectify" />
 
+	<!-- Google Analytics script -->
+	<script src="http://google-analytics.com/ga.js"/>
 	<!-- Specify the app entry point class. -->
 	<entry-point class='org.sealinc.accurator.client.Accurator' />
 

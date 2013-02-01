@@ -1,11 +1,13 @@
 package org.sealinc.accurator.client;
 
+import org.sealinc.accurator.client.Accurator.State;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.storage.client.Storage;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -25,70 +27,91 @@ public class UserManagement {
 		// get the current (URL) locale
 		final String locale = Window.Location.getParameter(LocaleInfo.getLocaleQueryParam());
 		// get the users language preference
-		RequestCallback callback = new RequestCallback() {
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(),
+				new RequestCallback() {
+					@Override
+					public void onResponseReceived(Request request, Response response) {
+						String json = response.getText();
+						JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(json);
+						String language = null;
+						if (entries.length() > 0) {
+							language = entries.get(0).getValueAsString();
+						}
+
+						//if the user indicated a preference
+						if (language != null && !language.isEmpty()) {
+							// check if that is the same as the current language
+							if (!language.equals(locale)) {
+								// change to the users preference (page is reloaded)
+								acc.changeLanguage(language);
+								return;
+							}
+						}
+						// either the user does not have a preference or the preference
+						// matches the current locale
+						
+						// clear login status message
+						acc.lblLoginMessage.setText("");
+						
+						// normal login procedure: first login
+						if (renewLoginTimer == null) {
+							// clear the datastore
+							Utility.clearLocalStorage();
+							// re-add the username/password
+							Utility.setUser(username, password);
+
+							acc.loadExpertise();
+							acc.loadRecommendations();
+							acc.loadFirstPrintForAnnotation();
+
+							// renew login every 4 minutes
+							renewLoginTimer = new Timer() {
+								@Override
+								public void run() {
+									renewLogin();
+								}
+							};
+							renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
+							
+							// now we are logged in show the logout button
+							acc.dvlogoutBlock.setVisible(true);
+							acc.lblLoginName.setText(username);
+							//check whether this is the first visit ever for this user
+							determineLandingPage();
+						}
+						// needs to be refreshed every login
+						acc.updateLanguageForAnnotationComponent();
+					}
+
+					@Override
+					public void onError(Request request, Throwable exception) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+
+	}
+	
+	protected void determineLandingPage() {
+		// if this is the first time the user visits accurator show the about box and the profile page
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "firstVisit", null, "Accurator", new RequestCallback() {
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				String json = response.getText();
-				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(json);
-				String language = null;
-				if (entries.length() > 0) {
-					language = entries.get(0).getValueAsString();
+				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
+				if (entries.length() == 0) {
+					// this is the first visit
+					History.newItem(State.Profile.toString());
+					acc.openAboutDialog();
 				}
-
-				if (language != null && !language.isEmpty()) {
-					// the user has a preference
-					// check if that is the same as the current language
-					if (!language.equals(locale)) {
-						// change to the users preference (page is reloaded)
-						acc.changeLanguage(language);
-						return;
-					}
-				}
-				// either the user does not have a preference or the preference matches
-				// the current locale
-				// normal login procedure: either a renewed login or a first login
-
-				// clear login status message
-				acc.lblLoginMessage.setText("");
-				if (renewLoginTimer == null) {
-					// first login
-					//clear the datastore
-					Utility.clearLocalStorage();
-					//re-add the username/password
-					Utility.setUser(username, password);
-					
-					
-					acc.loadExpertise();
-					acc.loadRecommendations();
-					acc.setPredefinedOrderPrints();
-					acc.loadFirstPrintForAnnotation();					
+				else {
 					acc.loadCurrentHistory();
-					
-					// renew login every 4 minutes
-					renewLoginTimer = new Timer() {
-						@Override
-						public void run() {
-							renewLogin();
-						}
-					};
-
-					renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
-					// now we are logged in show the logout button
-					acc.dvlogoutBlock.setVisible(true);
-					acc.lblLoginName.setText(username);
 				}
-				// needs to be refreshed every new session/login
-				acc.updateLanguageForAnnotationComponent();
+				Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "firstVisit", null, "Accurator", Boolean.FALSE.toString(), null);
 			}
 
 			@Override
-			public void onError(Request request, Throwable exception) {
-				// TODO Auto-generated method stub
-
-			}
-		};
-		// Execute the call
-		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), callback);
+			public void onError(Request request, Throwable exception) {}
+		});
 	}
 
 	private void loginFailed() {
@@ -97,14 +120,14 @@ public class UserManagement {
 		openLogin();
 	}
 
-	private void resetLoginTimer(){
-		if(renewLoginTimer!=null)
-			renewLoginTimer.cancel();
+	private void resetLoginTimer() {
+		if (renewLoginTimer != null) renewLoginTimer.cancel();
 	}
+
 	protected native void logout()/*-{
 		var um = this;
 		this.@org.sealinc.accurator.client.UserManagement::resetLoginTimer();
-		logoutURL = @org.sealinc.accurator.shared.Config::getLogoutURL();
+		logoutURL = @org.sealinc.accurator.shared.Config::logoutURL;
 		$wnd.jQuery.ajax({
 			type : 'GET',
 			url : logoutURL,
@@ -133,8 +156,7 @@ public class UserManagement {
 
 	private native void login(String username, String password)/*-{
 		var management = this;
-		var loginURL = @org.sealinc.accurator.shared.Config::getLoginURL()();
-		//this works for all browser execpt IE
+		var loginURL = @org.sealinc.accurator.shared.Config::loginURL;
 		$wnd.jQuery
 			.ajax({
 				type : 'GET',
@@ -248,8 +270,8 @@ public class UserManagement {
 	}-*/;
 
 	private native void closeRegister()/*-{
-		$wnd.jQuery("#dialog-register").dialog("close");
-	}-*/;
+																			$wnd.jQuery("#dialog-register").dialog("close");
+																			}-*/;
 
 	private void setRegistrationFailed(boolean failed) {
 		if (failed) acc.lblRegisterMessage.setText(Utility.constants.registrationFailed());

@@ -30,7 +30,7 @@ public class AnnotateScreen extends Composite {
 		View view = new View();
 		view.date = new Date();
 		view.fromRecommendation = false;
-		view.viewer = Config.getUserComponentUserURI() + Utility.getStoredUsername();
+		view.viewer = Config.userComponentUserURI + Utility.getStoredUsername();
 		Utility.userService.setViewed(resourceURI, view, new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean result) {
@@ -50,8 +50,14 @@ public class AnnotateScreen extends Composite {
 		return new NamedFrame(annotationFrameName);
 	}
 
+	@Override
+	public void setHeight(String height){
+		super.setHeight(height);
+		annotationFrame.setHeight(height);
+	}
+
 	public void setLanguage(String language) {
-		String urlToHit = Config.getAnnotationComponentChangePreferenceURL() + "?lang=" + language;
+		String urlToHit = Config.annotationComponentChangePreferenceURL + "?lang=" + language;
 		Utility.hitURLWithJsonp(urlToHit);
 	}
 

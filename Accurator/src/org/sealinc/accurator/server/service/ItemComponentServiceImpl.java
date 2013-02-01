@@ -35,7 +35,7 @@ public class ItemComponentServiceImpl extends RemoteServiceServlet implements It
 			List<CollectionItem> cis =  Utility.getObjectsByURI(resourceURIs, CollectionItem.class,CollectionItem.rdfType);
 			//get the makers
 				for(CollectionItem ci :cis){
-					String sparql = String.format("%s SELECT ?x WHERE { <%s> rma:maker ?y . ?y rdf:value ?z . ?z rma:name ?x . }" , Config.getRDFPrefixes(), ci.uri);
+					String sparql = String.format("%s SELECT ?x WHERE { <%s> rma:maker ?y . ?y rdf:value ?z . ?z rma:name ?x . }" , Config.sparqlPrefixes, ci.uri);
 					List<Literal> ls = Utility.getLiteralValue(sparql);
 					ci.maker = new ArrayList<String>();
 					for(Literal l:ls){
@@ -48,7 +48,7 @@ public class ItemComponentServiceImpl extends RemoteServiceServlet implements It
 
 	@Override
 	public String getTopic(String resourceURI) {
-		String sparql = String.format("%1$s SELECT ?x WHERE { {<%2$s> dcterms:description ?x} UNION {<%2$s> dcterms:title ?x}	}", Config.getRDFPrefixes(), resourceURI);
+		String sparql = String.format("%1$s SELECT ?x WHERE { {<%2$s> dcterms:description ?x} UNION {<%2$s> dcterms:title ?x}	}", Config.sparqlPrefixes, resourceURI);
 		List<Literal> descriptions =  Utility.getLiteralValue(sparql);
 		for(Literal l:descriptions){
 			String desc = l.getString().toLowerCase();

@@ -1,7 +1,6 @@
 package org.sealinc.accurator.client;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +13,8 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -42,27 +43,27 @@ import com.google.gwt.user.client.ui.Widget;
 public class Accurator implements EntryPoint {
 	interface MyUiBinder extends UiBinder<Widget, Accurator> {}
 
-	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+	public enum State {
+		Annotate, Profile, Quality, Admin, Recommendation
+	};
 
 	@UiField
 	HTMLPanel dvlogoutBlock;
 	@UiField
-	Panel content;
+	Panel content, header, footer;
 	@UiField
 	Anchor lnkRegister;
 	@UiField
 	Label lblLoginMessage, lblRegisterMessage, lblLoginName;
 	@UiField
-	Button btnDone, btnAnnotate, btnProfile;
+	Button btnDone;
 	@UiField
-	Anchor lnkLogout, lnkAboutAccurator;
+	Anchor lnkLogout, lnkAbout, lnkLicenses;
 
+	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 	private List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
 	private Map<String, Double> expertise;
 	private LinkedList<JsRecommendedItem> recommendedItems;
-
-	private LinkedList<String> predefinedCastleURIs = new LinkedList<String>();
-	private LinkedList<String> predefinedFloraURIs = new LinkedList<String>();
 
 	private AnnotateScreen annotateScreen;
 	private ProfileScreen profileScreen;
@@ -94,24 +95,10 @@ public class Accurator implements EntryPoint {
 		return management;
 	}
 
-	public enum State {
-		Annotate, Profile, Quality, Admin, Recommendation
-	};
-
-	@UiHandler("lnkAboutAccurator")
+	@UiHandler("lnkAbout")
 	void lnkAboutClick(ClickEvent e) {
 		openAboutDialog();
 	}
-
-	private native void openAboutDialog() /*-{
-		$wnd.jQuery("#dialog-about").dialog({
-			autoOpen : false,
-			modal : true,
-			draggable : false,
-			resizable : false,
-		});
-		$wnd.jQuery("#dialog-about").dialog("open");
-	}-*/;
 
 	@UiHandler("lnkLogout")
 	void lnkLogoutClick(ClickEvent e) {
@@ -123,24 +110,10 @@ public class Accurator implements EntryPoint {
 		Window.Location.reload();
 	}
 
-	@UiHandler("btnAnnotate")
-	void btnAnnotateClick(ClickEvent e) {
-		History.newItem(State.Annotate.toString());
-	}
-
-	@UiHandler("btnProfile")
-	void btnProfileClick(ClickEvent e) {
-		History.newItem(State.Profile.toString());
-	}
-
 	@UiHandler("btnDone")
 	void btnDoneClick(ClickEvent e) {
-		// remove the item from the to predefined order
-		String uri = annotateScreen.resourceURI;
-		predefinedCastleURIs.remove(uri);
-		predefinedFloraURIs.remove(uri);
-		getRecommendationScreen().loadNextRecommendations();
 		// load recommendation
+		getRecommendationScreen().loadNextRecommendations();
 		History.newItem(State.Recommendation.toString());
 	}
 
@@ -150,9 +123,62 @@ public class Accurator implements EntryPoint {
 		getManagement().openRegister();
 	}
 
+	public void onModuleLoad() {
+		RootPanel rootPanel = RootPanel.get();
+		Widget w = uiBinder.createAndBindUi(this);
+		rootPanel.add(w);
+		initHistorySupport();
+		loadUIThemeElements();
+
+		dvlogoutBlock.setVisible(false);
+		btnDone.setVisible(false);
+
+		resizeContent();
+		Window.addResizeHandler(new ResizeHandler() {
+
+			Timer resizeTimer = new Timer() {
+				@Override
+				public void run() {
+					resizeContent();
+				}
+			};
+
+			@Override
+			public void onResize(ResizeEvent event) {
+				resizeTimer.cancel();
+				resizeTimer.schedule(250);
+			}
+		});
+
+		getManagement().login();
+	}
+
+	public native void showLoading(boolean show) /*-{
+		if (show)
+			$wnd.jQuery(".loading").show();
+		else
+			$wnd.jQuery(".loading").hide();
+	}-*/;
+
+	protected native void openAboutDialog() /*-{
+		$wnd.jQuery("#dialog-about").dialog({
+			autoOpen : false,
+			modal : true,
+			draggable : false,
+			resizable : false,
+		});
+		$wnd.jQuery("#dialog-about").dialog("open");
+	}-*/;
+
 	private native void loadUIThemeElements()/*-{
 		$wnd.jQuery("button").button();
 		$wnd.jQuery(".button").button();
+		$wnd.jQuery("#menu").menu({
+			position : {
+				my : "right top",
+				at : "right+5 top+25"
+			}
+		});
 	}-*/;
 
 	public void updateLanguageForAnnotationComponent() {
@@ -161,49 +187,65 @@ public class Accurator implements EntryPoint {
 			@Override
 			public void onResponseReceived(Request request, Response response) {
 				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
-				if (entries.length() > 0) {
+				if (entries != null && entries.length() > 0) {
 					String language = entries.get(0).getValueAsString();
 					getAnnotateScreen().setLanguage(language);
+				}
+				else
+				{
+					//default to dutch
+					getAnnotateScreen().setLanguage("nl");
 				}
 			}
 
 			@Override
-			public void onError(Request request, Throwable exception) {}
+			public void onError(Request request, Throwable exception) {
+				exception.printStackTrace();
+			}
 		};
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), callback);
 	}
 
-	public void onModuleLoad() {
-		RootPanel rootPanel = RootPanel.get();
-		Widget w = uiBinder.createAndBindUi(this);
-		dvlogoutBlock.setVisible(false);
-		btnDone.setVisible(false);
-
-		rootPanel.add(w);
-		loadUIThemeElements();
-		initHistorySupport();
-
-		getManagement().login();
+	protected void resizeContent() {
+		int headerHeight = header.getOffsetHeight();
+		int footerHeight = footer.getOffsetHeight();
+		int windowHeight = Window.getClientHeight();
+		int height = windowHeight - headerHeight - footerHeight;
+		String mainContentHeight = height + "px";
+		content.setHeight(mainContentHeight);
 	}
 
 	protected void loadRecommendations() {
-		String url = Config.getAssignComponentURL() + "?" + "strategy=" + Config.getAssignStrategy() + "&nritems="
-				+ Config.getAssignComponentNrItems() + "&user=" + Utility.getQualifiedUsername();
+		String url = Config.assignComponentURL + "?" + "strategy=" + Config.assignComponentStrategy + "&nritems="
+				+ Config.assignComponentNrItems + "&user=" + Utility.getQualifiedUsername();
+
+		// show the loader image if we are on the recommendation screen
+		if (State.Recommendation.toString().equals(History.getToken())) showLoading(true);
+
 		Utility.adminService.getJSON(url, new AsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String json) {
-				recommendedItems = new LinkedList<JsRecommendedItem>();
-				JsArray<JsRecommendedItem> recs = parseRecommendations(json);
-				for (int i = 0; i < recs.length(); i++) {
-					recommendedItems.add(recs.get(i));
+				// if json == null, retry
+				if (json == null) {
+					loadRecommendations();
 				}
-				getRecommendationScreen().loadNextRecommendations();
+				else {
+					recommendedItems = new LinkedList<JsRecommendedItem>();
+					JsArray<JsRecommendedItem> recs = parseRecommendations(json);
+					for (int i = 0; i < recs.length(); i++) {
+						recommendedItems.add(recs.get(i));
+					}
+					getRecommendationScreen().loadNextRecommendations();
+					if (State.Recommendation.toString().equals(History.getToken())) showLoading(false);
+				}
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				System.err.println(caught.toString());
+				caught.printStackTrace();
+				// try again
+				loadRecommendations();
 			}
 		});
 	}
@@ -222,57 +264,6 @@ public class Accurator implements EntryPoint {
 		Window.Location.replace(newURL);
 	}
 
-	protected void setPredefinedOrderPrints() {
-		String user = Utility.getStoredUsername();
-		hasPredefinedAnnotationOrder = true;
-		String[] castles;
-		String[] flowers;
-		if ("user1".equals(user)) {
-			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-51204",
-					"http://purl.org/collections/nl/rma/collection/r-75847", "http://purl.org/collections/nl/rma/collection/r-51214",
-					"http://purl.org/collections/nl/rma/collection/r-60314", "http://purl.org/collections/nl/rma/collection/r-60350", };
-			predefinedCastleURIs.addAll(Arrays.asList(castles));
-			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-138755",
-					"http://purl.org/collections/nl/rma/collection/r-150004", "http://purl.org/collections/nl/rma/collection/r-55603",
-					"http://purl.org/collections/nl/rma/collection/r-417077", "http://purl.org/collections/nl/rma/collection/r-305471", };
-			predefinedFloraURIs.addAll(Arrays.asList(flowers));
-		}
-		else if ("user2".equals(user)) {
-			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-63828",
-					"http://purl.org/collections/nl/rma/collection/r-54265", "http://purl.org/collections/nl/rma/collection/r-51291",
-					"http://purl.org/collections/nl/rma/collection/r-59875", "http://purl.org/collections/nl/rma/collection/r-59127" };
-			predefinedCastleURIs.addAll(Arrays.asList(castles));
-			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-242635",
-					"http://purl.org/collections/nl/rma/collection/r-436862", "http://purl.org/collections/nl/rma/collection/r-63923",
-					"http://purl.org/collections/nl/rma/collection/r-242628", "http://purl.org/collections/nl/rma/collection/r-234811", };
-			predefinedFloraURIs.addAll(Arrays.asList(flowers));
-		}
-		else if ("user3".equals(user)) {
-			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-51204",
-					"http://purl.org/collections/nl/rma/collection/r-75847", "http://purl.org/collections/nl/rma/collection/r-51214",
-					"http://purl.org/collections/nl/rma/collection/r-60314", "http://purl.org/collections/nl/rma/collection/r-60350", };
-			predefinedCastleURIs.addAll(Arrays.asList(castles));
-			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-138755",
-					"http://purl.org/collections/nl/rma/collection/r-150004", "http://purl.org/collections/nl/rma/collection/r-55603",
-					"http://purl.org/collections/nl/rma/collection/r-417077", "http://purl.org/collections/nl/rma/collection/r-305471", };
-			predefinedFloraURIs.addAll(Arrays.asList(flowers));
-
-		}
-		else if ("user4".equals(user)) {
-			castles = new String[] { "http://purl.org/collections/nl/rma/collection/r-63828",
-					"http://purl.org/collections/nl/rma/collection/r-54265", "http://purl.org/collections/nl/rma/collection/r-51291",
-					"http://purl.org/collections/nl/rma/collection/r-59875", "http://purl.org/collections/nl/rma/collection/r-59127" };
-			predefinedCastleURIs.addAll(Arrays.asList(castles));
-			flowers = new String[] { "http://purl.org/collections/nl/rma/collection/r-242635",
-					"http://purl.org/collections/nl/rma/collection/r-436862", "http://purl.org/collections/nl/rma/collection/r-63923",
-					"http://purl.org/collections/nl/rma/collection/r-242628", "http://purl.org/collections/nl/rma/collection/r-234811", };
-			predefinedFloraURIs.addAll(Arrays.asList(flowers));
-		}
-		else {
-			hasPredefinedAnnotationOrder = false;
-		}
-	}
-
 	public void userPropertyChanged(String dimension) {
 		if ("expertise".equals(dimension)) {
 			loadRecommendations();
@@ -282,7 +273,7 @@ public class Accurator implements EntryPoint {
 	private void annotate(String resourceURI, String topic) {
 		// extra stylesheet for annotation component
 		String stylesheet = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/css/jacconator.css";
-		String url = Config.getAnnotationComponentURL() + "?target=" + resourceURI + "&stylesheet=" + stylesheet;
+		String url = Config.annotationComponentURL + "?target=" + resourceURI + "&stylesheet=" + stylesheet;
 		String ui = "";
 		if (floraTopic.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorFlowerDemoUi";
@@ -301,29 +292,18 @@ public class Accurator implements EntryPoint {
 		String topic = Utility.getResourceTopic(resourceURI);
 		// if not known, get it and store it
 		if (topic == null) {
-			// check if the prints are in the predefined lists
-			if (predefinedCastleURIs != null && predefinedCastleURIs.contains(resourceURI)) {
-				Utility.setResourceTopic(resourceURI, castleTopic);
-				annotate(resourceURI, castleTopic);
-			}
-			else if (predefinedFloraURIs != null && predefinedFloraURIs.contains(resourceURI)) {
-				Utility.setResourceTopic(resourceURI, floraTopic);
-				annotate(resourceURI, floraTopic);
-			}
-			else {
-				// get the new one
-				Utility.itemService.getTopic(resourceURI, new AsyncCallback<String>() {
+			// get the new one
+			Utility.itemService.getTopic(resourceURI, new AsyncCallback<String>() {
 
-					@Override
-					public void onSuccess(String topic) {
-						Utility.setResourceTopic(resourceURI, topic);
-						annotate(resourceURI, topic);
-					}
+				@Override
+				public void onSuccess(String topic) {
+					Utility.setResourceTopic(resourceURI, topic);
+					annotate(resourceURI, topic);
+				}
 
-					@Override
-					public void onFailure(Throwable caught) {}
-				});
-			}
+				@Override
+				public void onFailure(Throwable caught) {}
+			});
 		}
 		else {
 			annotate(resourceURI, topic);
@@ -401,30 +381,14 @@ public class Accurator implements EntryPoint {
 		if (expertise == null) {
 			return uris;
 		}
-		// either a static order based on the person or based on UP and
-		// recommendation
-		if (hasPredefinedAnnotationOrder) {
-			double castleExp = 0;
-			double floraExp = 0;
-			if (expertise.containsKey("castle")) castleExp = expertise.get("castle");
-			if (expertise.containsKey("flora")) floraExp = expertise.get("flora");
-			for (int i = 0; i < nrPrints; i++) {
-				if (castleExp > 0.6 && predefinedCastleURIs.size() > i) uris.add(predefinedCastleURIs.get(i));
-				else if (floraExp > 0.6 && predefinedFloraURIs.size() > i) uris.add(predefinedFloraURIs.get(i));
-				else if (recommendedItems != null && recommendedItems.size() > 0) {
-					uris.add(recommendedItems.removeFirst().getURI());
-				}
-			}
+		// based on UP and recommendation
+		if (recommendedItems == null || recommendedItems.size() == 0) {
+			return uris;
 		}
-		else {
-			if (recommendedItems == null) {
-				return uris;
-			}
-			for (int i = 0; i < nrPrints; i++) {
-				JsRecommendedItem rec = recommendedItems.removeFirst();
-				Utility.setResourceTopic(rec.getURI(), rec.getScope());
-				uris.add(rec.getURI());
-			}
+		for (int i = 0; i < nrPrints; i++) {
+			JsRecommendedItem rec = recommendedItems.removeFirst();
+			Utility.setResourceTopic(rec.getURI(), rec.getScope());
+			uris.add(rec.getURI());
 		}
 		return uris;
 	}
@@ -471,10 +435,33 @@ public class Accurator implements EntryPoint {
 	protected void loadCurrentHistory() {
 		String token = History.getToken();
 		if (token == null || token.isEmpty()) {
-			token = State.Annotate.toString();
+			History.newItem(State.Recommendation.toString());
 		}
-		LoadState(token);
+		else{
+			LoadState(token);
+		}
 	}
+
+	public static native void trackGoogleAnalytics(String historyToken) /*-{
+		try {
+
+			// setup tracking object with account
+			var pageTracker = $wnd._gat._getTracker("UA-37706543-1");
+
+			pageTracker._setRemoteServerMode();
+
+			// turn on anchor observing
+			pageTracker._setAllowAnchor(true)
+
+			// send event to google server
+			pageTracker._trackPageview(historyToken);
+
+		} catch (err) {
+
+			// debug
+			alert('FAILURE: to send in event to google analytics: ' + err);
+		}
+	}-*/;
 
 	private void initHistorySupport() {
 		History.addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -482,6 +469,7 @@ public class Accurator implements EntryPoint {
 			public void onValueChange(ValueChangeEvent<String> event) {
 				String token = event.getValue();
 				LoadState(token);
+				trackGoogleAnalytics(token);
 			}
 		});
 	}

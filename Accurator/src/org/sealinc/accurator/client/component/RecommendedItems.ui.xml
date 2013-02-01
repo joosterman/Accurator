@@ -3,10 +3,10 @@
 	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
-	<g:HTMLPanel>
+	<g:HTMLPanel styleName="recommendedContent">
 		<div class="recommendation">
 			<h2>
-				<ui:msg description="Personal recommendations">Personal recommendations</ui:msg>
+				<ui:msg description="Recommended prints">Recommended prints</ui:msg>
 			</h2>
 			<div class="search">
 				<g:TextBox ui:field="tbSearch" styleName="searchBox"></g:TextBox>

@@ -36,10 +36,10 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 
 	@Override
 	public List<Annotation> getAnnotations(String user, int nrAnnotations) {
-		String userURI = Config.getUserComponentUserURI() + user;
+		String userURI = Config.userComponentUserURI + user;
 		String sparql = String.format(
 				"%s SELECT ?subject WHERE { ?subject rdf:type oa:Annotation . ?subject oa:annotated ?date . ?subject oa:annotator <%s> } ORDER BY DESC(?date) LIMIT %s",
-				Config.getRDFPrefixes(), userURI, nrAnnotations);
+				Config.sparqlPrefixes, userURI, nrAnnotations);
 		List<String> uris = Utility.getURIs(sparql);
 		List<Annotation> anns = null;
 		anns = Utility.getObjectsByURI(uris, Annotation.class, Annotation.rdfType);
@@ -51,7 +51,7 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 		if (resourceURI == null) return false;
 		logger.info(view.viewer + " viewed " + resourceURI);
 		// create the view URI
-		String uri = String.format("%sview/%s-%s-%s", Config.getAdminComponentBaseURI(), resourceURI.hashCode(), view.viewer.hashCode(),
+		String uri = String.format("%sview/%s-%s-%s", Config.adminComponentBaseURI, resourceURI.hashCode(), view.viewer.hashCode(),
 				GregorianCalendar.getInstance().get(Calendar.DAY_OF_YEAR));
 		view.uri = uri;
 		// create new model
@@ -75,7 +75,7 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 	public boolean setReview(String annotationURI, Review review) {
 		logger.info(review.reviewer + " reviewed " + annotationURI);
 		// create the review URI
-		String uri = String.format("%sreview/%s-%s-%s", Config.getAdminComponentBaseURI(), annotationURI.hashCode(),
+		String uri = String.format("%sreview/%s-%s-%s", Config.adminComponentBaseURI, annotationURI.hashCode(),
 				review.reviewer.hashCode(), GregorianCalendar.getInstance().get(Calendar.DAY_OF_YEAR));
 		review.uri = uri;
 		// create new model
@@ -97,10 +97,10 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 
 	@Override
 	public int getTotalAnnotatedPrints(String user, Date annotatedSince) {
-		String userURI = Config.getUserComponentUserURI() + user;
+		String userURI = Config.userComponentUserURI + user;
 		String sparql = String.format(
 				"%s SELECT DISTINCT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> . ?target rdf:type <%s> }",
-				Config.getRDFPrefixes(), userURI, CollectionItem.rdfType);
+				Config.sparqlPrefixes, userURI, CollectionItem.rdfType);
 
 		// count unique uris
 		List<String> uris = Utility.getURIs(sparql);
@@ -110,10 +110,10 @@ public class UserComponentServiceImpl extends RemoteServiceServlet implements Us
 	@Override
 	public List<CollectionItem> getLastAnnotatedItems(String user, int nrItems) {
 		// get all
-		String userURI = Config.getUserComponentUserURI() + user;
+		String userURI = Config.userComponentUserURI + user;
 		String sparql = String.format(
 				"%s SELECT DISTINCT ?target WHERE { ?subject rdf:type oa:Annotation . ?subject oa:annotated ?date . ?subject oa:hasTarget ?target . ?subject oa:annotator <%s> . ?target rdf:type <%s> } ORDER BY DESC(?date)",
-				Config.getRDFPrefixes(), userURI, CollectionItem.rdfType);
+				Config.sparqlPrefixes, userURI, CollectionItem.rdfType);
 		List<String> uris = Utility.getURIs(sparql);
 		if (uris.size() > nrItems) uris = uris.subList(0, nrItems);
 		List<CollectionItem> items = Utility.getObjectsByURI(uris, CollectionItem.class, CollectionItem.rdfType);

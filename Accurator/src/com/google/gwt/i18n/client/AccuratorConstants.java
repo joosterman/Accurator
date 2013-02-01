@@ -6,4 +6,6 @@ public interface AccuratorConstants extends ConstantsWithLookup {
 	String logIn();
 	String loginFailed();
 	String registrationFailed();
+	String lay();
+	String expert();
 }

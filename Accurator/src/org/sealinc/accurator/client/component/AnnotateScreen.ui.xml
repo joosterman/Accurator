@@ -4,7 +4,7 @@
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 
-	<g:NamedFrame ui:field="annotationFrame" styleName="annotationFrame" height="650"></g:NamedFrame>
+	<g:NamedFrame ui:field="annotationFrame" styleName="annotationFrame" url="about:blank"></g:NamedFrame>
 
 
 </ui:UiBinder>

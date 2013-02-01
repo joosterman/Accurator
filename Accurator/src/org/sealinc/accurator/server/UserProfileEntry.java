@@ -24,7 +24,7 @@ public class UserProfileEntry implements Serializable,IsSerializable {
 	public String dimension;
 	@Index(IfNotNull.class)
 	public String scope;
-	@Unindex
+	@Index
 	public Object value;
 	@Index
 	public String provider;

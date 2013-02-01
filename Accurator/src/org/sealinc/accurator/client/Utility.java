@@ -74,7 +74,7 @@ public class Utility {
 	public static String getQualifiedUsername() {
 		Storage localStorage = Storage.getLocalStorageIfSupported();
 		if (localStorage != null) {
-			return Config.getUserComponentUserURI() + localStorage.getItem(username);
+			return Config.userComponentUserURI + localStorage.getItem(username);
 		}
 		else {
 			return null;
@@ -109,6 +109,24 @@ public class Utility {
 		}
 	}
 
+	public static void deleteUserProfileEntry(String user,String dimension, String scope,String provider){
+		String loc = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/accurator/userprofile?";
+		String data = "user=" + user;
+		if (dimension != null) data += "&dimension=" + dimension;
+		if (scope != null) data += "&scope=" + scope;
+		if (provider != null) data += "&provider=" + provider;		
+
+		RequestBuilder rb = new RequestBuilder(RequestBuilder.DELETE, loc + data);
+		rb.setRequestData("");
+		rb.setCallback(noopCallback);
+		try {
+			rb.send();
+		}
+		catch (RequestException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void storeUserProfileEntry(String user, String dimension, String scope, String provider, String value, String valueType) {
 		// value cannot be null
 		if (value == null) return;
