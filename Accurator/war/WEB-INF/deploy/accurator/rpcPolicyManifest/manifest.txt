@@ -1,7 +1,0 @@
-# Module accurator
-# RPC service class, partial path of RPC policy file
-org.sealinc.accurator.client.service.AdminComponentService, B2B2385CF6B08B637575897E43B8223F.gwt.rpc
-org.sealinc.accurator.client.service.QualityComponentService, 09F7EC9F8D53116A1CA5429E230F091E.gwt.rpc
-org.sealinc.accurator.client.service.AssignComponentService, C969FCB8B7A7067C24A8275985276013.gwt.rpc
-org.sealinc.accurator.client.service.ItemComponentService, DB1B860235295CCD6BEE9E4105901959.gwt.rpc
-org.sealinc.accurator.client.service.UserComponentService, 943EB913125F547559865605E95761B1.gwt.rpc
