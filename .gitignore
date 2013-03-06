@@ -19,4 +19,6 @@ Accurator/.gwt/.gwt-log
 
 UMAP2013-Demo/abstract.log
 
-*.log
+.log
+.synctex.gz
+.bbl
