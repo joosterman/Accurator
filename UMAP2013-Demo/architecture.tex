@@ -1,23 +1,20 @@
 \section{Accurator framework}
 \label{architecture}
-Our assumptions for the nichesourcing process are the following. 
-We assume that personalizing the nichesourcing process increases the quality of the annotations. 
-We assume we can use specific techniques to identify niches and create user profiles. 
-% MT: Can we use a different term than "user profiles" here? It might be misleading. What about "expert profiles" or "expertise profiles"? 
-Based on the user profiles we assume that we can recommend relevant tasks to the user and apply trust mechanisms to motivate users, provide feedback and improve the recommendations.  
-We build the Accurator framework upon these assumptions and we use it to solve the aforementioned challenges. 
+Our assumptions for the niche sourcing process are the following. We assume that personalizing the niche sourcing process increases the quality of the annotations. We assume we can use specific techniques to identify niches and create user profiles. Based on the user profiles we assume we can recommend relevant tasks to the user and apply trust mechanisms to motivate users, provide feedback and improve the recommendations.  We have build the Accurator framework, see Figure 1, upon these assumptions and use it to solve the aforementioned challenges. 
 
-Figure 1a and 1b
+Insert figure here.
 
-Figure 1a illustrated the different parts of Accurator. 
+The process starts with a collection of items that need annotation and are about topic \textit{t}. We search, see Figure 1a,  the social web for user generated content that, when enriched, is relevant for \textit{t}. We calculate the relevance of the content creators given \textit{t} and exploit, if available, social relations and platform specific features, for example mentions and retweets, to identify a topical niche. We target and motivate (key persons, based on their network, of) the niche to use Accurator. When a person starts using Accurator a user profile, Figure 1b, is build based on available data. The user can help the system by specifying additional social web accounts.
 
-List of points to discuss:
-quality of tags improved by
-user selection
-recommendation
-trust
-Intuitive and helpful interface for users 
-techniques/tools used
-wrap up
-% MT: We shouldn't forget to describe how we use Accurator in our research.
+Figure 1c shows the recommendation of tasks, either annotation or reviewing, for a user. The recommendation strategy is based on specific patterns in the data and the user profile of the user. Strategy can also be extended to use the overall annotation quality of an item. Since not every strategy works equally well for each user Accurator allows to easily change between different strategies and a future task is to automatically adapt the choice of strategy based on that user profile. The choice of recommended item is input for the interest of that user.
+
+Figure 1d shows the interface where users add their annotations to a collection item. The fields are dependent on the topic and which fields are shown depends on the expertise of the user on that topic. Users with more expertise on that topic are allowed to enter more difficult fields. Accurator can also be configured to use a vocabulary for a field to support the user.
+
+Figure 1e shows the reviewing interface where users can review the annotations of other users. Reviewing tasks are only available to users who are trustworthy and have a certain level of expertise for the topic(s) of that item. The result of a review is input for 1) the quality of an annotation, 2) the expertise level of a user and 3) the trustworthiness of a user.
+
+Another aspect that holds for all interfaces is that they should be intuitive and helpful. We acknowledge that users contribute based on intrinsic motivation and that users who have problems will not return. 
+
+Accurator consists of separate components which are linked together using Google Web Toolkit. Data is stored using both the Cliopatria triple store and Google App Engine. The algorithms and strategies are available as separate services. 
+
+
 
