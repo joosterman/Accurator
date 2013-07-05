@@ -1,6 +1,7 @@
 package org.sealinc.accurator.server;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,12 +20,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
+import javax.naming.BinaryRefAddr;
 import javax.servlet.http.HttpServletResponse;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.Namespace;
 import org.sealinc.accurator.shared.RDFObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
@@ -66,12 +70,14 @@ public class Utility {
 	public static Model toRDF(RDFObject o) {
 		return toRDF(o, ModelFactory.createDefaultModel());
 	}
+
 	/**
 	 * Makes sure that the response from a servlet is not chached (in any browser)
+	 * 
 	 * @param response
 	 */
-	public static void setNoCacheJSON(HttpServletResponse response){
-		//set to return JSON
+	public static void setNoCacheJSON(HttpServletResponse response) {
+		// set to return JSON
 		response.setContentType("application/json; charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		// Disable cache, also for IE
@@ -199,16 +205,16 @@ public class Utility {
 		}
 	}
 
-	public static boolean register(String user, String realname, String password) {	
-		//encode the real name
+	public static boolean register(String user, String realname, String password) {
+		// encode the real name
 		try {
-			realname = URLEncoder.encode(realname,"UTF-8");
+			realname = URLEncoder.encode(realname, "UTF-8");
 		}
 		catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.adminRegisterUserURL, user, realname, password);
 		int statusCode = getStatusCode(url);
 		if (statusCode == 200) {
@@ -292,6 +298,70 @@ public class Utility {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * Performs a HTTP request using the specified method. The data is written to
+	 * the outputstream or, if data is null, the provided parameters in key/value
+	 * pairs.
+	 * 
+	 * @param method
+	 * @param url
+	 * @param contentType
+	 * @param params
+	 * @param data
+	 * @return
+	 */
+	public static WebResponseData doRequest(HTTPMethod method, URL url, String contentType, String accepts, Map<String, String[]> params, String outputData) {
+		WebResponseData data = new WebResponseData();
+		try {
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod(method.name());
+			// write data when there are parameters or outputData
+			if ((params != null && params.size() > 0) || outputData != null) {
+				// indicate that we will ne writing
+				con.setDoOutput(true);
+				// set the right method
+				con.setRequestMethod(method.name());
+				String charset = "UTF-8";
+				con.setRequestProperty("Content-Type", contentType);
+				con.setRequestProperty("Accept", accepts);
+				// stringify the request parameters
+				StringBuilder builder = new StringBuilder();
+				for (String key : params.keySet()) {
+					for (String value : params.get(key)) {
+						builder.append(key);
+						builder.append("=");
+						builder.append(URLEncoder.encode(value, charset));
+						builder.append("&");
+					}
+				}
+
+				// write either the data or the parameters
+				DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+				if (outputData == null) wr.writeBytes(builder.toString());
+				else wr.writeBytes(outputData);
+				wr.flush();
+				wr.close();
+			}
+			con.connect();
+
+			data.statusCode = con.getResponseCode();
+			String line;
+			StringBuilder result = new StringBuilder();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			while ((line = reader.readLine()) != null) {
+				result.append(line);
+				result.append("\n");
+			}
+			reader.close();
+			data.data = result.toString();
+		}
+		catch (Exception ex) {
+			data.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+			data.data = ex.toString();
+		}
+		return data;
 	}
 
 	/**
@@ -458,16 +528,14 @@ public class Utility {
 		return m;
 	}
 
-	public static <T extends RDFObject> T getObjectByURI(String uri, Class<T> clazz,String rdfType){
+	public static <T extends RDFObject> T getObjectByURI(String uri, Class<T> clazz, String rdfType) {
 		List<String> uris = new ArrayList<String>();
 		uris.add(uri);
-		List<T> objs = getObjectsByURI(uris, clazz,rdfType);
-		if(objs.size()>0)
-			return objs.get(0);
-		else
-			return null;
+		List<T> objs = getObjectsByURI(uris, clazz, rdfType);
+		if (objs.size() > 0) return objs.get(0);
+		else return null;
 	}
-	
+
 	public static <T extends RDFObject> List<T> getObjectsByURI(List<String> uris, Class<T> clazz, String rdfType) {
 		// generate sparql
 		StringBuilder sb = new StringBuilder();
@@ -479,7 +547,8 @@ public class Utility {
 			sb.append(gt);
 			sb.append(" ");
 		}
-		String sparql = String.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . ?subject rdf:type <%s> . VALUES ?subject { %s }}",
+		String sparql = String.format(
+				"%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . ?subject rdf:type <%s> . VALUES ?subject { %s }}",
 				Config.sparqlPrefixes, rdfType, sb.toString());
 		List<T> cis = Utility.getObjects(sparql, clazz);
 		return cis;
@@ -497,10 +566,10 @@ public class Utility {
 	private static <T extends RDFObject> List<T> getObjects(String sparql, Class<T> clazz) {
 		ResultSet rs = getRDFFromEndpoint(sparql);
 		List<T> objs = new ArrayList<T>();
-		
+
 		if (rs == null) return objs;
 		QuerySolution qs = null;
-		
+
 		String uri, fieldName;
 		Object fieldValue;
 		T obj = null;
@@ -572,7 +641,7 @@ public class Utility {
 	 * @param sparql
 	 * @return List of uris string or null if more that 1 bound variable was found
 	 */
-	public static List<String> getURIs(String sparql){
+	public static List<String> getURIs(String sparql) {
 		ResultSet rs = getRDFFromEndpoint(sparql);
 		List<String> uris = new ArrayList<String>();
 		if (rs.getResultVars() == null || rs.getResultVars().size() != 1) {
@@ -595,15 +664,16 @@ public class Utility {
 			}
 			return uris;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Get literal values based on a sparql query. The resultset should include
 	 * only one variable.
 	 * 
 	 * @param sparql
-	 * @return List of the found literal values or null if more than 1 bound variables was found
+	 * @return List of the found literal values or null if more than 1 bound
+	 *         variables was found
 	 */
 	public static List<Literal> getLiteralValue(String sparql) {
 		ResultSet rs = getRDFFromEndpoint(sparql);

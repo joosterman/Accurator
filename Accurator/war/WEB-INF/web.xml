@@ -67,5 +67,13 @@
 		<servlet-name>UserProfileServlet</servlet-name>
 		<url-pattern>/accurator/userprofile</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>UtilityServlet</servlet-name>
+		<servlet-class>org.sealinc.accurator.server.service.UtilityServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UtilityServlet</servlet-name>
+		<url-pattern>/accurator/utility</url-pattern>
+	</servlet-mapping>
 
 </web-app>

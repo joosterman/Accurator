@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Crowdflower</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link type="text/css" rel="stylesheet" media="screen" href="bootstrap/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="bootstrap/css/alertify.core.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="bootstrap/css/alertify.bootstrap.css" />
+<style type="text/css">
+body {
+	padding-top: 60px; padding-bottom: 40px;
+}
+
+.sidebar-nav {
+	padding: 9px 0;
+}
+
+@media ( max-width : 980px) { /* Enable use of floated navbar text */
+	.navbar-text.pull-right {
+		float: none; padding-left: 5px; padding-right: 5px;
+	}
+}
+</style>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+				</button>
+				<a class="brand" href="#">Accurator crowdflower</a>
+				<div class="nav-collapse collapse">
+					<p class="navbar-text pull-right">
+						Logged in as <a href="#" class="navbar-link">Username</a>
+					</p>
+					<ul class="nav">
+						<li class="active"><a href="#">Home</a></li>
+						<li><a href="#about">About</a></li>
+						<li><a href="#contact">Contact</a></li>
+					</ul>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+	</div>
+
+	<ul class="nav nav-tabs" id="myTab">
+		<li class="active"><a href="#tab_data" data-toggle="tab">Data</a></li>
+		<li><a href="#tab_jobs" data-toggle="tab">Jobs</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="tab_data">
+			<div class="container-fluid">
+				<div class="row-fluid">
+					<div class="span12">
+						<div class="row-fluid">
+							<div class="span12">
+								<input type="button" class="btn" data-toggle="collapse" data-target="#rowInputData" value="Show / hide load input data" />
+							</div>
+						</div>
+						<div class="row-fluid collapse in" id="rowInputData">
+							<div class="span6">
+								<h2>Load data from CVS</h2>
+								<p>
+									<input type="file" id="inputCSVFile" />
+								</p>
+							</div>
+							<!--/span-->
+							<div class="span6">
+								<h2>Load data from query</h2>
+								<p>
+								<table class="table">
+									<tr>
+										<td>Field name</td>
+										<td><input type="text" id="txtQueryFieldName" value="http://purl.org/collections/nl/rma/schema#contentClassification" /></td>
+									</tr>
+									<tr>
+										<td>Field value</td>
+										<td><input type="text" id="txtQueryFieldValue" value="http://www.cs.vu.nl/stitch/iconclass#ic_25G41" /></td>
+									</tr>
+									<tr>
+										<td>Operation</td>
+										<td><select id="selQueryOperation">
+												<optgroup label="Text">
+													<option value="literal_exact">Exact match</option>
+													<option value="literal_contains">Contains</option>
+												</optgroup>
+												<optgroup label="Iconclass">
+													<option value="ic_exact" selected="selected">Exact match IC code</option>
+													<option value="ic_subtree">Exact match + subtree IC code</option>
+												</optgroup>
+										</select></td>
+									</tr>
+								</table>
+								<p>
+									<a class="btn" id="btnQuery" href="#">Query</a>
+								</p>
+							</div>
+
+						</div>
+						<hr>
+						<!--/row-->
+						<div class="row-fluid">
+							<div class="span12">
+								<h2>Input data</h2>
+								<a class="btn" id="btnSaveTable" href="#">Save data</a><a class="btn" id="btnLoadTable" href="#">Load data</a>
+								<div id="inputDataTable"></div>
+							</div>
+							<!--/span-->
+						</div>
+						<!--/row-->
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<hr>
+			</div>
+			<!--/.fluid-container-->
+		</div>
+		<div class="tab-pane" id="tab_jobs">
+			<div class="container-fluid">
+				<div class="row-fluid">
+					<div class="span12">
+						<a class="btn" id="btnReloadJobs" href="#">Reload Jobs</a>
+					</div>
+				</div>
+				<div class="row-fluid">
+					<div class="span6">
+						<h3>Create new Job</h3>
+						<table class="table">
+							<tr>
+								<td>Title</td>
+								<td><input type="text" id="txtJobTitle" value="" /></td>
+							</tr>
+						</table>
+						<p>
+							<a class="btn" id="btnCreateJob" href="#">Create</a>
+						</p>
+					</div>
+					<div class="span6">
+						<h3>Add saved data to selected jobs</h3>
+						<p>
+							<a class="btn" id="btnAddData" href="#">Add saved data</a>
+						</p>
+					</div>
+				</div>
+				<hr>
+				<div class="row-fluid">
+					<div class="span12">
+						<h3>Jobs</h3>
+						<div id="jobDataTable"></div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<footer>
+		<p>&copy; Jasper Oosterman 2013</p>
+	</footer>
+
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="bootstrap/js/jquery.csv-0.71.min.js"></script>
+	<script type="text/javascript" src="bootstrap/js/alertify.min.js"></script>
+	<script type='text/javascript' src='//www.google.com/jsapi'></script>
+	<script type='text/javascript'>
+		google.load('visualization', '1', {
+			packages : [ 'table' ]
+		});
+	</script>
+	<script type="text/javascript" src="bootstrap/js/crowdflower.jquery.js"></script>
+	<script type="text/javascript" src="bootstrap/js/custom.js"></script>
+
+</body>
+</html>

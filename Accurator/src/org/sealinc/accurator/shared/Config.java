@@ -1,13 +1,13 @@
 package org.sealinc.accurator.shared;
 
 public class Config {
-	/*public static final String baseURL = "http://eculture.cs.vu.nl/sealinc/";
+	public static final String baseURL = "http://eculture.cs.vu.nl/sealinc/";
 	public static final String adminUsername = "admin";
-	public static final String adminPassword = "Anuz3EeY";*/
+	public static final String adminPassword = "Anuz3EeY";
 	
-	public static final String baseURL = "http://eculture.cs.vu.nl/sealinctest/";
+	/*public static final String baseURL = "http://eculture.cs.vu.nl/sealinctest/";
 	public static final String adminUsername = "admin";
-	public static final String adminPassword = "sealink";
+	public static final String adminPassword = "sealink";*/
 	
 	public static final String sparqlEndpoint = baseURL + "sparql/";
 	public static final String annotationComponentURL = baseURL + "annotate";
