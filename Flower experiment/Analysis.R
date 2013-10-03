@@ -44,6 +44,9 @@ mnpc3 = mnp[mnp$Channel=="vivatic",]
 mnpc4 = mnp[mnp$Channel=="point_dollars",]
 mnpc5 = mnp[mnp$Channel!="niche",]
 
+#store the number of prints per dimension
+nrPrints = c("d1"=8, "d2"=16,"d3"=9,"d4"=53)
+
 
 # list all (names/corrected name/family) (1,2,3) in one dataframe
 x1 = subset(data, select=c(Image,Channel,name1corrected))
@@ -71,6 +74,12 @@ prints$nrUniqueCrowdAnnotations = apply(prints,1,function(m) nrow(unique(names[n
 prints$overlap = apply(prints,1,function(m) length(intersect(names[names$Image==m[1] & names$Channel=="niche",]$name, names[names$Image==m[1] & names$Channel!="niche",]$name)))
 prints$overlapPercentage = prints$overlap / prints$nrUniqueNicheAnnotations
 prints$confidence = apply(prints,1,function(m) mean(data[Image==m[1],]$AverageConfidence,na.rm=T))
+prints$maxCrowdAgreement = apply(prints,1,function(m){
+ 	x = names[names$Image==m[1] & names$Channel!="niche",]$name 
+	y = aggregate(x,by=list(x),FUN=length)
+	max(y[2])
+	}
+)
 
 #Get the prints (hashed image urls) with high (0.66 1.0) overlap
 highconfidence = prints[prints$overlapPercentage >0.6 & !is.na(prints$overlapPercentage),]
@@ -85,3 +94,38 @@ aggregate(prints$confidence,by=list(prints$Dimension),FUN="mean")
 
 #average confidence scores for overlap categories (0,0.33,0.5,0.66,1.0, "rest"=no niche annotations)
 aggregate(prints$confidence, by=list("overlapPercentage"=prints$overlapPercentage),FUN="mean")
+
+#Percentage of prints per dimension that have at least n crowd agreement
+n = 4
+x = table(prints[prints$maxCrowdAgreement>=n,]$Dimension)
+x / nrPrints
+
+#For each print find the annotations with at least n crowd agreements
+#Count the number of time this occors for each annotation
+n = 4
+x = apply(prints,1,function(m){
+ 	x = names[names$Image==m[1] & names$Channel!="niche",]$name 
+	y = aggregate(x,by=list(x),FUN=length)
+    z = y[y[2]>=n,]
+	cbind("Image" = m[1],z)
+	c("Image"=m[1],"annotation")
+	}
+)
+y = unlist(x,recursive=F)
+z = unlist(lapply(y,function(m) as.character(m)))
+t = table(z)
+sort(t,decreasing=T)
+
+#determine the crowd agreement for a print
+x = apply(prints,1,function(m){
+ 	x = names[names$Image==m[1] & names$Channel!="niche",]$name 
+	y = aggregate(x,by=list(x),FUN=length)
+	t = cbind("Image" = m[1],y)
+	colnames(t) = c("Image","name","agreement")
+	as.data.frame(t)
+	}
+)
+#make one date frame out of the list of data frames
+z = x[[1]]
+for(i in 2:length(x)) z = rbind(z,x[[i]])
+crowdagreement = z
