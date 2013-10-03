@@ -1,6 +1,6 @@
 #Read in the data from the csv file
 detach(data)
-data = read.csv("Aggregated batch123 crowd+niche+comments+classification-spam_v6.csv",head=TRUE)
+data = read.csv("Aggregated batch123 crowd+niche+comments+classification-spam_v7.csv",head=TRUE)
 attach(data)
 
 #make data frame with executions on only specific prints
@@ -49,9 +49,9 @@ nrPrints = c("d1"=8, "d2"=16,"d3"=9,"d4"=53)
 
 
 # list all (names/corrected name/family) (1,2,3) in one dataframe
-x1 = subset(data, select=c(Image,Channel,name1corrected))
-x2 = subset(data, select=c(Image,Channel,name2corrected))
-x3 = subset(data, select=c(Image,Channel,name3corrected))
+x1 = subset(data, select=c(Image,Channel,name1botanical))
+x2 = subset(data, select=c(Image,Channel,name2botanical))
+x3 = subset(data, select=c(Image,Channel,name3botanical))
 colnames(x1) = c("Image","Channel","name")
 colnames(x2) = c("Image","Channel","name")
 colnames(x3) = c("Image","Channel","name")
@@ -100,32 +100,16 @@ n = 4
 x = table(prints[prints$maxCrowdAgreement>=n,]$Dimension)
 x / nrPrints
 
-#For each print find the annotations with at least n crowd agreements
-#Count the number of time this occors for each annotation
-n = 4
-x = apply(prints,1,function(m){
- 	x = names[names$Image==m[1] & names$Channel!="niche",]$name 
-	y = aggregate(x,by=list(x),FUN=length)
-    z = y[y[2]>=n,]
-	cbind("Image" = m[1],z)
-	c("Image"=m[1],"annotation")
-	}
-)
-y = unlist(x,recursive=F)
-z = unlist(lapply(y,function(m) as.character(m)))
-t = table(z)
-sort(t,decreasing=T)
+#crowd agreement
+x = names[names$Channel!="niche",]
+crowdagreement = aggregate(x$name,by=list("Image" = x$Image,"name" = x$name),FUN=length)
+colnames(crowdagreement) = c("Image","name","agreement")
 
-#determine the crowd agreement for a print
-x = apply(prints,1,function(m){
- 	x = names[names$Image==m[1] & names$Channel!="niche",]$name 
-	y = aggregate(x,by=list(x),FUN=length)
-	t = cbind("Image" = m[1],y)
-	colnames(t) = c("Image","name","agreement")
-	as.data.frame(t)
-	}
-)
-#make one date frame out of the list of data frames
-z = x[[1]]
-for(i in 2:length(x)) z = rbind(z,x[[i]])
-crowdagreement = z
+#high agreement annotations
+high = 3
+x = crowdagreement
+y = x[x$agreement >= high,]
+z = aggregate(y$name,by=list("name"=y$name),FUN=length)
+z[order(z[2],decreasing=T),]
+
+
