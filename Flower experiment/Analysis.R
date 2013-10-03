@@ -1,7 +1,11 @@
+# Packages needed:
+# install.packages("hashFunction")
+
 #Read in the data from the csv file
 detach(data)
 data = read.csv("Aggregated batch123 crowd+niche+comments+classification-spam_v8.csv",head=TRUE)
 attach(data)
+
 
 #make data frame with executions on only specific prints
 sp = data[Dimension.amount=="single" & Dimension.prominence=="prominent" ,]
@@ -72,7 +76,7 @@ prints$nrCrowdAnnotations = apply(prints,1,function(m) nrow(names[names$Channel!
 prints$nrUniqueNicheAnnotations = apply(prints,1,function(m) nrow(unique(names[names$Channel=="niche" & names$Image==m[1], ]))  )
 prints$nrUniqueCrowdAnnotations = apply(prints,1,function(m) nrow(unique(names[names$Channel!="niche" & names$Image==m[1], ]))  )
 prints$overlap = apply(prints,1,function(m) length(intersect(names[names$Image==m[1] & names$Channel=="niche",]$name, names[names$Image==m[1] & names$Channel!="niche",]$name)))
-prints$overlapPercentage = prints$overlap / prints$nrUniqueNicheAnnotations
+prints$recall = prints$overlap / prints$nrUniqueNicheAnnotations
 prints$confidence = apply(prints,1,function(m) mean(data[Image==m[1],]$AverageConfidence,na.rm=T))
 prints$maxCrowdAgreement = apply(prints,1,function(m){
  	x = names[names$Image==m[1] & names$Channel!="niche",]$name 
@@ -82,7 +86,7 @@ prints$maxCrowdAgreement = apply(prints,1,function(m){
 )
 
 #Get the prints (hashed image urls) with high (0.66 1.0) overlap
-highconfidence = prints[prints$overlapPercentage >0.6 & !is.na(prints$overlapPercentage),]
+highconfidence = prints[prints$recall >0.6 & !is.na(prints$recall),]
 #Calculates the mean of the confidence scores of the high overlap prints
 mean(highconfidence$confidence)
 
@@ -93,7 +97,7 @@ aggregate.data.frame(prints$overlap,by=list(prints$nrUniqueNicheAnnotations,prin
 aggregate(prints$confidence,by=list(prints$Dimension),FUN="mean")
 
 #average confidence scores for overlap categories (0,0.33,0.5,0.66,1.0, "rest"=no niche annotations)
-aggregate(prints$confidence, by=list("overlapPercentage"=prints$overlapPercentage),FUN="mean")
+aggregate(prints$confidence, by=list("recall"=prints$recall),FUN="mean")
 
 #Percentage of prints per dimension that have at least n crowd agreement
 n = 4
