@@ -2,7 +2,7 @@
 # install.packages("hashFunction")
 
 #Read in the data from the csv file
-detach(data)
+#detach(data)
 data = read.csv("Aggregated batch123 crowd+niche+comments+classification-spam_v8.csv",head=TRUE)
 attach(data)
 
@@ -72,8 +72,8 @@ x3 = data[data$name3corrected=="no flower name",]$name3
 x = table(as.character(x1,x2,x3))
 noflowers = x[order(x,decreasing=T)]
 
-y = x[x$name=="no flower name",]
-aggregate(y$name,by=list("Image" =y$Image),FUN=length)
+#y = x[x$name=="no flower name",]
+#aggregate(y$name,by=list("Image" =y$Image),FUN=length)
 
 #Create a data frame containing each print on one row and aggregate info on the columns (Reminder: annotations are flower name annotations)
 prints = unique(subset(data, select=c("Image","Dimension")))
@@ -151,6 +151,6 @@ z = crowdagreement[crowdagreement$name=="fantasy",]
 merge(as.data.frame(fantasy),z,by.x="fantasy",by.y="Image")
 
 #data frame with data based on the percentage of overlap between niche and crowd
-aggregate(prints$nrAnnotations, by=list("overlapPercentage" = prints$overlapPercentage),FUN=mean)
-aggregate(prints$nrUniqueAnnotations, by=list("overlapPercentage" = prints$overlapPercentage),FUN=mean)
+aggregate(prints$nrAnnotations, by=list("recall" = prints$recall),FUN=mean)
+aggregate(prints$nrUniqueAnnotations, by=list("recall" = prints$recall),FUN=mean)
 
