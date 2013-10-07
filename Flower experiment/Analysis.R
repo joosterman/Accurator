@@ -1,6 +1,8 @@
 # Packages needed:
 # install.packages("hashFunction")
 
+
+
 #Read in the data from the csv file
 #detach(data)
 data = read.csv("Aggregated batch123 crowd+niche+comments+classification-spam_v8.csv",head=TRUE)
@@ -89,6 +91,8 @@ prints$nrUniqueCrowdAnnotations = apply(prints,1,function(m) nrow(unique(names[n
 prints$nrUniqueAnnotations = apply(prints,1,function(m) nrow(unique(names[names$Image==m[1], ]))  )
 prints$overlap = apply(prints,1,function(m) length(intersect(names[names$Image==m[1] & names$Channel=="niche",]$name, names[names$Image==m[1] & names$Channel!="niche",]$name)))
 prints$recall = prints$overlap / prints$nrUniqueNicheAnnotations
+# remove NaN from recall column
+prints$recall[is.nan(prints$recall)] <- 0
 prints$precision = prints$overlap / prints$nrUniqueCrowdAnnotations
 prints$confidence = apply(prints,1,function(m) mean(data[Image==m[1],]$AverageConfidence,na.rm=T))
 prints$executionTime = apply(prints,1,function(m) mean(data[Image==m[1],]$TotalTime,na.rm=T))
