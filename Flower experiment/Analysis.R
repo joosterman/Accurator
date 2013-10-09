@@ -1,11 +1,9 @@
 # Packages needed:
 # install.packages("hashFunction")
 
-
-
 #Read in the data from the csv file
 #detach(data)
-data = read.csv("Aggregated batch123 crowd+niche+comments+classification-spam_v8.csv",head=TRUE)
+data = read.csv("Aggregated batch123 crowd+niche+comments+classification-spam_v9.csv",head=TRUE)
 attach(data)
 
 
@@ -53,7 +51,6 @@ mnpc5 = mnp[mnp$Channel!="niche",]
 #store the number of prints per dimension
 nrPrints = c("d1"=8, "d2"=16,"d3"=9,"d4"=53)
 
-
 # list all (nname1botanical) (1,2,3) in one dataframe. Contains only flower names, non flower names are removed.
 x1 = subset(data, select=c(Image,Channel,name1botanical))
 x2 = subset(data, select=c(Image,Channel,name2botanical))
@@ -74,9 +71,6 @@ x3 = data[data$name3corrected=="no flower name",]$name3
 x = table(as.character(x1,x2,x3))
 noflowers = x[order(x,decreasing=T)]
 
-#y = x[x$name=="no flower name",]
-#aggregate(y$name,by=list("Image" =y$Image),FUN=length)
-
 #Create a data frame containing each print on one row and aggregate info on the columns (Reminder: annotations are flower name annotations)
 prints = unique(subset(data, select=c("Image","Dimension")))
 prints = prints[order(prints$Image),]
@@ -90,9 +84,11 @@ prints$nrUniqueNicheAnnotations = apply(prints,1,function(m) nrow(unique(names[n
 prints$nrUniqueCrowdAnnotations = apply(prints,1,function(m) nrow(unique(names[names$Channel!="niche" & names$Image==m[1], ]))  )
 prints$nrUniqueAnnotations = apply(prints,1,function(m) nrow(unique(names[names$Image==m[1], ]))  )
 prints$overlap = apply(prints,1,function(m) length(intersect(names[names$Image==m[1] & names$Channel=="niche",]$name, names[names$Image==m[1] & names$Channel!="niche",]$name)))
-prints$recall = prints$overlap / prints$nrUniqueNicheAnnotations
-# remove NaN from recall column
-prints$recall[is.nan(prints$recall)] <- 0
+prints$overlapPercentage = prints$overlap / prints$nrUniqueNicheAnnotations
+#This is not correct! The meaning of NaN is different from 0. NaN means no niche annotations where 0 means no overlap. NaN is also needed as a seperate category in the analysis. If you want another measure, please make another column, instead of removing/renaming an existing one.
+	prints$recall = prints$overlap / prints$nrUniqueNicheAnnotations
+	#remove NaN from recall column
+	prints$recall[is.nan(prints$recall)] <- 0
 prints$precision = prints$overlap / prints$nrUniqueCrowdAnnotations
 prints$confidence = apply(prints,1,function(m) mean(data[Image==m[1],]$AverageConfidence,na.rm=T))
 prints$executionTime = apply(prints,1,function(m) mean(data[Image==m[1],]$TotalTime,na.rm=T))
@@ -102,6 +98,10 @@ prints$maxCrowdAgreement = apply(prints,1,function(m){
 	max(y[2])
 	}
 )
+prints$nrNicheWorkers = apply(prints,1,function(m) length(unique(data[Image==m[1] & Channel=="niche",]$WorkerID )))
+prints$nrCrowdWorkers = apply(prints,1,function(m) length(unique(data[Image==m[1] & Channel!="niche",]$WorkerID )))
+prints$nrWorkers = prints$nrCrowdWorkers + prints$nrNicheWorkers
+prints$avgAnnotations= prints$nrAnnotations / prints$nrWorkers 
 
 #Get the prints (hashed image urls) with high (0.66 1.0) overlap
 highconfidence = prints[prints$recall >0.6 & !is.na(prints$recall),]
@@ -127,7 +127,7 @@ x = names[names$Channel!="niche",]
 crowdagreement = aggregate(x$name,by=list("Image" = x$Image,"name" = x$name),FUN=length)
 colnames(crowdagreement) = c("Image","name","agreement")
 
-#high crowd agreement annotations
+#annotations that have a high(>=2) agreement by crowd workers
 high = 2
 x = crowdagreement
 y = x[x$agreement >= high,]
@@ -156,6 +156,56 @@ z = crowdagreement[crowdagreement$name=="fantasy",]
 merge(as.data.frame(fantasy),z,by.x="fantasy",by.y="Image")
 
 #data frame with data based on the percentage of overlap between niche and crowd
-aggregate(prints$nrAnnotations, by=list("recall" = prints$recall),FUN=mean)
-aggregate(prints$nrUniqueAnnotations, by=list("recall" = prints$recall),FUN=mean)
+z = prints$nrAnnotations / prints$nrWorkers
+method = mean
+#aggregate per overlap
+aggregate(z,by=list("overlapPercentage" = prints$overlapPercentage),FUN=method)
+# aggregate per overlap per dimension
+x = aggregate(z, by=list("overlapPercentage" = prints$overlapPercentage,"Dimension" = prints$Dimension),FUN=method)
+x[order(x$overlapPercentage,na.last=F),]
+#aggregate per dimension
+aggregate(z, by=list("Dimension" = prints$Dimension),FUN=method)
+#total 
+mean(z)
+
+#prints that have on average more crowd annotations than niche annotations
+averageAnnotations = as.data.frame(cbind("Dimension"=prints$Dimension, "avgAnnPerNicheWorker" = prints$nrNicheAnnotations / prints$nrNicheWorkers, "avgAnnPerCrowdWorker"=prints$nrCrowdAnnotations / prints$nrCrowdWorkers))
+#exclude prints with zero annotations for the niche
+x = averageAnnotations[averageAnnotations$avgAnnPerNicheWorker>0,]
+aggregate(x$avgAnnPerNicheWorker,by=list(x$Dimension),mean)
+#crowd with zero niche annotations excluded
+aggregate(x$avgAnnPerCrowdWorker,by=list(x$Dimension),mean)
+#crowd with zero niche annotations included
+aggregate(averageAnnotations$avgAnnPerCrowdWorker,by=list(averageAnnotations$Dimension),mean)
+#prints with big (>1) difference between niche and crowd
+y = averageAnnotations$avgAnnPerNicheWorker - averageAnnotations$avgAnnPerCrowdWorker
+z = prints[(y<= -1 | y>=1) & prints$nrNicheAnnotations>0,]
+
+#calculate the agreement between annotators for each print annotation
+x = subset(names, select=c("Image","name"))
+y = aggregate(x$name,by=list(x$Image,x$name),length)
+colnames(y) = c("Image", "name","count")
+z = merge(y,prints,x.by="Image",y.by="Image")
+z = subset(z,select=c("Image","Dimension","name","nrWorkers","count"))
+z$agreement = z$count / z$nrWorkers
+#average the agreement per print
+agreementPerPrint = aggregate(z$agreement, by=list(z$Image,z$Dimension),mean)
+colnames(agreementPerPrint) = c("Image","Dimension","agreement")
+agreementPerDimension = aggregate(agreementPerPrint$agreement, by=list(agreementPerPrint$Dimension),mean)
+
+#comments
+dim = "d1"
+x = data[data$Dimension==dim,]
+#total comments
+nrow(x[nchar(as.character(x$ComClD))>0,])
+#comments indicating "unable"
+nrow(x[x$ComClD == "N" | x$ComClD=="U",]) / nrow(x)
+#comments indicating "lack of knowledge"
+nrow(x[x$ComClD == "D",]) / nrow(x)
+
+#crowd agreement on annotations not provided by the niche
+x = crowdagreement
+#get the annotations that are not (also) provided by the niche
+y = apply(x,1, function(m) nrow(names[names$Image==m[1] & names$name==m[2] & names$Channel=="niche",])>0)
+#filter the agreement dataframe
 
