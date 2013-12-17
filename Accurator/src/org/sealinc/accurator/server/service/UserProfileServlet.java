@@ -38,9 +38,10 @@ public class UserProfileServlet extends HttpServlet {
 		final String provider = request.getParameter("provider");
 
 		// get the user
-		LoadResult<User> u = ofy().load().type(User.class).filter("URI", user).first();
+		LoadResult<User> dbUser = ofy().load().type(User.class).filter("URI", user).first();
 		// if the user does not exist, send an empty list
-		if (u.now() == null) {
+		User u = dbUser.now();
+		if (u == null) {
 			response.getWriter().write(gson.toJson(new UserProfileEntry[] {}));
 			return;
 		}

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<link type="text/css" rel="stylesheet" href="css/humanity/jquery-ui-1.9.0.custom.css" />
+<link type="text/css" rel="stylesheet" media="screen" href="css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="css/Accurator.css" />
 <meta name="gwt:property" content="locale=nl" />
 <title>Accurator</title>
@@ -12,10 +12,9 @@
 <!-- be added before this line.                -->
 <!--                                           -->
 <script type="text/javascript" src="accurator/accurator.nocache.js"></script>
-<script type="text/javascript" src="scripts/jquery-1.8.0.min.js"></script>
-<script type="text/javascript" src="scripts/jquery-ui-1.9.0.custom.min.js"></script>
-
-
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/bootbox.js"></script>
 
 </head>
 <body>

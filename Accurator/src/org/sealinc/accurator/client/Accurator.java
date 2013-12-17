@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.sealinc.accurator.client.component.AnnotateScreen;
 import org.sealinc.accurator.client.component.IntroScreen;
 import org.sealinc.accurator.client.component.ProfileScreen;
 import org.sealinc.accurator.client.component.RecommendedItems;
 import org.sealinc.accurator.shared.Config;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -88,7 +86,7 @@ public class Accurator implements EntryPoint {
 		if (profileScreen == null) profileScreen = new ProfileScreen(this);
 		return profileScreen;
 	}
-	
+
 	private IntroScreen getIntroScreen() {
 		if (introScreen == null) introScreen = new IntroScreen(this);
 		return introScreen;
@@ -159,7 +157,7 @@ public class Accurator implements EntryPoint {
 			}
 		});
 
-//		getManagement().login();
+		// getManagement().login();
 		LoadState(State.Intro.toString());
 	}
 
@@ -181,14 +179,15 @@ public class Accurator implements EntryPoint {
 	}-*/;
 
 	private native void loadUIThemeElements()/*-{
-		$wnd.jQuery("button").button();
-		$wnd.jQuery(".button").button();
-		$wnd.jQuery("#menu").menu({
-			position : {
-				my : "right top",
-				at : "right+5 top+25"
-			}
-		});
+		//$wnd.jQuery("button").button();
+		//$wnd.jQuery(".button").button();
+		//$wnd.jQuery("#menu").menu({
+		//	position : {
+		//		my : "right top",
+		//		at : "right+5 top+25"
+		//	}
+		//});
+	1+1 == 2;
 	}-*/;
 
 	public void updateLanguageForAnnotationComponent() {
@@ -201,9 +200,8 @@ public class Accurator implements EntryPoint {
 					String language = entries.get(0).getValueAsString();
 					getAnnotateScreen().setLanguage(language);
 				}
-				else
-				{
-					//default to dutch
+				else {
+					// default to dutch
 					getAnnotateScreen().setLanguage("nl");
 				}
 			}
@@ -218,7 +216,7 @@ public class Accurator implements EntryPoint {
 
 	protected void resizeContent() {
 		int headerHeight = header.getOffsetHeight();
-		//int footerHeight = footer.getOffsetHeight();
+		// int footerHeight = footer.getOffsetHeight();
 		int windowHeight = Window.getClientHeight();
 		int height = windowHeight - headerHeight;// - footerHeight;
 		String mainContentHeight = height + "px";
@@ -450,7 +448,7 @@ public class Accurator implements EntryPoint {
 		if (token == null || token.isEmpty()) {
 			History.newItem(State.Recommendation.toString());
 		}
-		else{
+		else {
 			LoadState(token);
 		}
 	}
