@@ -9,7 +9,6 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
 
 public class IntroScreen extends Composite {
@@ -19,13 +18,11 @@ public class IntroScreen extends Composite {
 	@UiField
 	Button btnRegister;
 	@UiField
-	Hyperlink linkLogin;
-	
+	Button btnLogin;
+
+		
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 	
-	
-	
-
 	@Override
 	public void setHeight(String height){
 		super.setHeight(height);
@@ -41,7 +38,7 @@ public class IntroScreen extends Composite {
 		accurator.getManagement().openRegister();
 	}
 	
-	@UiHandler("linkLogin")
+	@UiHandler("btnLogin")
 	void linkLoginClick(ClickEvent e) {
 		accurator.getManagement().openLogin();
 	}

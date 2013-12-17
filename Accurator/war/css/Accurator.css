@@ -47,29 +47,12 @@ a:hover {
 }
 
 /* Header */
-.header {
-	background-color: #525355; width: 100%;
-	heigth: 100px; position: fixed; top: 0px; z-index: 1000;
-}
-
-.ui-menu {
-	width: 120px; position: fixed; top: 5px; right: 10px; z-index: 5000;
-}
-
 .logoutBlock .username {
 	position: relative; color: white; top: 5px; right: 150px; font-size: 80%;
 }
 
 #headerImage {
-	height: 35px; left: 100px; position: relative;
-}
-
-.navbar {
-	position: absolute; top: 4px; right: 18px;
-}
-
-.header .done {
-	position: absolute; top: 79px; z-index: 10; right: 18px;
+	height: 20px;
 }
 
 /* Footer */
@@ -113,20 +96,31 @@ a:hover {
 
 /* Intro screen */
 .introContent {
-	position: relative; float: left; border: none; width: 100%;
+	position: relative;
 	height: 100%;
+	background: url('/images/background/1.jpg');
 }
 
-.registerBlock {
-	position: relative; float: right; width: 45%; margin-top: 50px; margin-right: 10px;  z-index: 5000;
+.btn-transparant {
+	background-color: transparent;
+	border-color: #000000;
 }
 
-.signInText {
-	
+.btn-transparant:hover {
+	background-color: transparent;
+	border-color: #757575;
 }
 
-.introBackground {
-	width: 100%; position: absolute;
+.introText {
+	padding-top: 100px;
+}
+
+.introLink {
+	color: #505050;
+}
+
+.introLink:hover {
+	color: #909090; cursor: pointer;
 }
 
 /* Annotation screen */

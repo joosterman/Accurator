@@ -5,91 +5,59 @@
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 	<g:HTMLPanel styleName="content">
 		<g:HTMLPanel styleName="header" ui:field="header">
-			<a href="/">
-				<img id="headerImage" src="/images/Accurator.png" alt="Accurator" />
-			</a>
-			<div class="navbar">
-				<g:HTMLPanel styleName="logoutBlock" ui:field="dvlogoutBlock">
+			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	    		<div class="navbar-header">
+	      			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-sign-collapse">
+	        			<span class="icon-bar"></span>
+	      			</button>
+	      			<a class="navbar-brand" href="/"><img id="headerImage" src="/images/Accurator.png" alt="Accurator" /></a>
+	    		</div>
+
+	    		<div class="collapse navbar-collapse navbar-sign-collapse">
+              		<ul class="nav navbar-nav navbar-right">
+	        			<li class="dropdown">
+        					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><ui:msg description="Menu">Menu</ui:msg> <b class="caret"></b></a>
+        					<ul class="dropdown-menu">
+          						<li>
+									<g:Hyperlink targetHistoryToken="Profile">
+										<ui:msg description="MyProfile">MyProfile</ui:msg>
+									</g:Hyperlink>
+								</li>
+          						<li>
+									<g:Anchor ui:field="lnkAbout">
+										<ui:msg description="About Accurator">About Accurator</ui:msg>
+									</g:Anchor>
+								</li>
+								<li class="ui-state-disabled">
+									<g:Anchor ui:field="lnkLicenses">
+										<ui:msg description="Licenses">Licenses</ui:msg>
+									</g:Anchor>
+								</li>
+								<li>
+									<g:Anchor ui:field="lnkLogout">
+										<ui:msg description="Logout">Logout</ui:msg>
+									</g:Anchor>
+								</li>
+        					</ul>
+      					</li>
+	      			</ul>
+	      		</div>
+	      		<g:HTMLPanel styleName="logoutBlock" ui:field="dvlogoutBlock">
 					<span class="username">
 						<ui:msg description="Welcome">Welcome</ui:msg>
 						,&#160;
 						<g:InlineLabel ui:field="lblLoginName"></g:InlineLabel>
 					</span>
 				</g:HTMLPanel>
-			</div>
-
-			<g:Button ui:field="btnDone" styleName="done button">
+	  		</nav>
+			
+			<g:Button ui:field="btnDone"  styleName="done button">
 				<ui:msg description="Done">Done</ui:msg>
 			</g:Button>
-			<ul id="menu">
-				<li>
-					<a href="#">
-						<ui:msg description="Menu">Menu</ui:msg>
-					</a>
-					<ul>
-						<li>
-							<g:Anchor ui:field="lnkAbout">
-								<ui:msg description="About Accurator">About Accurator</ui:msg>
-							</g:Anchor>
-						</li>
-						<li>
-							<g:Hyperlink targetHistoryToken="Profile">
-								<ui:msg description="MyProfile">MyProfile</ui:msg>
-							</g:Hyperlink>
-						</li>
-						<li class="ui-state-disabled">
-							<g:Anchor ui:field="lnkLicenses">
-								<ui:msg description="Licenses">Licenses</ui:msg>
-							</g:Anchor>
-						</li>
-						<li>
-							<g:Anchor ui:field="lnkLogout">
-								<ui:msg description="Logout">Logout</ui:msg>
-							</g:Anchor>
-						</li>
-					</ul>
-				</li>
-			</ul>
 		</g:HTMLPanel>
+		
 		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
-		<!-- <g:HTMLPanel styleName="footer" ui:field="footer">
-			<div class="logos">
-				<div class="group">
-					<span class="title">Project</span>
-					<div>
-						<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text COMMIT logo" />
-						</img>
-						<img src="/images/SEALINCMedia.png" alt="Logo of the SEALINCMedia project"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
-						</img>
-					</div>
-				</div>
-				<div class="group">
-					<span class="title">Partners</span>
-					<div>
-						<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text RMA logo" />
-						</img>
-						<img src="/images/TUD.png" alt="Logo of Delft University of Technology"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text DUT logo" />
-						</img>
-						<img src="/images/VU.png" alt="Logo of the Free University Amsterdam"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text VU logo" />
-						</img>
-						<img src="/images/CWI.png"
-							alt="Logo of the CWI Centrum voor Wiskunde en Informatica" class="logo">
-							<ui:attribute name="alt" description="Alt text CWI logo" />
-						</img>
-					</div>
-				</div>
-			</div>
-		</g:HTMLPanel> -->
+		
 		<div id="dialog-login" class="dialog" title="Login">
 			<ui:attribute name="title" description="Login popup title" />
 			<p>

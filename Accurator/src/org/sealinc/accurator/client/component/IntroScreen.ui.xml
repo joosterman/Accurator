@@ -5,15 +5,63 @@
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 
 	<g:HTMLPanel styleName="introContent">
-		<div class="registerBlock">
-			<g:Button ui:field="btnRegister" styleName="Register">
-				<ui:msg description="Register">Sign up</ui:msg>
-			</g:Button>
-			<br />
-			<ui:msg description="Sign in">Or</ui:msg>
-			<g:Hyperlink ui:field="linkLogin">Sign in</g:Hyperlink>
+		<div class="row introText">
+			<div class="col-md-8 col-md-offset-2">
+				<h2>
+					<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
+					<small>
+						<ui:msg description="SubSlogan">Help us add information to the artworks of the Rijksmuseum Amsterdam.</ui:msg>
+						
+						<g:InlineHyperlink targetHistoryToken="Profile">
+							<ui:msg description="linkTryIt">Give it a try!</ui:msg>
+						</g:InlineHyperlink>
+					</small>
+				</h2>
+				<g:Button ui:field="btnRegister" styleName="btn btn-default btn-transparant">
+					<ui:msg description="Register">Sign up</ui:msg>
+				</g:Button>
+				<g:Button ui:field="btnLogin"  styleName="btn btn-link introLink">
+					<ui:msg description="Login">or Sign in</ui:msg>
+				</g:Button>
+			</div>
 		</div>
-		<img src="/images/background/1.jpg" class="introBackground"></img>
-
+		<!-- <g:HTMLPanel styleName="footer" ui:field="footer">
+			<div class="logos">
+				<div class="group">
+					<span class="title">Project</span>
+					<div>
+						<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text COMMIT logo" />
+						</img>
+						<img src="/images/SEALINCMedia.png" alt="Logo of the SEALINCMedia project"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+						</img>
+					</div>
+				</div>
+				<div class="group">
+					<span class="title">Partners</span>
+					<div>
+						<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text RMA logo" />
+						</img>
+						<img src="/images/TUD.png" alt="Logo of Delft University of Technology"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text DUT logo" />
+						</img>
+						<img src="/images/VU.png" alt="Logo of the Free University Amsterdam"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text VU logo" />
+						</img>
+						<img src="/images/CWI.png"
+							alt="Logo of the CWI Centrum voor Wiskunde en Informatica" class="logo">
+							<ui:attribute name="alt" description="Alt text CWI logo" />
+						</img>
+					</div>
+				</div>
+			</div>
+		</g:HTMLPanel> -->
 	</g:HTMLPanel>
 </ui:UiBinder>
