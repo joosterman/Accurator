@@ -198,7 +198,7 @@ public class UserManagement {
 		}
 	}
 
-	private native void openLogin()/*-{
+	public native void openLogin()/*-{
 		var management = this;
 		var logIn = @org.sealinc.accurator.client.Utility::getLocalString(Ljava/lang/String;)("logIn");
 		var localButtons = {};
@@ -240,7 +240,7 @@ public class UserManagement {
 		});
 	}
 
-	protected native void openRegister()/*-{
+	public native void openRegister()/*-{
 		var management = this;
 		var cancel = @org.sealinc.accurator.client.Utility::getLocalString(Ljava/lang/String;)("cancel");
 		var register = @org.sealinc.accurator.client.Utility::getLocalString(Ljava/lang/String;)("register");

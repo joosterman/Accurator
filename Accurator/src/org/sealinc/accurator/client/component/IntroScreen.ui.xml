@@ -1,0 +1,19 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
+	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
+
+	<g:HTMLPanel styleName="introContent">
+		<div class="registerBlock">
+			<g:Button ui:field="btnRegister" styleName="Register">
+				<ui:msg description="Register">Sign up</ui:msg>
+			</g:Button>
+			<br />
+			<ui:msg description="Sign in">Or</ui:msg>
+			<g:Hyperlink ui:field="linkLogin">Sign in</g:Hyperlink>
+		</div>
+		<img src="/images/background/1.jpg" class="introBackground"></img>
+
+	</g:HTMLPanel>
+</ui:UiBinder>

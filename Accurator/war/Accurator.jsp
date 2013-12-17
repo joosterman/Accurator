@@ -5,7 +5,7 @@
 <link type="text/css" rel="stylesheet" href="css/humanity/jquery-ui-1.9.0.custom.css" />
 <link type="text/css" rel="stylesheet" href="css/Accurator.css" />
 <meta name="gwt:property" content="locale=nl" />
-<title>RMA Accurator</title>
+<title>Accurator</title>
 <!--                                           -->
 <!-- This script loads your compiled module.   -->
 <!-- If you add any GWT meta tags, they must   -->

@@ -5,10 +5,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.sealinc.accurator.client.component.AnnotateScreen;
+import org.sealinc.accurator.client.component.IntroScreen;
 import org.sealinc.accurator.client.component.ProfileScreen;
 import org.sealinc.accurator.client.component.RecommendedItems;
 import org.sealinc.accurator.shared.Config;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -44,13 +47,13 @@ public class Accurator implements EntryPoint {
 	interface MyUiBinder extends UiBinder<Widget, Accurator> {}
 
 	public enum State {
-		Annotate, Profile, Quality, Admin, Recommendation
+		Annotate, Profile, Quality, Admin, Recommendation, Intro
 	};
 
 	@UiField
 	HTMLPanel dvlogoutBlock;
 	@UiField
-	Panel content, header, footer;
+	Panel content, header;
 	@UiField
 	Anchor lnkRegister;
 	@UiField
@@ -67,6 +70,7 @@ public class Accurator implements EntryPoint {
 
 	private AnnotateScreen annotateScreen;
 	private ProfileScreen profileScreen;
+	private IntroScreen introScreen;
 	private RecommendedItems recommendationScreen;
 	private UserManagement management;
 	private int nrInitialPrints = 50;
@@ -84,13 +88,18 @@ public class Accurator implements EntryPoint {
 		if (profileScreen == null) profileScreen = new ProfileScreen(this);
 		return profileScreen;
 	}
+	
+	private IntroScreen getIntroScreen() {
+		if (introScreen == null) introScreen = new IntroScreen(this);
+		return introScreen;
+	}
 
 	private RecommendedItems getRecommendationScreen() {
 		if (recommendationScreen == null) recommendationScreen = new RecommendedItems(this);
 		return recommendationScreen;
 	}
 
-	private UserManagement getManagement() {
+	public UserManagement getManagement() {
 		if (management == null) management = new UserManagement(this);
 		return management;
 	}
@@ -150,7 +159,8 @@ public class Accurator implements EntryPoint {
 			}
 		});
 
-		getManagement().login();
+//		getManagement().login();
+		LoadState(State.Intro.toString());
 	}
 
 	public native void showLoading(boolean show) /*-{
@@ -208,9 +218,9 @@ public class Accurator implements EntryPoint {
 
 	protected void resizeContent() {
 		int headerHeight = header.getOffsetHeight();
-		int footerHeight = footer.getOffsetHeight();
+		//int footerHeight = footer.getOffsetHeight();
 		int windowHeight = Window.getClientHeight();
-		int height = windowHeight - headerHeight - footerHeight;
+		int height = windowHeight - headerHeight;// - footerHeight;
 		String mainContentHeight = height + "px";
 		content.setHeight(mainContentHeight);
 	}
@@ -422,6 +432,9 @@ public class Accurator implements EntryPoint {
 					break;
 				case Recommendation:
 					content.add(getRecommendationScreen());
+					break;
+				case Intro:
+					content.add(getIntroScreen());
 					break;
 			}
 			loadUIThemeElements();

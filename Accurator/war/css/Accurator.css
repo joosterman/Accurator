@@ -1,6 +1,6 @@
 /* General */
 html body {
-	margin: 0px; font-family: Helvetica, Arial, sans-serif;
+	margin: 0px; font-family: Arial, Helvetica, sans-serif;
 }
 
 .loading {
@@ -18,11 +18,11 @@ html body {
 }
 
 a {
-	color: brown;
+	color: #505050;
 }
 
 a:hover {
-	color: chocolate; cursor: pointer;
+	color: #909090; cursor: pointer;
 }
 
 .spaceRight {
@@ -39,7 +39,7 @@ a:hover {
 
 /* Content and main content */
 .content {
-	position: fixed; top: 76px; width: 100%;
+	position: fixed; top: 35px; width: 100%;
 }
 
 .mainContent {
@@ -48,20 +48,20 @@ a:hover {
 
 /* Header */
 .header {
-	background-color: #F0E4CE; border-bottom: 3px solid brown; width: 100%;
-	heigth: 87px; position: fixed; top: 0px; z-index: 1000;
+	background-color: #525355; width: 100%;
+	heigth: 100px; position: fixed; top: 0px; z-index: 1000;
 }
 
 .ui-menu {
-	width: 120px; position: fixed; top: 30px; right: 10px; z-index: 5000;
+	width: 120px; position: fixed; top: 5px; right: 10px; z-index: 5000;
 }
 
 .logoutBlock .username {
-	position: relative; top: 1px; right: 10px; font-size: 80%;
+	position: relative; color: white; top: 5px; right: 150px; font-size: 80%;
 }
 
 #headerImage {
-	height: 70px; left: 100px; position: relative;
+	height: 35px; left: 100px; position: relative;
 }
 
 .navbar {
@@ -109,6 +109,24 @@ a:hover {
 
 .dialog fieldset {
 	padding: 0; border: 0; margin-top: 25px;
+}
+
+/* Intro screen */
+.introContent {
+	position: relative; float: left; border: none; width: 100%;
+	height: 100%;
+}
+
+.registerBlock {
+	position: relative; float: right; width: 45%; margin-top: 50px; margin-right: 10px;  z-index: 5000;
+}
+
+.signInText {
+	
+}
+
+.introBackground {
+	width: 100%; position: absolute;
 }
 
 /* Annotation screen */

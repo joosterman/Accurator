@@ -5,7 +5,9 @@
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 	<g:HTMLPanel styleName="content">
 		<g:HTMLPanel styleName="header" ui:field="header">
-			<img id="headerImage" src="/images/Accurator.png" alt="Accurator" />
+			<a href="/">
+				<img id="headerImage" src="/images/Accurator.png" alt="Accurator" />
+			</a>
 			<div class="navbar">
 				<g:HTMLPanel styleName="logoutBlock" ui:field="dvlogoutBlock">
 					<span class="username">
@@ -50,7 +52,7 @@
 			</ul>
 		</g:HTMLPanel>
 		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
-		<g:HTMLPanel styleName="footer" ui:field="footer">
+		<!-- <g:HTMLPanel styleName="footer" ui:field="footer">
 			<div class="logos">
 				<div class="group">
 					<span class="title">Project</span>
@@ -87,7 +89,7 @@
 					</div>
 				</div>
 			</div>
-		</g:HTMLPanel>
+		</g:HTMLPanel> -->
 		<div id="dialog-login" class="dialog" title="Login">
 			<ui:attribute name="title" description="Login popup title" />
 			<p>
