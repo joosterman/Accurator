@@ -13,7 +13,7 @@ import org.sealinc.accurator.shared.Configuration;
 import org.sealinc.accurator.shared.ConfigurationSetting;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.LoadResult;
 
 public class AdminComponentServiceImpl extends RemoteServiceServlet implements AdminComponentService {
 
@@ -51,8 +51,8 @@ public class AdminComponentServiceImpl extends RemoteServiceServlet implements A
 		// identified this application
 		String applicationId = SystemProperty.applicationId.get();
 		// get the Configuration if it exists
-		Ref<Configuration> refConfig = ofy().load().type(Configuration.class).filter("version", version).filter("applicationId", applicationId).first();
-		Configuration config = refConfig.getValue();
+		LoadResult<Configuration> refConfig = ofy().load().type(Configuration.class).filter("version", version).filter("applicationId", applicationId).first();
+		Configuration config = refConfig.now();
 
 		// If there is a config
 		if (config != null) {

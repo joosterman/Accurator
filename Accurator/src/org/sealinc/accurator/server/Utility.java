@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-import javax.naming.BinaryRefAddr;
 import javax.servlet.http.HttpServletResponse;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.Namespace;

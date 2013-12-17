@@ -14,7 +14,7 @@ import org.sealinc.accurator.server.UserProfileEntry;
 import org.sealinc.accurator.server.Utility;
 import com.google.gson.Gson;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
+import com.googlecode.objectify.LoadResult;
 import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.Query;
 
@@ -38,15 +38,15 @@ public class UserProfileServlet extends HttpServlet {
 		final String provider = request.getParameter("provider");
 
 		// get the user
-		Ref<User> u = ofy().load().type(User.class).filter("URI", user).first();
+		LoadResult<User> u = ofy().load().type(User.class).filter("URI", user).first();
 		// if the user does not exist, send an empty list
-		if (u.getValue() == null) {
+		if (u.now() == null) {
 			response.getWriter().write(gson.toJson(new UserProfileEntry[] {}));
 			return;
 		}
 
 		// build the query
-		Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(u.getKey());
+		Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(u);
 		// if the dimension is given
 		if (dimension != null) query = query.filter("dimension =", dimension);
 		if (scope != null) query = query.filter("scope =", scope);
@@ -74,22 +74,19 @@ public class UserProfileServlet extends HttpServlet {
 		final String value = request.getParameter("value");
 
 		// get the user if it exists
-		Ref<User> refu = ofy().load().type(User.class).filter("URI =", user).first();
-		final Key<User> keyu;
-		// if user does not exist, create the user
-		User u = refu.getValue();
+		LoadResult<User> refu = ofy().load().type(User.class).filter("URI =", user).first();
+		final User u = refu.now();
 		if (u == null) {
 			// if the user does not exist the user profile entry can also not exist
 			return;
 		}
 		else {
-			keyu = refu.getKey();
 			// start deleting
 			ofy().transact(new VoidWork() {
 				@Override
 				public void vrun() {
 					// get existing UPE
-					Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(keyu);
+					Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(u);
 					if (dimension != null) query = query.filter("dimension =", dimension);
 					if (scope != null) query = query.filter("scope =", scope);
 					if (provider != null) query = query.filter("provider =", provider);
@@ -155,19 +152,21 @@ public class UserProfileServlet extends HttpServlet {
 		final Object typedVal = o;
 
 		// get the user if it exists
-		Ref<User> refu = ofy().load().type(User.class).filter("URI =", user).first();
-		final Key<User> keyu;
+		User storedUser = null;
+		LoadResult<User> dbUser = ofy().load().type(User.class).filter("URI =", user).first();
+		//if the user exists in the DB 
+		User dbUsero = dbUser.now();
+		if(dbUsero != null){
+			storedUser = dbUsero;
+		}
+		else{
 		// if user does not exist, create the user
-		User u = refu.getValue();
-		if (u != null) {
-			keyu = refu.getKey();
+			storedUser = new User();
+			storedUser.URI = user;
+			ofy().save().entity(storedUser).now();
 		}
-		else {
-			u = new User();
-			u.URI = user;
-			keyu = ofy().save().entity(u).now();
-		}
-		// keyu now contains the correct user
+		//stored user now is a existing user in the DB 
+		final User finalUser = storedUser;
 
 		// Value is converted, start transaction
 		ofy().transact(new VoidWork() {
@@ -177,17 +176,17 @@ public class UserProfileServlet extends HttpServlet {
 
 				// check if the UPE already exists and create otherwise
 				// build the query
-				Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(keyu);
+				Query<UserProfileEntry> query = ofy().load().type(UserProfileEntry.class).ancestor(finalUser);
 				if (dimension != null) query = query.filter("dimension =", dimension);
 				if (scope != null) query = query.filter("scope =", scope);
 				if (provider != null) query = query.filter("provider =", provider);
 
 				// execute the query
-				Ref<UserProfileEntry> refentry = query.first();
-				UserProfileEntry entry = refentry.getValue();
+				LoadResult<UserProfileEntry> refentry = query.first();
+				UserProfileEntry entry = refentry.now();
 				if (entry == null) {
 					entry = new UserProfileEntry();
-					entry.user = keyu;
+					entry.user = Key.create(User.class, finalUser.id);
 					entry.dimension = dimension;
 					entry.provider = provider;
 					entry.scope = scope;

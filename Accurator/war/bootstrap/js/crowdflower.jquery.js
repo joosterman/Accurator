@@ -32,13 +32,28 @@ if (!String.prototype.format) {
 	var judgementParamPrefix = "judgement[";
 	var paramPostfix = "]";
 
-	var resultDataType = "json";
 	var httpMethods = {
 		GET : "GET",
 		POST : "POST",
 		PUT : "PUT",
 		DELETE : "DELETE",
 	};
+
+	var defaultAjaxSettings = {
+		dataType : "json",
+		done : null,
+		fail : null,
+	}
+
+	/**
+	 * @param objSettings
+	 *            Object containing properties for AJAX request
+	 * @returns the provided setting with the default setting. Provided setting
+	 *          will override the default.
+	 */
+	function ajaxSettings(objSettings) {
+		return $.extend({}, defaultAjaxSettings, objSettings);
+	}
 
 	/**
 	 * Returns the full URL, made up by the proxyURL, the baseURL and the trail
@@ -112,13 +127,12 @@ if (!String.prototype.format) {
 
 			// add the attributes to the URL so strData can be sent
 			// as data
-			return $.ajax(fullURL(path, attr), {
+			return $.ajax(fullURL(path, attr), ajaxSettings({
 				data : strData,
 				type : method,
-				dataType : resultDataType,
-				contentType : contentType,
 				processData : false,
-			});
+				contentType : contentType,
+			}));
 
 		} else {
 			throw "[data upload] Data was not provided";
@@ -175,7 +189,8 @@ if (!String.prototype.format) {
 	}
 
 	/**
-	 * Checks whether !attr. 
+	 * Checks whether !attr.
+	 * 
 	 * @param attr
 	 *            Object
 	 * @param allowedAttr
@@ -212,6 +227,17 @@ if (!String.prototype.format) {
 			settings.proxyURL = strProxyURL;
 			return this;
 		},
+		ajaxFail : function(func) {
+			defaultAjaxSettings.fail = func;
+			return this;
+		},
+		ajaxDone : function(func) {
+			defaultAjaxSettings.done = func;
+			return this;
+		},
+		allowedAttributes : function(fname) {
+			return allowedAttr[fname];
+		},
 		job : function(job_id) {
 			if (!job_id || !$.isNumeric(job_id)) {
 				throw "Please provide a valid job id";
@@ -233,6 +259,12 @@ if (!String.prototype.format) {
 					link.target = "_blank";
 					link.click();
 				},
+				downloadURL: function(attr){
+					var path = "jobs/{0}.csv".format(job_id);
+					checkAttributes(attr, allowedAttr["job.download"]);
+					var downloadURL = apiURL(path, attr, false);
+					return downloadURL;
+				},
 				upload : (function() {
 					var path = "jobs/{0}/upload".format(job_id);
 					var contentType = "application/json";
@@ -251,10 +283,9 @@ if (!String.prototype.format) {
 				}()),
 				read : function() {
 					var path = "jobs/{0}".format(job_id);
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						type : httpMethods.GET,
-						dataType : resultDataType,
-					});
+					}));
 				},
 				update : function(attr) {
 					var path = "jobs/{0}".format(job_id);
@@ -265,55 +296,48 @@ if (!String.prototype.format) {
 					for ( var at in attr) {
 						attrFixed[jobParamPrefix + at + paramPostfix] = attr[at];
 					}
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						data : attrFixed,
 						type : httpMethods.PUT,
-						dataType : resultDataType,
-					});
+					}));
 				},
 				remove : function() {
 					var path = "jobs/{0}".format(job_id);
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						type : httpMethods.DELETE,
-						dataType : resultDataType,
-					});
+					}));
 				},
 				copy : function(attr) {
 					var path = "jobs/{0}/copy".format(job_id);
 					checkAttributes(attr, allowedAttr["job.copy"]);
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						data : attr,
 						type : httpMethods.POST,
-						dataType : resultDataType,
-					});
+					}));
 				},
 				pause : function() {
 					var path = "jobs/{0}/pause".format(job_id);
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						type : httpMethods.GET,
-						dataType : resultDataType,
-					});
+					}));
 				},
 				resume : function() {
 					var path = "jobs/{0}/resume".format();
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						type : httpMethods.GET,
-						dataType : resultDataType,
-					});
+					}));
 				},
 				cancel : function() {
 					var path = "jobs/{0}/cancel".format(job_id);
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						type : httpMethods.GET,
-						dataType : resultDataType,
-					});
+					}));
 				},
 				ping : function() {
 					var path = "jobs/{0}/ping".format(job_id);
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						type : httpMethods.GET,
-						dataType : resultDataType,
-					});
+					}));
 
 				},
 				status : function() {
@@ -321,10 +345,9 @@ if (!String.prototype.format) {
 				},
 				legend : function() {
 					var path = "jobs/{0}/legend".format(job_id);
-					return $.ajax(fullURL(path), {
+					return $.ajax(fullURL(path), ajaxSettings({
 						type : httpMethods.GET,
-						dataType : resultDataType,
-					});
+					}));
 				},
 				gold : function(attr, data) {
 					var path = "jobs/{0}/gold".format(job_id);
@@ -335,10 +358,9 @@ if (!String.prototype.format) {
 					var path = "jobs/{0}/channels".format(job_id);
 					return {
 						view : function() {
-							return $.ajax(fullURL(path, null, false), {
+							return $.ajax(fullURL(path, null, false), ajaxSettings({
 								type : httpMethods.GET,
-								dataType : resultDataType,
-							});
+							}));
 						},
 						set : function(channels) {
 							// check channels data is an array of Strings
@@ -353,11 +375,10 @@ if (!String.prototype.format) {
 							var attr = {
 								channels : channels
 							};
-							return $.ajax(fullURL(path, null, false), {
+							return $.ajax(fullURL(path, null, false), ajaxSettings({
 								data : attr,
 								type : httpMethods.PUT,
-								dataType : resultDataType,
-							});
+							}));
 						},
 					};
 				}()),
@@ -381,28 +402,25 @@ if (!String.prototype.format) {
 								attrFixed[unitParamPrefix + at + paramPostfix] = attr[at];
 							}
 						}
-						return $.ajax(fullURL(path), {
+						return $.ajax(fullURL(path), ajaxSettings({
 							data : attrFixed,
 							type : httpMethods.POST,
-							dataType : resultDataType,
-						});
+						}));
 					},
 					ping : function() {
 						var path = "jobs/{0}/units/ping".format(job_id);
-						return $.ajax(fullURL(path), {
+						return $.ajax(fullURL(path), ajaxSettings({
 							type : httpMethods.GET,
-							dataType : resultDataType,
-						});
+						}));
 					},
 					status : function() {
 						return this.ping();
 					},
 					read : function() {
 						var path = "jobs/{0}/units".format(job_id);
-						return $.ajax(fullURL(path), {
+						return $.ajax(fullURL(path), ajaxSettings({
 							type : httpMethods.GET,
-							dataType : resultDataType,
-						});
+						}));
 					},
 					split : function() {
 						throw "[units.split] NotImplementedException";
@@ -416,10 +434,9 @@ if (!String.prototype.format) {
 					return {
 						read : function() {
 							var path = "jobs/{0}/units/{1}".format(job_id, unit_id);
-							return $.ajax(fullURL(path, null, true), {
+							return $.ajax(fullURL(path, null, true), ajaxSettings({
 								type : httpMethods.GET,
-								dataType : resultDataType,
-							});
+							}));
 						},
 						update : function(attr) {
 							var path = "jobs/{0}/units/{1}".format(job_id, unit_id);
@@ -441,25 +458,22 @@ if (!String.prototype.format) {
 									attrFixed[unitParamPrefix + at + paramPostfix] = attr[at];
 								}
 							}
-							return $.ajax(fullURL(path), {
+							return $.ajax(fullURL(path), ajaxSettings({
 								data : attrFixed,
 								type : httpMethods.PUT,
-								dataType : resultDataType,
-							});
+							}));
 						},
 						destroy : function() {
 							var path = "jobs/{0}/units/{1}".format(job_id, unit_id);
-							return $.ajax(fullURL(path), {
+							return $.ajax(fullURL(path), ajaxSettings({
 								type : httpMethods.DELETE,
-								dataType : resultDataType,
-							});
+							}));
 						},
 						cancel : function() {
 							var path = "jobs/{0}/units/{1}/cancel".format(job_id, unit_id);
-							return $.ajax(fullURL(path), {
+							return $.ajax(fullURL(path), ajaxSettings({
 								type : httpMethods.POST,
-								dataType : resultDataType,
-							});
+							}));
 						}
 					};
 				},
@@ -487,28 +501,25 @@ if (!String.prototype.format) {
 									attrFixed[judgementParamPrefix + at + paramPostfix] = attr[at];
 								}
 							}
-							return $.ajax(fullURL(path), {
+							return $.ajax(fullURL(path), ajaxSettings({
 								data : attrFixed,
 								type : httpMethods.PUT,
-								dataType : resultDataType,
-							});
+							}));
 						},
 						read : function(attr) {
 							var path = "jobs/{0}/judgments/{1}".format(job_id, judgment_id);
 							checkAttributes(attr, allowedAttr["job.judgment.read"]);
-							return $.ajax(fullURL(path), {
+							return $.ajax(fullURL(path), ajaxSettings({
 								data : attr,
 								type : httpMethods.GET,
-								dataType : resultDataType,
-							});
+							}));
 
 						},
 						remove : function() {
 							var path = "jobs/{0}/judgments/{1}".format(job_id, judgment_id);
-							return $.ajax(fullURL(path), {
+							return $.ajax(fullURL(path), ajaxSettings({
 								type : httpMethods.DELETE,
-								dataType : resultDataType,
-							});
+							}));
 						}
 					};
 				},
@@ -532,22 +543,20 @@ if (!String.prototype.format) {
 								attrFixed[judgementParamPrefix + at + paramPostfix] = attr[at];
 							}
 						}
-						return $.ajax(fullURL(path), {
+						return $.ajax(fullURL(path), ajaxSettings({
 							data : attrFixed,
 							type : httpMethods.POST,
-							dataType : resultDataType,
-						});
+						}));
 					}
 				},
 				orders : {
 					create : function(attr) {
 						var path = "jobs/{0}/orders".format(job_id);
 						checkAttributes(attr, allowedAttr["job.orders.create"]);
-						return $.ajax(fullURL(path, null, false), {
+						return $.ajax(fullURL(path, null, false), ajaxSettings({
 							data : attr,
 							type : httpMethods.POST,
-							dataType : resultDataType,
-						});
+						}));
 					}
 				},
 				order : function(order_id) {
@@ -557,10 +566,9 @@ if (!String.prototype.format) {
 					return {
 						read : function() {
 							var path = "jobs/{0}/orders/{1}".format(job_id, order_id);
-							return $.ajax(fullURL(path), {
+							return $.ajax(fullURL(path), ajaxSettings({
 								type : httpMethods.GET,
-								dataType : resultDataType,
-							});
+							}));
 						},
 					};
 				},
@@ -592,18 +600,16 @@ if (!String.prototype.format) {
 				for ( var at in attr) {
 					attrFixed[jobParamPrefix + at + paramPostfix] = attr[at];
 				}
-				return $.ajax(fullURL(path), {
+				return $.ajax(fullURL(path), ajaxSettings({
 					data : attrFixed,
 					type : httpMethods.POST,
-					dataType : resultDataType,
-				});
+				}));
 			},
-			read:function(){
+			read : function() {
 				var path = "jobs";
-				return $.ajax(fullURL(path), {
+				return $.ajax(fullURL(path), ajaxSettings({
 					type : httpMethods.GET,
-					dataType : resultDataType,
-				});
+				}));
 			}
 		},
 	};

@@ -4,7 +4,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.sealinc.accurator.shared.Configuration;
 import org.sealinc.accurator.shared.ConfigurationSetting;
-
 import com.googlecode.objectify.ObjectifyService;
 
 public class ServletListener implements ServletContextListener {
@@ -19,6 +18,6 @@ public class ServletListener implements ServletContextListener {
 		ObjectifyService.register(UserProfileEntry.class);		
 		ObjectifyService.register(User.class);		
 		ObjectifyService.register(Configuration.class);		
-		ObjectifyService.register(ConfigurationSetting.class);		
+		ObjectifyService.register(ConfigurationSetting.class);	
 	}
 }

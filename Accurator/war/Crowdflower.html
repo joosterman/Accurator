@@ -7,19 +7,18 @@
 <link type="text/css" rel="stylesheet" media="screen" href="bootstrap/css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" media="screen" href="bootstrap/css/alertify.core.css" />
 <link type="text/css" rel="stylesheet" media="screen" href="bootstrap/css/alertify.bootstrap.css" />
+
 <style type="text/css">
 body {
 	padding-top: 60px; padding-bottom: 40px;
 }
 
-.sidebar-nav {
-	padding: 9px 0;
+.popover {
+	max-width: 500px;
 }
 
-@media ( max-width : 980px) { /* Enable use of floated navbar text */
-	.navbar-text.pull-right {
-		float: none; padding-left: 5px; padding-right: 5px;
-	}
+.popover.top .arrow {
+	left: 15%;
 }
 </style>
 </head>
@@ -47,11 +46,11 @@ body {
 	</div>
 
 	<ul class="nav nav-tabs" id="myTab">
-		<li class="active"><a href="#tab_data" data-toggle="tab">Data</a></li>
-		<li><a href="#tab_jobs" data-toggle="tab">Jobs</a></li>
+		<li><a href="#tab_data" data-toggle="tab">Data</a></li>
+		<li class="active"><a href="#tab_jobs" data-toggle="tab">Jobs</a></li>
 	</ul>
 	<div class="tab-content">
-		<div class="tab-pane active" id="tab_data">
+		<div class="tab-pane" id="tab_data">
 			<div class="container-fluid">
 				<div class="row-fluid">
 					<div class="span12">
@@ -119,7 +118,7 @@ body {
 			</div>
 			<!--/.fluid-container-->
 		</div>
-		<div class="tab-pane" id="tab_jobs">
+		<div class="tab-pane active" id="tab_jobs">
 			<div class="container-fluid">
 				<div class="row-fluid">
 					<div class="span12">
@@ -129,22 +128,24 @@ body {
 				<div class="row-fluid">
 					<div class="span6">
 						<h3>Create new Job</h3>
-						<table class="table">
-							<tr>
-								<td>Title</td>
-								<td><input type="text" id="txtJobTitle" value="" /></td>
-							</tr>
-						</table>
-						<p>
-							<a class="btn" id="btnCreateJob" href="#">Create</a>
-						</p>
+						<form method="post" action="#" id="formNewJob">
+							<table id="tblNewJob" class="table">
+								<tr>
+									<td>Title</td>
+									<td><input type="text" name="title" /></td>
+								</tr>
+								<tr>
+									<td>Instructions</td>
+									<td><textarea name="instructions" cols="100" rows="5"></textarea></td>
+								</tr>
+							</table>
+
+							<p>
+								<input type="submit" value="Create" class="btn" />
+							</p>
+						</form>
 					</div>
-					<div class="span6">
-						<h3>Add saved data to selected jobs</h3>
-						<p>
-							<a class="btn" id="btnAddData" href="#">Add saved data</a>
-						</p>
-					</div>
+					<div class="span6"></div>
 				</div>
 				<hr>
 				<div class="row-fluid">
@@ -157,12 +158,33 @@ body {
 			</div>
 		</div>
 	</div>
+	<br />
+	<br />
 	<footer>
 		<p>&copy; Jasper Oosterman 2013</p>
 	</footer>
 
+	<div id="modalJobUpdate" class="modal hide fade">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<h3>Update Job</h3>
+		</div>
+		<div class="modal-body">
+			<form id="formJobUpdate" target="#">
+				<table class="table" id="tblJobUpdate">
+					
+				</table>
+			</form>
+			<p>One fine body…</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn">Close</a> <a href="#" class="btn btn-primary">Save changes</a>
+		</div>
+	</div>
+
 	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="bootstrap/js/bootbox.min.js"></script>
 	<script type="text/javascript" src="bootstrap/js/jquery.csv-0.71.min.js"></script>
 	<script type="text/javascript" src="bootstrap/js/alertify.min.js"></script>
 	<script type='text/javascript' src='//www.google.com/jsapi'></script>

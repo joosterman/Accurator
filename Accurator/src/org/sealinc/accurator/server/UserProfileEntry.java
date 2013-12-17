@@ -9,7 +9,6 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.OnSave;
 import com.googlecode.objectify.annotation.Parent;
-import com.googlecode.objectify.annotation.Unindex;
 import com.googlecode.objectify.condition.IfNotNull;
 
 @Entity

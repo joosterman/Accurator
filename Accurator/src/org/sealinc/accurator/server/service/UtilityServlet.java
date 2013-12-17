@@ -28,6 +28,7 @@ public class UtilityServlet extends HttpServlet {
 
 	private Map<String, String[]> getParams(HttpServletRequest request) {
 		// get the immutable parameters
+		@SuppressWarnings("unchecked")
 		Map<String, String[]> params = request.getParameterMap();
 		// make a new map that is mutable
 		Map<String, String[]> params2 = new HashMap<String, String[]>(params);
