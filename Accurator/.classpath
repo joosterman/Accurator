@@ -12,15 +12,11 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/Accurator/libs/jena/jena-core-2.7.0-incubating-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.2.jar" sourcepath="libs/gson/gson-2.2.2-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Accurator/libs/gson/gson-2.2.2-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-jdk14-1.7.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-4.0a4.jar" sourcepath="war/WEB-INF/lib/objectify-4.0a4-sources.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/objectify-4.0b3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
