@@ -1,3 +1,4 @@
+/** This is archanas page**/
 package org.sealinc.accurator.client.component;
 
 import java.beans.Beans;
