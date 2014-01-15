@@ -17,10 +17,10 @@
 						</g:InlineHyperlink>
 					</small>
 				</h2>
-				<g:Button ui:field="btnRegister" styleName="btn btn-default btn-transparant">
+				<g:Button ui:field="btnRegister" styleName="button-combo-end button-forward button-primary">
 					<ui:msg description="Register">Sign up</ui:msg>
 				</g:Button>
-				<g:Button ui:field="btnLogin"  styleName="btn btn-link introLink">
+				<g:Button ui:field="btnLogin"  styleName="button-combo-end button-forward button-primary">
 					<ui:msg description="Login">or Sign in</ui:msg>
 				</g:Button>
 			</div>

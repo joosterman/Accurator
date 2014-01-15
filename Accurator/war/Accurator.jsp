@@ -6,6 +6,8 @@
 
 <link type="text/css" rel="stylesheet" media="screen" href="css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="css/Accurator.css" />
+<link type="text/css" rel="stylesheet" href="https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web-fonts.css" />
+<link type="text/css" rel="stylesheet" href="https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web.css" />
 <meta name="gwt:property" content="locale=nl" />
 <title>Accurator</title>
 <!--                                           -->
