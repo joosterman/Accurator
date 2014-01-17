@@ -4,13 +4,16 @@ html body {
 }
 
 .loading {
-	position: fixed; top: 50%; left: 50%;
-	z-index: 5000;
-	display: none;
+	position: fixed; top: 50%; left: 50%; z-index: 5000; display: none;
 }
 
-.ui-widget {
-	font-size: 0.8em;
+div.top {
+	min-height: 600px;
+}
+
+div.bottom {
+	min-height: 600px;
+	background-color: white;
 }
 
 .imageButton:hover {
@@ -48,7 +51,8 @@ a:hover {
 
 /* Header */
 .logoutBlock .username {
-	position: relative; color: white; top: 5px; right: 150px; font-size: 80%;
+	position: relative; color: white; top: 5px; right: 150px;
+	font-size: 80%;
 }
 
 #headerImage {
@@ -57,12 +61,11 @@ a:hover {
 
 /* Footer */
 .introFooter {
-	height: 20px;
-	position: fixed; bottom: 10px;
+	height: 20px; position: fixed; bottom: 10px;
 }
 
 .introFooter .logos {
-
+	
 }
 
 /* .footer {
@@ -87,7 +90,6 @@ a:hover {
 	max-width: 150px; max-height: 40px; margin-right: 10px;
 	margin-left: 10px; vertical-align: bottom;
 } */
-
 /* Login and registration */
 .dialog {
 	display: none;
@@ -103,19 +105,16 @@ a:hover {
 
 /* Intro screen */
 .introContent {
-	position: relative;
-	height: 100%;
+	position: relative; height: 100%;
 	background: url('/images/background/1.jpg');
 }
 
 .btn-transparant {
-	background-color: transparent;
-	border-color: #000000;
+	background-color: transparent; border-color: #000000;
 }
 
 .btn-transparant:hover {
-	background-color: transparent;
-	border-color: #757575;
+	background-color: transparent; border-color: #757575;
 }
 
 .introText {

@@ -5,88 +5,61 @@
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 
 	<g:HTMLPanel styleName="introContent">
-		<div class="row introText">
-			<div class="col-md-8 col-md-offset-2">
-				<h2>
-					<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
-					<small>
-						<ui:msg description="SubSlogan">Help us add information to the artworks of the Rijksmuseum Amsterdam.</ui:msg>
-						
-						<g:InlineHyperlink targetHistoryToken="Profile">
-							<ui:msg description="linkTryIt">Give it a try!</ui:msg>
-						</g:InlineHyperlink>
-					</small>
-				</h2>
-				<g:Button ui:field="btnRegister" styleName="btn btn-default btn-transparant">
-					<ui:msg description="Register">Sign up</ui:msg>
-				</g:Button>
+		<div class="top">
+			<div class="row introText">
+				<div class="col-md-8 col-md-offset-2">
+					<h2>
+						<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
+						<small>
+							<ui:msg description="SubSlogan">Help us add information to the
+								artworks
+								of the Rijksmuseum Amsterdam.
+							</ui:msg>
 
-				<button class="btn btn-primary" data-toggle="modal" data-target="#modalRegister">Register</button>
-				<button class="btn btn-primary" data-toggle="modal" data-target="#modalLogin">Log in</button>
+							<g:InlineHyperlink targetHistoryToken="Profile">
+								<ui:msg description="linkTryIt">Give it a try!</ui:msg>
+							</g:InlineHyperlink>
+						</small>
+					</h2>
+					<g:Button ui:field="btnRegister" styleName="btn btn-default btn-transparant">
+						<ui:msg description="Register">Sign up</ui:msg>
+					</g:Button>
+
+					<button class="btn btn-primary" data-toggle="modal"
+						data-target="#modalRegister">Register</button>
+					<button class="btn btn-primary" data-toggle="modal"
+						data-target="#modalLogin">Log in</button>
+				</div>
+			</div>
+			<div id="learn-more">
+				<g:Label ui:field="lblLearnMore">Learn more v</g:Label>
 			</div>
 		</div>
+		<div id="divider">
+		</div>
+		<div class="bottom">
+		</div>
+
+
 		<div class="row introFooter">
 			<div class="col-md-2 col-md-offset-1">
 				<a href="https://www.rijksmuseum.nl/">
-					<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam" class="logos">
+					<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
+						class="logos">
 						<ui:attribute name="alt" description="Alt text RMA logo" />
 					</img>
 				</a>
 			</div>
 			<div class="col-md-2 col-md-offset-2">
-				<a href="https://www.rijksmuseum.nl/">
-					More information
-				</a>
 			</div>
 			<div class="col-md-1 col-md-offset-2">
 				<a href="http://commit-nl.nl/">
-					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="logos">
+					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
+						class="logos">
 						<ui:attribute name="alt" description="Alt text COMMIT logo" />
 					</img>
 				</a>
 			</div>
 		</div>
-		<div class="col-md-10 col-md-offset-1 row more-information" id="more-information">
-			<h1>More information about Accurator</h1>
-			<p>Accurator is developed in the context of the research project <a href="http://sealincmedia.wordpress.com/">SEALINCMedia</a></p>
-		</div>
-		<!-- <g:HTMLPanel styleName="footer" ui:field="footer">
-			<div class="logos">
-				<div class="group">
-					<span class="title">Project</span>
-					<div>
-						<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text COMMIT logo" />
-						</img>
-						<img src="/images/SEALINCMedia.png" alt="Logo of the SEALINCMedia project"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
-						</img>
-					</div>
-				</div>
-				<div class="group">
-					<span class="title">Partners</span>
-					<div>
-						<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text RMA logo" />
-						</img>
-						<img src="/images/TUD.png" alt="Logo of Delft University of Technology"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text DUT logo" />
-						</img>
-						<img src="/images/VU.png" alt="Logo of the Free University Amsterdam"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text VU logo" />
-						</img>
-						<img src="/images/CWI.png"
-							alt="Logo of the CWI Centrum voor Wiskunde en Informatica" class="logo">
-							<ui:attribute name="alt" description="Alt text CWI logo" />
-						</img>
-					</div>
-				</div>
-			</div>
-		</g:HTMLPanel> -->
 	</g:HTMLPanel>
 </ui:UiBinder>
