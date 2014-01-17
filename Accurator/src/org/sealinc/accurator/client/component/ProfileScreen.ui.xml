@@ -109,14 +109,10 @@
 				<legend>
 					<ui:msg description="Instructions">Instructions</ui:msg>
 				</legend>
-				<legend>
-					<ui:msg description="Prints annotated">Prints annotated</ui:msg>
-				</legend>
 			</fieldset>
 			
 			
-
-</div>
+			
 			
 </div>
 </g:HTMLPanel>
