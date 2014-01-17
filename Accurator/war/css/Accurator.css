@@ -118,6 +118,11 @@ a:hover {
 	border-color: #757575;
 }
 
+.btn-transparant:active {
+	background-color: transparent;
+	border-color: #606060;
+}
+
 .introText {
 	padding-top: 100px;
 }
