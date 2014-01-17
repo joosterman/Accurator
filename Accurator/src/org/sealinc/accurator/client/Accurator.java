@@ -35,7 +35,9 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -53,13 +55,15 @@ public class Accurator implements EntryPoint {
 	@UiField
 	Panel content, header;
 	@UiField
-	Anchor lnkRegister;
-	@UiField
 	Label lblLoginMessage, lblRegisterMessage, lblLoginName;
 	@UiField
-	Button btnDone;
+	Button btnDone, btnLogin;
 	@UiField
 	Anchor lnkLogout, lnkAbout, lnkLicenses;
+	@UiField
+	PasswordTextBox txtLoginPassword;
+	@UiField
+	TextBox txtLoginName;
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 	private List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
@@ -102,6 +106,14 @@ public class Accurator implements EntryPoint {
 		return management;
 	}
 
+	@UiHandler("btnLogin")
+	void btnLoginClick(ClickEvent e) {
+		// get the entered fields
+		String user = txtLoginName.getText();
+		String pass = txtLoginPassword.getText();
+		getManagement().login(user, pass);
+	}
+
 	@UiHandler("lnkAbout")
 	void lnkAboutClick(ClickEvent e) {
 		openAboutDialog();
@@ -124,18 +136,11 @@ public class Accurator implements EntryPoint {
 		History.newItem(State.Recommendation.toString());
 	}
 
-	@UiHandler("lnkRegister")
-	void registerClickHandler(ClickEvent e) {
-		getManagement().closeLogin();
-		getManagement().openRegister();
-	}
-
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get();
 		Widget w = uiBinder.createAndBindUi(this);
 		rootPanel.add(w);
 		initHistorySupport();
-		loadUIThemeElements();
 
 		dvlogoutBlock.setVisible(false);
 		btnDone.setVisible(false);
@@ -176,18 +181,6 @@ public class Accurator implements EntryPoint {
 			resizable : false,
 		});
 		$wnd.jQuery("#dialog-about").dialog("open");
-	}-*/;
-
-	private native void loadUIThemeElements()/*-{
-		//$wnd.jQuery("button").button();
-		//$wnd.jQuery(".button").button();
-		//$wnd.jQuery("#menu").menu({
-		//	position : {
-		//		my : "right top",
-		//		at : "right+5 top+25"
-		//	}
-		//});
-	1+1 == 2;
 	}-*/;
 
 	public void updateLanguageForAnnotationComponent() {
@@ -435,7 +428,6 @@ public class Accurator implements EntryPoint {
 					content.add(getIntroScreen());
 					break;
 			}
-			loadUIThemeElements();
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

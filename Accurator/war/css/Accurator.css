@@ -39,7 +39,7 @@ a:hover {
 
 /* Content and main content */
 .content {
-	position: fixed; top: 35px; width: 100%;
+	top: 35px; width: 100%;
 }
 
 .mainContent {

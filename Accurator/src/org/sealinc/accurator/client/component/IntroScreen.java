@@ -37,9 +37,4 @@ public class IntroScreen extends Composite {
 	void btnRegisterClick(ClickEvent e) {
 		accurator.getManagement().openRegister();
 	}
-	
-	@UiHandler("btnLogin")
-	void linkLoginClick(ClickEvent e) {
-		accurator.getManagement().openLogin();
-	}
 }
