@@ -17,13 +17,38 @@
 						</g:InlineHyperlink>
 					</small>
 				</h2>
-				<g:Button ui:field="btnRegister" styleName="button-combo-end button-forward button-primary">
+				<g:Button ui:field="btnRegister" styleName="btn btn-default btn-transparant">
 					<ui:msg description="Register">Sign up</ui:msg>
 				</g:Button>
-				<g:Button ui:field="btnLogin"  styleName="button-combo-end button-forward button-primary">
+				<g:Button ui:field="btnLogin"  styleName="btn btn-link introLink">
 					<ui:msg description="Login">or Sign in</ui:msg>
 				</g:Button>
 			</div>
+		</div>
+		<div class="row introFooter">
+			<div class="col-md-2 col-md-offset-1">
+				<a href="https://www.rijksmuseum.nl/">
+					<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam" class="logos">
+						<ui:attribute name="alt" description="Alt text RMA logo" />
+					</img>
+				</a>
+			</div>
+			<div class="col-md-2 col-md-offset-2">
+				<a href="https://www.rijksmuseum.nl/">
+					More information
+				</a>
+			</div>
+			<div class="col-md-1 col-md-offset-2">
+				<a href="http://commit-nl.nl/">
+					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="logos">
+						<ui:attribute name="alt" description="Alt text COMMIT logo" />
+					</img>
+				</a>
+			</div>
+		</div>
+		<div class="col-md-10 col-md-offset-1 row more-information" id="more-information">
+			<h1>More information about Accurator</h1>
+			<p>Accurator is developed in the context of the research project <a href="http://sealincmedia.wordpress.com/">SEALINCMedia</a></p>
 		</div>
 		<!-- <g:HTMLPanel styleName="footer" ui:field="footer">
 			<div class="logos">

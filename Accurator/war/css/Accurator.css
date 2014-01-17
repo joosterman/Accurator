@@ -39,7 +39,7 @@ a:hover {
 
 /* Content and main content */
 .content {
-	position: fixed; top: 35px; width: 100%;
+	top: 35px; width: 100%;
 }
 
 .mainContent {
@@ -56,16 +56,23 @@ a:hover {
 }
 
 /* Footer */
-.footer {
+.introFooter {
+	height: 20px;
+	position: fixed; bottom: 10px;
+}
+
+.introFooter .logos {
+
+}
+
+/* .footer {
 	background-color: #F0E4CE; height: 53px; clear: both; margin-top: 10px;
 	border-top: 3px solid brown; padding-top: 5px; padding-bottom: 5px;
 	font-size: 0.8em; width: 100%; position: fixed; bottom: 0px;
 	overflow: hidden;
 }
 
-.footer .logos {
-	height: 70%; width: 100%;
-}
+
 
 .footer .group {
 	position: relative; float: left; margin-right: 50px;
@@ -79,7 +86,7 @@ a:hover {
 .footer .logo {
 	max-width: 150px; max-height: 40px; margin-right: 10px;
 	margin-left: 10px; vertical-align: bottom;
-}
+} */
 
 /* Login and registration */
 .dialog {
