@@ -12,8 +12,23 @@ div.top {
 }
 
 div.bottom {
-	min-height: 600px;
-	background-color: white;
+	min-height: 600px; background-color: white;
+}
+
+#learn-more {
+	position: absolute; bottom: 60px; width: 100%; text-align: center;
+}
+
+#learn-more :HOVER {
+	cursor: pointer;
+}
+#learn-more :FIRST-CHILD
+{
+	width:100px;
+}
+#learn-more .glyphicon
+{
+	height:10px;
 }
 
 .imageButton:hover {
@@ -118,13 +133,11 @@ a:hover {
 }
 
 .btn-transparant:active {
-	background-color: transparent;
-	border-color: #606060;
+	background-color: transparent; border-color: #606060;
 }
 
 .btn-transparant:active {
-	background-color: transparent;
-	border-color: #606060;
+	background-color: transparent; border-color: #606060;
 }
 
 .introText {

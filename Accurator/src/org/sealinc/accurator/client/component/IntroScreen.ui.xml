@@ -1,3 +1,4 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
@@ -26,9 +27,13 @@
 						data-target="#modalLogin">or Sign in</button>
 				</div>
 
-				<div id="learn-more">
-					<g:Label ui:field="lblLearnMore">Learn more v</g:Label>
-				</div>
+
+			</div>
+			<div id="learn-more">
+				<g:InlineLabel ui:field="lblLearnMore">
+					Learn more&nbsp; </g:InlineLabel>
+				<g:InlineLabel stylePrimaryName="glyphicon glyphicon-chevron-down"></g:InlineLabel>
+
 			</div>
 		</div>
 		<div id="divider">
