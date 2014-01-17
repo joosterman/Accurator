@@ -1,3 +1,4 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
@@ -6,24 +7,30 @@
 	<g:HTMLPanel styleName="content">
 		<g:HTMLPanel styleName="header" ui:field="header">
 			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-	    		<div class="navbar-header">
-	      			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-sign-collapse">
-	        			<span class="icon-bar"></span>
-	      			</button>
-	      			<a class="navbar-brand" href="/"><img id="headerImage" src="/images/Accurator.png" alt="Accurator" /></a>
-	    		</div>
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target=".navbar-sign-collapse">
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">
+						<img id="headerImage" src="/images/Accurator.png" alt="Accurator" />
+					</a>
+				</div>
 
-	    		<div class="collapse navbar-collapse navbar-sign-collapse">
-              		<ul class="nav navbar-nav navbar-right">
-	        			<li class="dropdown">
-        					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><ui:msg description="Menu">Menu</ui:msg> <b class="caret"></b></a>
-        					<ul class="dropdown-menu">
-          						<li>
+				<div class="collapse navbar-collapse navbar-sign-collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<ui:msg description="Menu">Menu</ui:msg>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
 									<g:Hyperlink targetHistoryToken="Profile">
 										<ui:msg description="MyProfile">MyProfile</ui:msg>
 									</g:Hyperlink>
 								</li>
-          						<li>
+								<li>
 									<g:Anchor ui:field="lnkAbout">
 										<ui:msg description="About Accurator">About Accurator</ui:msg>
 									</g:Anchor>
@@ -38,77 +45,116 @@
 										<ui:msg description="Logout">Logout</ui:msg>
 									</g:Anchor>
 								</li>
-        					</ul>
-      					</li>
-	      			</ul>
-	      		</div>
-	      		<g:HTMLPanel styleName="logoutBlock" ui:field="dvlogoutBlock">
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<g:HTMLPanel styleName="logoutBlock" ui:field="dvlogoutBlock">
 					<span class="username">
 						<ui:msg description="Welcome">Welcome</ui:msg>
 						,&#160;
 						<g:InlineLabel ui:field="lblLoginName"></g:InlineLabel>
 					</span>
 				</g:HTMLPanel>
-	  		</nav>
-			
-			<g:Button ui:field="btnDone"  styleName="done button">
+			</nav>
+
+			<g:Button ui:field="btnDone" styleName="done button">
 				<ui:msg description="Done">Done</ui:msg>
 			</g:Button>
 		</g:HTMLPanel>
-		
-		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
-		
-		<div id="dialog-login" class="dialog" title="Login">
-			<ui:attribute name="title" description="Login popup title" />
-			<p>
-				<g:Label ui:field="lblLoginMessage"></g:Label>
-			</p>
 
-			<form>
-				<fieldset>
-					<label for="name">
-						<ui:msg description="Username">Username</ui:msg>
-					</label>
-					<input type="text" class="text ui-widget-content ui-corner-all"
-						name="name" id="name" />
-					<label for="password">
-						<ui:msg description="Password">Password</ui:msg>
-					</label>
-					<input type="password" name="password" id="password" value=""
-						class="text ui-widget-content ui-corner-all" />
-				</fieldset>
-				<p>
-					<g:Anchor ui:field="lnkRegister">
-						<ui:msg description="Or register">Or register</ui:msg>
-					</g:Anchor>
-				</p>
-			</form>
-		</div>
-		<div id="dialog-register" class="dialog" title="Register">
-			<ui:attribute name="title" description="Register popup title" />
-			<p>
-				<g:Label ui:field="lblRegisterMessage"></g:Label>
-			</p>
-			<form>
-				<fieldset>
-					<label for="regname">
-						<ui:msg description="Username">Username</ui:msg>
-					</label>
-					<input type="text" class="text ui-widget-content ui-corner-all"
-						name="name" id="regname" />
-					<label for="regpassword">
-						<ui:msg description="Password">Password</ui:msg>
-					</label>
-					<input type="password" name="password" id="regpassword"
-						value="" class="text ui-widget-content ui-corner-all" />
-					<label for="regrealName">
-						<ui:msg description="Full name">Full name</ui:msg>
-					</label>
-					<input type="text" class="text ui-widget-content ui-corner-all"
-						name="realName" id="regrealName" />
-				</fieldset>
-			</form>
-		</div>
+		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
+
+		<div class="modal fade" id="modalLogin">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times; </button>
+						<h4 class="modal-title">
+							<ui:msg description="Login popup title">Login</ui:msg>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<div class="form-group">
+								<label for="name">
+									<ui:msg description="Username">Username</ui:msg>
+								</label>
+								<g:TextBox ui:field="txtLoginName" stylePrimaryName="form-control"></g:TextBox>
+							</div>
+							<div class="form-group">
+								<label for="password">
+									<ui:msg description="Password">Password</ui:msg>
+								</label>
+								<g:PasswordTextBox ui:field="txtLoginPassword"
+									stylePrimaryName="form-control"></g:PasswordTextBox>
+							</div>
+							<div class="form-group">
+								<p>
+									<g:Label ui:field="lblLoginMessage"></g:Label>
+								</p>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<g:Button ui:field="btnLogin" stylePrimaryName="btn btn-primary"
+							text="Log in"></g:Button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<div class="modal fade" id="modalRegister">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times; </button>
+						<h4 class="modal-title">
+							<ui:msg description="Register popup title">Register</ui:msg>
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form role="form">
+							<div class="form-group">
+								<label for="name">
+									<ui:msg description="Username">Username</ui:msg>
+								</label>
+								<g:TextBox ui:field="txtRegisterName"
+									stylePrimaryName="form-control"></g:TextBox>
+							</div>
+							<div class="form-group">
+								<label for="password">
+									<ui:msg description="Password">Password</ui:msg>
+								</label>
+								<g:PasswordTextBox ui:field="txtRegisterPassword"
+									stylePrimaryName="form-control"></g:PasswordTextBox>
+							</div>
+							<div class="form-group">
+								<label for="regrealName">
+									<ui:msg description="Full name">Full name</ui:msg>
+								</label>
+								<g:TextBox ui:field="txtRegisterFullName"
+									stylePrimaryName="form-control"></g:TextBox>
+							</div>
+							<div class="form-group">
+								<p>
+									<g:Label ui:field="lblRegisterMessage"></g:Label>
+								</p>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<g:Button ui:field="btnRegister" stylePrimaryName="btn btn-primary"
+							text="Register"></g:Button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
 		<div id="dialog-about" class="dialog" title="About Accurator">
 			<ui:attribute name="title" description="About Accurator" />
 			<p>

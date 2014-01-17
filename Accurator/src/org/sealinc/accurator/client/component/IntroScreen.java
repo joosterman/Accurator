@@ -17,8 +17,7 @@ public class IntroScreen extends Composite {
 	
 	@UiField
 	Button btnRegister;
-	@UiField
-	Button btnLogin;
+
 
 		
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
@@ -36,10 +35,5 @@ public class IntroScreen extends Composite {
 	@UiHandler("btnRegister")
 	void btnRegisterClick(ClickEvent e) {
 		accurator.getManagement().openRegister();
-	}
-	
-	@UiHandler("btnLogin")
-	void linkLoginClick(ClickEvent e) {
-		accurator.getManagement().openLogin();
 	}
 }

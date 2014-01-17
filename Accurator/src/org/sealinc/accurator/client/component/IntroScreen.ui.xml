@@ -20,9 +20,9 @@
 				<g:Button ui:field="btnRegister" styleName="btn btn-default btn-transparant">
 					<ui:msg description="Register">Sign up</ui:msg>
 				</g:Button>
-				<g:Button ui:field="btnLogin"  styleName="btn btn-link introLink">
-					<ui:msg description="Login">or Sign in</ui:msg>
-				</g:Button>
+
+				<button class="btn btn-primary" data-toggle="modal" data-target="#modalRegister">Register</button>
+				<button class="btn btn-primary" data-toggle="modal" data-target="#modalLogin">Log in</button>
 			</div>
 		</div>
 		<div class="row introFooter">

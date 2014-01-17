@@ -117,7 +117,7 @@ public class UserManagement {
 	private void loginFailed() {
 		acc.lblLoginMessage.setText(Utility.constants.loginFailed());
 		Utility.deleteStoredUserCredentials();
-		openLogin();
+		//TODO Handle login failed
 	}
 
 	private void resetLoginTimer() {
@@ -150,11 +150,11 @@ public class UserManagement {
 			login(user, pass);
 		}
 		else {
-			openLogin();
+		//TODO Handle login not available in local storage
 		}
 	}
 
-	private native void login(String username, String password)/*-{
+	protected native void login(String username, String password)/*-{
 		var management = this;
 		var loginURL = @org.sealinc.accurator.shared.Config::loginURL;
 		$wnd.jQuery
@@ -166,13 +166,15 @@ public class UserManagement {
 					"user" : username,
 					"password" : password
 				},
-				timeout : 10000,
+				timeout : 5000,
 				error : function(xhr, ajaxOptions, thrownError) {
 					if (xhr.status === 200) {
 						try {
 							$wnd.jQuery("#dialog-login").dialog("close");
 						} catch (err) {
 						}
+								//close the login box
+						$wnd.jQuery('#modalLogin').modal('hide')
 						management.@org.sealinc.accurator.client.UserManagement::loginSuccessful(Ljava/lang/String;Ljava/lang/String;)(username,password);
 					} else {
 						//show failed!
@@ -180,10 +182,6 @@ public class UserManagement {
 					}
 				}
 			});
-	}-*/;
-
-	protected native void closeLogin()/*-{
-		$wnd.jQuery("#dialog-login").dialog("close");
 	}-*/;
 
 	private void renewLogin() {
@@ -197,27 +195,6 @@ public class UserManagement {
 			}
 		}
 	}
-
-	public native void openLogin()/*-{
-		var management = this;
-		var logIn = @org.sealinc.accurator.client.Utility::getLocalString(Ljava/lang/String;)("logIn");
-		var localButtons = {};
-		localButtons[logIn] = function() {
-			var user = $wnd.jQuery("#name").val();
-			var password = $wnd.jQuery("#password").val();
-			management.@org.sealinc.accurator.client.UserManagement::login(Ljava/lang/String;Ljava/lang/String;)(user,password);
-		};
-		$wnd.jQuery("#dialog-login").dialog({
-			autoOpen : false,
-			modal : true,
-			draggable : false,
-			resizable : false,
-			closeOnEscape : false,
-			buttons : localButtons,
-		});
-		$wnd.jQuery("#dialog-login").dialog("open");
-		$wnd.jQuery(".ui-dialog-titlebar-close").hide();
-	}-*/;
 
 	private void register(final String user, final String password, String realName) {
 		Utility.adminService.register(user, password, realName, new AsyncCallback<Boolean>() {
