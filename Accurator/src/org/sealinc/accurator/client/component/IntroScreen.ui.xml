@@ -12,8 +12,7 @@
 						<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
 						<small>
 							<ui:msg description="SubSlogan">Help us add information to the
-								artworks
-								of the Rijksmuseum Amsterdam.
+								artworks of the Rijksmuseum Amsterdam.
 							</ui:msg>
 
 							<g:InlineHyperlink targetHistoryToken="Profile">
@@ -21,18 +20,15 @@
 							</g:InlineHyperlink>
 						</small>
 					</h2>
-					<g:Button ui:field="btnRegister" styleName="btn btn-default btn-transparant">
-						<ui:msg description="Register">Sign up</ui:msg>
-					</g:Button>
-
-					<button class="btn btn-primary" data-toggle="modal"
-						data-target="#modalRegister">Register</button>
-					<button class="btn btn-primary" data-toggle="modal"
-						data-target="#modalLogin">Log in</button>
+					<button class="btn btn-default btn-transparant" data-toggle="modal"
+						data-target="#modalRegister">Sign up</button>
+					<button class="btn btn-link introLink" data-toggle="modal"
+						data-target="#modalLogin">or Sign in</button>
 				</div>
-			</div>
-			<div id="learn-more">
-				<g:Label ui:field="lblLearnMore">Learn more v</g:Label>
+
+				<div id="learn-more">
+					<g:Label ui:field="lblLearnMore">Learn more v</g:Label>
+				</div>
 			</div>
 		</div>
 		<div id="divider">

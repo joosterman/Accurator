@@ -39,5 +39,4 @@ public class IntroScreen extends Composite {
 		alert("scrolling");
 		$wnd.jQuery("div.bottom").scrollIntoView();
 	}-*/;
-
 }
