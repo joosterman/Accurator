@@ -46,7 +46,7 @@ public class Utility {
 	};
 
 	private Utility() {}
-
+	
 	public static native void hitURLWithJsonp(String urlToHit)/*-{
 		$wnd.jQuery.ajax({
 			type : 'GET',

@@ -7,18 +7,22 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class IntroScreen extends Composite {
 	interface MyUiBinder extends UiBinder<Widget, IntroScreen> {}
 
-	Accurator accurator;
+	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+	private Accurator accurator;
+	private final String imagePathPrefix = "./images/background/";
+	private final String[] backgroundImages = { "1.jpg", "2.jpg" };
 
 	@UiField
 	InlineLabel lblLearnMore;
-
-	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
+	@UiField
+	Image imgBackground;
 
 	@Override
 	public void setHeight(String height) {
@@ -28,6 +32,10 @@ public class IntroScreen extends Composite {
 	public IntroScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));
 		accurator = acc;
+		int index = (int) Math.round(Math.random() * backgroundImages.length);
+		// correct for zero based index
+		if (index > 0) index--;
+		imgBackground.setUrl(imagePathPrefix + backgroundImages[index]);
 	}
 
 	@UiHandler("lblLearnMore")
@@ -36,6 +44,12 @@ public class IntroScreen extends Composite {
 	}
 
 	private native void scrollToBottom()/*-{
-		$wnd.jQuery("div.bottom").scrollIntoView();
+		var container = $wnd.jQuery('body');
+		var scrollTo = $wnd.jQuery('#divider');
+
+		container.animate({
+			scrollTop : scrollTo.offset().top - container.offset().top + container.scrollTop()
+		});
+
 	}-*/;
 }

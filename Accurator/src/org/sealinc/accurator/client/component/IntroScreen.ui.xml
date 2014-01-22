@@ -7,38 +7,65 @@
 
 	<g:HTMLPanel styleName="introContent">
 		<div class="top">
-			<div class="row introText">
-				<div class="col-md-8 col-md-offset-2">
-					<h2>
-						<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
-						<small>
-							<ui:msg description="SubSlogan">Help us add information to the
-								artworks of the Rijksmuseum Amsterdam.
-							</ui:msg>
+			<g:Image ui:field="imgBackground" stylePrimaryName="backgroundImage"></g:Image>
+			<div class="container introText ">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<h2>
+							<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
+							<small>
+								<ui:msg description="SubSlogan">Help us add information to the
+									artworks of the Rijksmuseum Amsterdam.
+								</ui:msg>
 
-							<g:InlineHyperlink targetHistoryToken="Profile">
-								<ui:msg description="linkTryIt">Give it a try!</ui:msg>
-							</g:InlineHyperlink>
-						</small>
-					</h2>
-					<button class="btn btn-default btn-transparant" data-toggle="modal"
-						data-target="#modalRegister">Sign up</button>
-					<button class="btn btn-link introLink" data-toggle="modal"
-						data-target="#modalLogin">or Sign in</button>
+								<g:InlineHyperlink targetHistoryToken="Profile">
+									<ui:msg description="linkTryIt">Give it a try!</ui:msg>
+								</g:InlineHyperlink>
+							</small>
+						</h2>
+						<button class="btn btn-default btn-transparant"
+							data-toggle="modal" data-target="#modalRegister">Sign up</button>
+						<button class="btn btn-link introLink" data-toggle="modal"
+							data-target="#modalLogin">or Sign in</button>
+					</div>
 				</div>
-
-
 			</div>
 			<div id="learn-more">
-				<g:InlineLabel ui:field="lblLearnMore">
-					Learn more&nbsp; </g:InlineLabel>
-				<g:InlineLabel stylePrimaryName="glyphicon glyphicon-chevron-down"></g:InlineLabel>
+				<div id="learn-more-text">
+					<g:InlineLabel ui:field="lblLearnMore">
+						Learn more&nbsp; </g:InlineLabel>
+					<g:InlineLabel stylePrimaryName="glyphicon glyphicon-chevron-down"></g:InlineLabel>
+				</div>
 
 			</div>
 		</div>
-		<div id="divider">
-		</div>
-		<div class="bottom">
+		<div id="divider"></div>
+		<div class="bottom container">
+			<div class="row">
+				<div class="row col-md-4 col-md-offset-2">
+					<h3>Placeholder TITLE</h3>
+					Placeholder TEXT
+				</div>
+				<div class="row col-md-4">
+					Placeholder IMAGE
+				</div>
+			</div>
+			<div class="row">
+				<div class="row col-md-4 col-md-offset-2">
+					IMAGE 2
+				</div>
+				<div class="row col-md-4">
+					TEXT 2
+				</div>
+			</div>
+			<div class="row">
+				<div class="row col-md-4 col-md-offset-2">
+					TEXT 3
+				</div>
+				<div class="row col-md-4">
+					IMAGE 3
+				</div>
+			</div>
 		</div>
 
 
