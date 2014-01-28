@@ -145,8 +145,8 @@ public class Accurator implements EntryPoint {
 		dvlogoutBlock.setVisible(false);
 		btnDone.setVisible(false);
 
-		resizeContent();
-		Window.addResizeHandler(new ResizeHandler() {
+		//resizeContent();
+		/*Window.addResizeHandler(new ResizeHandler() {
 
 			Timer resizeTimer = new Timer() {
 				@Override
@@ -160,7 +160,7 @@ public class Accurator implements EntryPoint {
 				resizeTimer.cancel();
 				resizeTimer.schedule(250);
 			}
-		});
+		});*/
 
 		// getManagement().login();
 		LoadState(State.Intro.toString());

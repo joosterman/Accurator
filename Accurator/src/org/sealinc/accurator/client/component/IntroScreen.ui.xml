@@ -1,3 +1,4 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
@@ -5,65 +6,88 @@
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 
 	<g:HTMLPanel styleName="introContent">
-		<div class="row introText">
-			<div class="col-md-8 col-md-offset-2">
-				<h2>
-					<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
-					<small>
-						<ui:msg description="SubSlogan">Help us add information to the artworks of the Rijksmuseum Amsterdam.</ui:msg>
-						
-						<g:InlineHyperlink targetHistoryToken="Profile">
-							<ui:msg description="linkTryIt">Give it a try!</ui:msg>
-						</g:InlineHyperlink>
-					</small>
-				</h2>
-				<g:Button ui:field="btnRegister" styleName="button-combo-end button-forward button-primary">
-					<ui:msg description="Register">Sign up</ui:msg>
-				</g:Button>
-				<g:Button ui:field="btnLogin" styleName="button-combo-end button-forward button-primary">
-					<ui:msg description="Login">or Sign in</ui:msg>
-				</g:Button>
-				<button class="btn btn-primary" data-toggle="modal" data-target="#modalRegister">Register</button>
-				<button class="btn btn-primary" data-toggle="modal" data-target="#modalLogin">Log in</button>
+		<div class="top">
+			<g:Image ui:field="imgBackground" stylePrimaryName="backgroundImage"></g:Image>
+			<div class="container introText ">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<h2>
+							<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
+							<small>
+								<ui:msg description="SubSlogan">Help us add information to the
+									artworks of the Rijksmuseum Amsterdam.
+								</ui:msg>
+
+								<g:InlineHyperlink targetHistoryToken="Profile">
+									<ui:msg description="linkTryIt">Give it a try!</ui:msg>
+								</g:InlineHyperlink>
+							</small>
+						</h2>
+						<button class="btn btn-default btn-transparant"
+							data-toggle="modal" data-target="#modalRegister">Sign up</button>
+						<button class="btn btn-link introLink" data-toggle="modal"
+							data-target="#modalLogin">or Sign in</button>
+					</div>
+				</div>
+			</div>
+			<div id="learn-more">
+				<div id="learn-more-text">
+					<g:InlineLabel ui:field="lblLearnMore">
+						Learn more&nbsp; </g:InlineLabel>
+					<g:InlineLabel stylePrimaryName="glyphicon glyphicon-chevron-down"></g:InlineLabel>
+				</div>
+
 			</div>
 		</div>
-		<!-- <g:HTMLPanel styleName="footer" ui:field="footer">
-			<div class="logos">
-				<div class="group">
-					<span class="title">Project</span>
-					<div>
-						<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text COMMIT logo" />
-						</img>
-						<img src="/images/SEALINCMedia.png" alt="Logo of the SEALINCMedia project"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
-						</img>
-					</div>
+		<div id="divider"></div>
+		<div class="bottom container">
+			<div class="row">
+				<div class="row col-md-4 col-md-offset-2">
+					<h3>Placeholder TITLE</h3>
+					Placeholder TEXT
 				</div>
-				<div class="group">
-					<span class="title">Partners</span>
-					<div>
-						<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text RMA logo" />
-						</img>
-						<img src="/images/TUD.png" alt="Logo of Delft University of Technology"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text DUT logo" />
-						</img>
-						<img src="/images/VU.png" alt="Logo of the Free University Amsterdam"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text VU logo" />
-						</img>
-						<img src="/images/CWI.png"
-							alt="Logo of the CWI Centrum voor Wiskunde en Informatica" class="logo">
-							<ui:attribute name="alt" description="Alt text CWI logo" />
-						</img>
-					</div>
+				<div class="row col-md-4">
+					Placeholder IMAGE
 				</div>
 			</div>
-		</g:HTMLPanel> -->
+			<div class="row">
+				<div class="row col-md-4 col-md-offset-2">
+					IMAGE 2
+				</div>
+				<div class="row col-md-4">
+					TEXT 2
+				</div>
+			</div>
+			<div class="row">
+				<div class="row col-md-4 col-md-offset-2">
+					TEXT 3
+				</div>
+				<div class="row col-md-4">
+					IMAGE 3
+				</div>
+			</div>
+		</div>
+
+
+		<div class="row introFooter">
+			<div class="col-md-2 col-md-offset-1">
+				<a href="https://www.rijksmuseum.nl/">
+					<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
+						class="logos">
+						<ui:attribute name="alt" description="Alt text RMA logo" />
+					</img>
+				</a>
+			</div>
+			<div class="col-md-2 col-md-offset-2">
+			</div>
+			<div class="col-md-1 col-md-offset-2">
+				<a href="http://commit-nl.nl/">
+					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
+						class="logos">
+						<ui:attribute name="alt" description="Alt text COMMIT logo" />
+					</img>
+				</a>
+			</div>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>
