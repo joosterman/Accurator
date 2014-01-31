@@ -32,8 +32,8 @@
 			</div>
 			<div id="learn-more">
 				<div id="learn-more-text">
-					<g:InlineLabel ui:field="lblLearnMore">
-						Learn more&nbsp; </g:InlineLabel>
+					<h3><g:InlineLabel ui:field="lblLearnMore">
+						Learn more&nbsp;</g:InlineLabel></h3>
 					<g:InlineLabel stylePrimaryName="glyphicon glyphicon-chevron-down"></g:InlineLabel>
 				</div>
 
