@@ -43,8 +43,9 @@
 		<div class="bottom container">
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
-					<h3>Placeholder TITLE</h3>
-					Placeholder TEXT
+					<h3>About Accurator</h3>
+					Accurator is a platform that allows users to provide information about Rijksmuseum collection. The information provided by the users is used to enrich the colleciton
+					and to facilitate searching through the Rijkmuseum collection.
 				</div>
 				<div class="row col-md-4">
 					Placeholder IMAGE
@@ -55,7 +56,8 @@
 					IMAGE 2
 				</div>
 				<div class="row col-md-4">
-					TEXT 2
+					Accurator is designed as part of Socially Enriched Access to Linked Cultural Heritage (SEALINC) COMMIT/ project in Netherlands. This is a collaboration between industry and academia. The participaitng institutions are 
+					VU University Amsterdam, Technical University Delft, Center voor Wiskunde en Informatica (CWI) and Rijksmuseum.
 				</div>
 			</div>
 			<div class="row">
