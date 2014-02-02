@@ -2,6 +2,7 @@
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:HTMLPanel>
 	<g:HTMLPanel styleName="profileContent">
 		<div class="leftColumn infoblock">
 			<fieldset>
@@ -102,5 +103,18 @@
 			</fieldset>
 		</div>
 	</g:HTMLPanel>
-
+<g:HTMLPanel>
+<div class="leftColumn infoblock">
+			<fieldset>
+				<legend>
+					<ui:msg description="Instructions">Instructions</ui:msg>
+				</legend>
+			</fieldset>
+			
+			
+			
+			
+</div>
+</g:HTMLPanel>
+</g:HTMLPanel>
 </ui:UiBinder>
