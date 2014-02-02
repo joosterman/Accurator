@@ -69,25 +69,17 @@
 		</div>
 
 
-		<div class="row introFooter">
-			<div class="col-md-2 col-md-offset-1">
-				<a href="https://www.rijksmuseum.nl/">
-					<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
-						class="logos">
-						<ui:attribute name="alt" description="Alt text RMA logo" />
-					</img>
-				</a>
-			</div>
-			<div class="col-md-2 col-md-offset-2">
-			</div>
-			<div class="col-md-1 col-md-offset-2">
-				<a href="http://commit-nl.nl/">
-					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
-						class="logos">
-						<ui:attribute name="alt" description="Alt text COMMIT logo" />
-					</img>
-				</a>
-			</div>
+		<div class="introFooter">
+			<a href="https://www.rijksmuseum.nl/">
+				<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam" class="footerLogo" id="footerLogoRijksmuseum">
+					<ui:attribute name="alt" description="Alt text RMA logo" />
+				</img>
+			</a>
+			<a href="http://commit-nl.nl/">
+				<img src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="footerLogo" id="footerLogoCommit">
+					<ui:attribute name="alt" description="Alt text COMMIT logo" />
+				</img>
+			</a>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

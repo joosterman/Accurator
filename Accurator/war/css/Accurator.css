@@ -48,7 +48,19 @@ a:hover {
 
 /* Footer */
 .introFooter {
-	height: 20px; position: fixed; bottom: 10px;
+	height: 20px; position: fixed; bottom: 10px; left: 20px; right: 20px;
+}
+
+.footerLogo {
+	max-height: 90%; position: relative;	
+}
+
+#footerLogoCommit {
+	float: right;
+}
+
+#footerLogoRijksmuseum {
+	float: left;
 }
 
 /* Login and registration */
@@ -130,10 +142,6 @@ a:hover {
 
 .imageButton:hover {
 	opacity: 0.4; cursor: pointer;
-}
-
-.introFooter img {
-	width: 100%;
 }
 
 /* Annotation screen */
