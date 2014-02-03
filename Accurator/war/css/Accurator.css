@@ -76,6 +76,12 @@ a:hover {
 	padding: 0; border: 0; margin-top: 25px;
 }
 
+.modal-footer {
+	margin-top: 0;
+}
+
+
+ 
 /* Intro screen */
 .introContent .top {
 	position: relative; height: 100%; overflow: hidden;
@@ -99,28 +105,16 @@ a:hover {
 }
 
 /* Button */
-.btn-transparant {
-	background-color: transparent; border-color: #000000;
-}
-
-.btn-transparant:hover {
-	background-color: transparent; border-color: #757575;
-}
-
-.btn-transparant:focus {
-	background-color: transparent; border-color: #909090; outline: none;
-}
-
-.btn-transparant:active {
-	background-color: transparent; border-color: #606060;
-}
-
 .introLink {
 	color: #505050;
 }
 
 .introLink:hover {
 	color: #909090; cursor: pointer;
+}
+
+.introLink:focus {
+	outline: none;
 }
 
 #learn-more {

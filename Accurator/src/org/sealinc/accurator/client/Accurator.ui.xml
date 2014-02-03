@@ -78,7 +78,7 @@
 							<ui:msg description="Login popup title">Login</ui:msg>
 						</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body bg-lighter">
 						<form role="form">
 							<div class="form-group">
 								<label for="name">
@@ -101,8 +101,8 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<g:Button ui:field="btnLogin" stylePrimaryName="btn btn-primary"
+						<button type="button" class="button-overlay" data-dismiss="modal">Close</button>
+						<g:Button ui:field="btnLogin" stylePrimaryName="button-primary"
 							text="Log in"></g:Button>
 					</div>
 				</div>
@@ -120,7 +120,7 @@
 							<ui:msg description="Register popup title">Register</ui:msg>
 						</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body bg-lighter">
 						<form role="form">
 							<div class="form-group">
 								<label for="name">
@@ -151,8 +151,8 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<g:Button ui:field="btnRegister" stylePrimaryName="btn btn-primary"
+						<button type="button" class="button-overlay" data-dismiss="modal">Close</button>
+						<g:Button ui:field="btnRegister" stylePrimaryName="button-primary"
 							text="Register"></g:Button>
 					</div>
 				</div>
