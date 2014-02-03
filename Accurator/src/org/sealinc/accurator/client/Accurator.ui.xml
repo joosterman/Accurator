@@ -5,11 +5,12 @@
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'
 	xmlns:d="urn:import:com.google.gwt.dom.client" xmlns:acc="urn:import:org.sealinc.accurator.client.component">
 	<g:HTMLPanel styleName="content">
+		<!-- Header -->
 		<g:HTMLPanel styleName="header" ui:field="header">
+			<!-- Navbar -->
 			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse"
-						data-target=".navbar-sign-collapse">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-sign-collapse">
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="/">
@@ -62,9 +63,11 @@
 				<ui:msg description="Done">Done</ui:msg>
 			</g:Button>
 		</g:HTMLPanel>
-
+		
+		<!-- Main Content -->
 		<g:SimplePanel ui:field="content" styleName="mainContent"></g:SimplePanel>
-
+		
+		<!-- Login -->
 		<div class="modal fade" id="modalLogin">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -102,10 +105,11 @@
 						<g:Button ui:field="btnLogin" stylePrimaryName="btn btn-primary"
 							text="Log in"></g:Button>
 					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-
+				</div>
+			</div>
+		</div>
+		
+		<!-- Register -->
 		<div class="modal fade" id="modalRegister">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -151,10 +155,11 @@
 						<g:Button ui:field="btnRegister" stylePrimaryName="btn btn-primary"
 							text="Register"></g:Button>
 					</div>
-				</div><!-- /.modal-content -->
-			</div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-
+				</div>
+			</div>
+		</div>
+		
+		<!-- About -->
 		<div id="dialog-about" class="dialog" title="About Accurator">
 			<ui:attribute name="title" description="About Accurator" />
 			<p>
@@ -170,6 +175,8 @@
 				<ui:msg description="About_project">About_project</ui:msg>
 			</p>
 		</div>
+		
+		<!-- Loading image fig -->
 		<g:Image url="./images/ajax-loader.gif" styleName="loading"></g:Image>
 	</g:HTMLPanel>
 </ui:UiBinder>
