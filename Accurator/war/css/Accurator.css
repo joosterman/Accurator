@@ -98,6 +98,7 @@ a:hover {
 	height: 150px;
 }
 
+/* Button */
 .btn-transparant {
 	background-color: transparent; border-color: #000000;
 }
@@ -106,8 +107,8 @@ a:hover {
 	background-color: transparent; border-color: #757575;
 }
 
-.btn-transparant:active {
-	background-color: transparent; border-color: #606060;
+.btn-transparant:focus {
+	background-color: transparent; border-color: #909090; outline: none;
 }
 
 .btn-transparant:active {
