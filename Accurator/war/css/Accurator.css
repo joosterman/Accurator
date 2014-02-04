@@ -92,7 +92,13 @@ a:hover {
 }
 
 .backgroundImage {
-	max-width: 100%;
+	position: relative; 
+	top: 0; 
+	left: 0; 
+		
+	/* Preserve aspect ratio */
+	min-width: 100%;
+	min-height: 100%;
 }
 
 .introContent .bottom {
