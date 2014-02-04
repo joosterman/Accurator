@@ -49,30 +49,44 @@
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
 					<h3>About Accurator</h3>
-					Accurator is a platform that allows users to provide information about Rijksmuseum collection. The information provided by the users is used to enrich
-					and facilitate searching through the Rijkmuseum collection.
+					Accurator is a platform that allows users to help museum professionals with describing collection items of the 
+					Rijksmuseum Amsterdam with expert knowledge. This could, for example, be the annotation of the depicted species 
+					of an animal or plant. Apart from contributing to very detailed descriptions, this information can also be used to 
+					facilitate searching the museum's collection.
 				</div>
 				<div class="row col-md-4">
-					Placeholder IMAGE
+					Screenshot?
 				</div>
 			</div>
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
-					IMAGE 2
+					SEALINCMedia group picture?
 				</div>
 				<div class="row col-md-4">
-				    <h3>COMMIT/</h3>
-					Accurator is designed as part of Socially Enriched Access to Linked Cultural Heritage (SEALINC) COMMIT/ project in Netherlands. This is a collaboration between industry and academia. The participaitng institutions are 
-					VU University Amsterdam, TU University Delft, CWI and Rijksmuseum Amsterdam.
+				    <h3>SEALINCMedia</h3>
+					Accurator is designed as part of the SEALINCMedia project. The collaborating institutions are 
+					VU University Amsterdam, TU University Delft, Centrum Wiskunde & Informatica, Rijksmuseum Amsterdam and the National Library of The Netherlands.
 				</div>
 			</div>
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
 					<h3>Accurator for research</h3>
-					Accurator is also developed as a research project with funcitonalities which help in recruiting users, understanding user annotation techniques, search and recommendation patterns and evaluating quality of user contributions. The data collected as part of Accurator will be used for research purposes.
+					 The research challenges of the project are to identify the niche of relevant experts and to motivate them to contribute to the 
+					 annotation of artworks; developping the personalization mechanisms to make sure that the experts are shown items that correspond 
+					 to their expertise; evaluating the quality of the annotations and annotators using trust algorithms and to present all these aspects 
+					 in an appropriate interface. To test our hypotheses, we continuously develop and evaluate Accurator. 
 				</div>
 				<div class="row col-md-4">
 					IMAGE 3
+				</div>
+			</div>
+			<div class="row">
+				<div class="row col-md-4 col-md-offset-2">
+					COMMIT/ logo?
+				</div>
+				<div class="row col-md-4">
+				    <h3>COMMIT/</h3>
+					SEALINCMedia is part of the COMMIT/ project which brings together academic research and (non-)profit organizations to solve challenges in ICT. 
 				</div>
 			</div>
 		</div>
