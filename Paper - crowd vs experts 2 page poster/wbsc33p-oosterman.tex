@@ -21,20 +21,20 @@
 \author{
 % 1st. author
 \alignauthor 
-J. Oosterman, \\A. Bozzon, G.J. Houben \\
+Jasper Oosterman, \\Alessandro Bozzon, Geert-Jan Houben \\
        \affaddr{Delft University of Technology} \\
        \affaddr{Delft, The Netherlands} \\
        \email{j.e.g.oosterman, a.bozzon, g.j.p.m.houben@tudelft.nl}
 \and
 % 2nd. author
-\alignauthor A. Nottamkandath, 	\\C. Dijkshoorn, L. Aroyo \\
+\alignauthor Archana Nottamkandath, 	\\Chris Dijkshoorn, Lora Aroyo \\
        \affaddr{VU University Amsterdam} \\
        \affaddr{Amsterdam, The Netherlands} \\
        \email{a.nottamkandath, c.r.dijkshoorn, lora.aroyo@vu.nl}
 % 3rd. author
 \and  % use '\and' if you need 'another row' of author names
 % 4th. author
-\alignauthor  M.~H.~R.~Leyssen, M.~C.~Traub \\
+\alignauthor  Mieke~H.~R.~Leyssen, Myriam~C.~Traub \\
        \affaddr{Centrum Wiskunde \& Informatica}\\
        \affaddr{Amsterdam, The Netherlands}\\
        \email{mieke.leyssen, myriam.traub@cwi.nl}
@@ -65,7 +65,7 @@ In this paper we show the results of an exploratory study focussing on a knowled
 	\item What is the relation between task difficulty and crowd annotation behavior?
 \end{itemize}
 
-The contributions from this exploratory study include a detailed analysis of crowd and expert annotations for flower prints in the Rijksmuseum collection, and a dataset with expert annotations and crowd annotations to be used for further study. 
+The contributions from this exploratory study include a analysis of crowd and expert annotations for flower prints in the Rijksmuseum collection, and a dataset with expert and crowd annotations to be used for further study. 
 
 \section{Experimental Setup}
 Our dataset consists of 86 prints depicting one or more flowers from the Rijksmuseum Amsterdam. We classified each print along two dimensions: the print depicts \textit{multiple} flowers or a \textit{single} one and the depicted flower(s) can be \textit{prominent} (main element of the artwork) or \textit{non-prominent} (detail). In the collection are 8 Single Prominent (\textbf{SP}), 9 Multiple Prominent (\textbf{MP}), 16 Single Non-prominent (\textbf{SNP}) and 53 Multiple Non-prominent (\textbf{MNP}) prints.
@@ -74,10 +74,10 @@ The experiment addressed two target populations: persons with known domain exper
 
 Figure \ref{fig:ui} depicts the user interface of our testbed designed and implemented for our experiments. Annotator could provide one to three tags (flower names), a certainty score indicating the certainty of the annotator that the annotation was correct (ranging from 1: uncertain to 5: certain), and a free-text comments. Experts and crowd workers were instructed to provide: 1) the most specific flower names for depicted flowers; 2) the tag ``fantasy'' if a flower was not real, or; 3) ``unable'' including an explanatory comment if they could not name any depicted flower.
 
-The experiment was performed in June 2013. Table \ref{tab:general} gives an overview of the experimental outcomes. The dataset and crowd and expert annotations are made available online\footnote{\url{http://bit.ly/Mr8IEC}}.
+The experiment was performed in June 2013. Table \ref{tab:general} gives an overview of the experimental outcomes. The resulting data is available online\footnote{\url{http://bit.ly/Mr8IEC}}.
 
 \begin{figure}[t]
-\includegraphics[height=3.65cm]{ui}
+\includegraphics[height=3.65cm,natwidth=791,natheight=347]{ui.png}
 \caption{User interface for annotation task.}
 \label{fig:ui}
 \end{figure}
@@ -126,8 +126,10 @@ We targeted crowd workers with unknown domain-specific knowledge. Despite this w
 
 Difficulty of annotation tasks clearly played a role in the tagging performance of the two groups which. This can be observed from the higher confidence for prints with prominent flowers and the low annotator agreement of crowd workers. Traditional algorithms such as majority voting are thus less useful for truth elicitation than in other image annotation tasks. Characteristics of these prints, prominence and amount of flowers, might make it more difficult to identify and name all the flowers in the print. This suggests the usage of a more articulated annotation process, where the recognition and identification of flowers are different annotation tasks, possibly to be assigned to different annotator groups. 
 
-\section{Acknowledgements}
-This publication was supported by the Dutch national program COMMIT. We like to thank the members of the SEALINCMedia worktable and in particular the Rijksmuseum for their support.
+\vspace{5mm}
+
+\noindent\textbf{Acknowledgements}
+This publication was supported by the Dutch national program COMMIT. 
 
 \bibliographystyle{abbrv}
 \begin{thebibliography}{1}
