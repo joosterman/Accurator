@@ -80,7 +80,8 @@ public class Accurator implements EntryPoint {
 
 	private static final String castleTopic = "castle";
 	private static final String floraTopic = "flora";
-
+	private static final String birdTopic = "bird";
+	
 	private AnnotateScreen getAnnotateScreen() {
 		if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
 		return annotateScreen;
@@ -281,6 +282,8 @@ public class Accurator implements EntryPoint {
 		}
 		else if (castleTopic.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
+		} else if (birdTopic.equals(topic)) {
+			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorBirdDemoUi";
 		}
 		// complete url for the iframe containing the annotation component
 		url += ui;

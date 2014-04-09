@@ -74,6 +74,19 @@
 							<ui:msg description="flora">flora</ui:msg>
 						</g:cell>
 					</g:row>
+					<g:row>
+						<g:cell styleName="spaceRight">
+							<ui:msg description="Not much">Not much</ui:msg>
+							<ui:msg description="birds">birds</ui:msg>
+						</g:cell>
+						<g:cell>
+							<div id="birdsSlider" class="expertiseSlider"></div>
+						</g:cell>
+						<g:cell styleName="spaceLeft">
+							<ui:msg description="Much">Much</ui:msg>
+							<ui:msg description="birds">birds</ui:msg>
+						</g:cell>
+					</g:row>
 				</g:Grid>
 
 			</fieldset>
