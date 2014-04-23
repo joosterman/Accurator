@@ -1,0 +1,30 @@
+<div class="row">
+  	<div class="span11">
+   		<div class="instruction"><span class="badge">1</span> <div>You will be shown images that each contains at least one FLOWER. First, count the number of flowers in the image.</div></div>
+   		<div class="well">
+   			<p><strong>
+				FLOWER definition: A FLOWER is considered to be the flowering part of a plant with petals and distinguishable from leaves. A branch can have multiple FLOWERS (but each of those flowers has the same NAME). A flower bud counts as a flower.
+			</strong></p>
+                        <p><strong>FLOWER NAMES: All flowers have a botanical name such as <i>Helianthus</i>. For most flowers there also exists an English common name such as <i>Sunflower</i>. You can provide either although we prefer the botanical name.</strong></p>
+   		</div>
+		<h4>The following images illustrate how flowers occur on the images. Sometimes they are prominent, sometimes only a detail.</h4>
+		<div class="example_images">
+			<div class="example_image1 span2"> </div>
+		 	<div class="example_image2 span2"> </div>
+		 	<div class="example_image3 span2"> </div>
+		 	<div class="example_image4 span2"> </div>
+		 	<div class="example_image5 span2"> </div>
+		</div>
+		<br />
+   		<div class="instruction">
+			<span class="badge">2</span><div> Click on the image and draw a BOUNDING BOX around each individual FLOWER as shown in the examples above. For each box select one of the following options:</div>
+			<div class="instruction"><span class="badge">2a</span> <div>If you know the NAME of the flower, type the name and be as specific as possible.</div></div>
+  			<div class="instruction"><span class="badge">2b</span> <div>If you don't know the NAME of the flower, explain why you cannot type a name for this flower. </div></div>
+  			<div class="instruction"><span class="badge">2c</span> <div>If you think the flower does not exist in real life, i.e. it is a fantasy flower.</div></div>
+   		</div>
+   		<div class="instruction"><span class="badge">3</span> <div>Indicate your level of certainty on a scale of 1 (uncertain) - 5 (certain).</div> </div>
+   		<div class="instruction"><span class="badge">4</span> <div>After you have drawn all the bounding boxes count the number of FLOWER NAMES that you entered. </div></div>
+   		<div class="instruction"><span class="badge">5</span> <div>Next, count the number of DISTINCT FLOWER TYPES. Two flowers are of a different TYPE if they have a different NAME or if they look visually different. Flowers on the same branch are of the same type. </div></div>
+   		<div class="instruction"><span class="badge">6</span> <div>Finally, provide some explanation on your your answers, e.g. describe for example the search strategy you used, or the website you used to find the flower name, or the reason you already knew the names of the flowers.</div></div>
+  	</div>
+</div>

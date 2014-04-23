@@ -1,9 +1,9 @@
 package org.sealinc.accurator.shared;
 
 public class Config {
-	public static final String baseURL = "http://eculture.cs.vu.nl/sealinc/";
-	public static final String adminUsername = "admin";
-	public static final String adminPassword = "Anuz3EeY";
+	public static final String baseURL = "http://ops.few.vu.nl/chris/";
+	public static final String adminUsername = "accurator";
+	public static final String adminPassword = "Angfsd3E11";
 	
 	/*public static final String baseURL = "http://eculture.cs.vu.nl/sealinctest/";
 	public static final String adminUsername = "admin";

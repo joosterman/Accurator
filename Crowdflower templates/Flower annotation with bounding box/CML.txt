@@ -1,0 +1,53 @@
+  <div class="content customTask">
+  <cml:hidden name="totaltime"></cml:hidden>
+  <cml:hidden name="tagtiming"></cml:hidden>
+  <cml:hidden name="starttime"></cml:hidden>
+  <cml:hidden name="endtime"></cml:hidden>
+  <cml:hidden name="annotations"></cml:hidden>
+  <cml:hidden name="fullsizeimageclicked" value="false"></cml:hidden>
+  <cml:hidden name="contributors_browser" validates="user_agent"></cml:hidden>
+  
+  <div class="row">
+    <div class="span7">
+      <a href="{{image_url}}" class="fullsizeimage" target="_blank" title="Click to open a full-size version in a new tab">Click for the full-size image</a>
+      <img class="annotatable" src="{{image_url}}" />
+    </div>
+    <div class="span4">
+      <cml:text name="nrflowers" validates="required positiveInteger" label="How many FLOWERS are in this image?*" default="Number of flowers" gold="true" instructions="Count every flower and flower bud you see on the image. Click for the full-size image if needed."></cml:text>
+      
+      <div class="cml_field">
+        <span class="legend">Tag each individual FLOWER by drawing a bounding box around it.</span>
+        <p class="instructions">For each box fill in the fields of the popup.</p>
+        <div class="border">
+          Number of bounding boxes: <span class="nrTags">0</span>
+        </div>
+      </div>
+            
+      <cml:radios name="nrflowertags" label="For how many of the FLOWERS you identified on this image did you provide a FLOWER NAME?*" validates="required">
+        <cml:radio label="0"></cml:radio>
+        <cml:radio label="1"></cml:radio>
+        <cml:radio label="2"></cml:radio>
+        <cml:radio label="3"></cml:radio>
+        <cml:radio label="4"></cml:radio>
+        <cml:radio label="5"></cml:radio>
+        <cml:radio label="6"></cml:radio>
+        <cml:radio label="More"></cml:radio>
+      </cml:radios>
+          
+      <cml:text name="nrflowertypes" validates="required positiveInteger" label="How many DISTINCT FLOWER TYPES (see definition in the instructions) did you identify in this image?*" default="Number of flower types" gold="true" instructions="Count all the types, also the ones you could not name."></cml:text>
+          
+      <cml:textarea name="references" label="Please provide a reference on how you got the answer to these questions*" validates="required minLength:10" default="Describe the search strategy you used, or the website you used to find the flower name, or the reason you already knew the names of the flowers."></cml:textarea>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
