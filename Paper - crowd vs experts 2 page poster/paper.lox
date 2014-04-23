@@ -1,0 +1,27 @@
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: The order of authors is not how we decided it before.}{\thepage }{section*.1}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: check if these are needed for the submission and add those}{\thepage }{section*.4}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: I think this review can be deleted. The subtitles make it clear.}{\thepage }{section.2}
+\contentsline {fixme}{\color {fxnote}\ignorespaces \textsf {FiXme}: References needed}{\thepage }{subsection.2.2}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: write section introduction. 1) print collection and annotation task, 2) worker recruitment and 3)testbed +task design }{\thepage }{section.3}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Alessandro: This is a very critical point! We need to make sure that is it clear that experts are not creating a ground-truth.}{\thepage }{Item.6}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Alessandro: I do not understand the meaning of the ``provenance'' field. In any case, I would not describe fields for which there is not a correspond discussion in the results section.}{\thepage }{Item.13}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: I think this overview is not necessary.}{\thepage }{section.4}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: I think the table about the spam takes in a lot of space and does not add a lot. Explanation in sentences would be enough.}{\thepage }{table.caption.11}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: We tried it in text, but that did not provide a clear overview. }{\thepage }{table.caption.11}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: Special attention for fantasy category}{\thepage }{subsubsection.4.3.1}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: Special attention for unable category}{\thepage }{subsubsection.4.3.1}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: Includes unable comments.}{\thepage }{subsubsection.4.3.1}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: Special attention for fantasy category}{\thepage }{subsubsection.4.3.2}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: Special attention for unable category}{\thepage }{subsubsection.4.3.2}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: Includes unable comments.}{\thepage }{subsubsection.4.3.2}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Lora: Can you also say something about the spammers e.g. that they had no comments, or that their comments were useless? Can you also say whether the crowd or the expert had more comments, or on specific prints?}{\thepage }{subsection.4.4}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Lora: can you include those numbers in a table too?}{\thepage }{subsection.4.4}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: what does the comparison say?}{\thepage }{subsection.4.5}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Jasper: Mention the vocabulary used by crowd and experts on species and genus level.}{\thepage }{table.caption.14}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: We should also mention that we did not have a high number of workers doing the experiment and we should explain why we believe this is not a problem. I am sure reviewers will ask quesitons about that.}{\thepage }{section.5}
+\contentsline {fixme}{\color {fxnote}\ignorespaces \textsf {FiXme}: Note: more effective techniques, like gold data, can be used to drastically reduce the amount payed to spammers. However, creating gold is too difficult and time consuming in our case - most of the time it is the same as the task}{\thepage }{section.5}
+\contentsline {fixme}{\color {fxnote}\ignorespaces \textsf {FiXme}: Note: On AMT we identified zero spam users, which can be explained by the strict policy of Amazon regarding spammers and the requirement for US based workers.}{\thepage }{section.5}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: Mention number of workers.}{\thepage }{section.6}
+\contentsline {fixme}{\color {fxnote}\ignorespaces Mieke: stress applicability and importance of research and results}{\thepage }{section.6}
+\contentsline {fixme}{\color {fxnote}\ignorespaces \textsf {FiXme}: Note: Experts are apparently more critical and provide on average a lower confidence rating than crowd workers.}{\thepage }{section.6}
+\contentsline {fixme}{\color {fxnote}\ignorespaces \textsf {FiXme}: Note: We expected that workers that spend more time on the task and workers who provided multiple annotations in an executions would rate their confidence higher, but as can be seen from the analysis for this data this is not true.}{\thepage }{section.6}
