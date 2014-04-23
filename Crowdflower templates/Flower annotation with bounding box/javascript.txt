@@ -1,0 +1,368 @@
+require(['jquery-noconflict'], function(jQuery) {
+  //Ensure MooTools is where it must be
+  Window.implement('$', function(el, nc) {
+    return document.id(el, nc, this.document);
+  });
+  var $ = window.jQuery;
+  // Use `$` in here.
+  window.setTimeout(function() {
+    $('body').scrollTop(1);
+  }, 1000);
+
+  //initialize variables
+  var timers = new Object();
+  var timings = new Object();
+  var startTime = new Date().getTime();
+
+  //load the annotorius dark style sheet
+  $('<link>').appendTo($('head')).attr({
+    type: 'text/css',
+    rel: 'stylesheet'
+  }).attr('href', 'https://www.st.ewi.tudelft.nl/~jasper/annotorious-0.6.2/css/theme-dark/annotorious-dark.css');
+
+  //load the script
+  $.getScript("https://www.st.ewi.tudelft.nl/~jasper/annotorious-0.6.2/annotorious.min.js", function(data, textStatus, jqxhr) {
+    //for each annotatable image add the information to the editor on first load
+    anno.addHandler('onEditorShown', function(annotation) {
+      //change the type and certainty values in the editor when updating
+      if (annotation) {
+        var certainty = annotation.certainty;
+        var type = annotation.type;
+        $("img[src='" + annotation.src + "']").parents(".customTask").find(".tagtypeselection input[value='" + type + "']").click();
+        $("img[src='" + annotation.src + "']").parents(".customTask").find(".ratings input[value='" + certainty + "']").prop("checked", true);
+      }
+
+      //get all the editors (not all editors exist during startup, so execute this each time)
+      $(".annotorious-editor").each(function() {
+        //check if the editor already was updated
+        if ($(this).find(".tagtypeselection").length === 1) {
+          //continue to the next editor
+          return true;
+        }
+        //update the editor
+        //disable the save buttons
+        $(this).find(".annotorious-editor-button-save").hide();
+        $(this).find(".annotorious-editor-button-container").prepend("<span style='font-size: x-small;vertical-align: sub;'>Fill the fields to enable save button</span>");
+
+        //add the radio buttons
+        $(this).find("form").prepend("<div class='tagtypeselection'><label class='radio inline' title='Select this option if you know the name of the flower'>  <input type='radio' name='tagtype' class='tagtypename' value='name' checked='checked' >I know the name</label><label class='radio inline' title='Select this option if you don\'t know the name of the flower'>  <input type='radio' value='unable' name='tagtype' class='tagtypeunable' > Don\'t know</label><label class='radio inline' title='Select this option if you think the flower is a fantasy flower'> <input type='radio' value='fantasy' name='tagtype' class='tagtypefantasy' > Fantasy</label></div>");
+        //add the certainty score
+        $(this).find("form textarea").after(getStarRating());
+
+        //set the placeholder to the right text
+        $(this).find(".annotorious-editor-text").attr("placeholder", "Please enter the flower name (min. 4 characters)");
+
+        //add event when "i know the name" is selected
+        $(this).find("form .tagtypename").change(function(data) {
+          var checked = data.srcElement.checked;
+          if (checked) {
+            $(".annotorious-editor-text").attr("placeholder", "Please enter the flower name (min. 4 characters)");
+            $(this).parents(".customTask").find(".annotorious-editor-text").val("");
+            $(this).parents(".customTask").find(".annotorious-editor-text").show();
+            $(this).parents(".customTask").find(".annotorious-editor-text").focus();
+          }
+        });
+        //add event when "i don't know the name" is selected
+        $(this).find("form .tagtypeunable").change(function(data) {
+          var checked = data.srcElement.checked;
+          if (checked) {
+            $(".annotorious-editor-text").attr("placeholder", "Please provide the reason why you cannot name the flower? (min. 4 characters)");
+            $(this).parents(".customTask").find(".annotorious-editor-text").val("");
+            $(this).parents(".customTask").find(".annotorious-editor-text").show();
+            $(this).parents(".customTask").find(".annotorious-editor-text").focus();
+          }
+        });
+        //add event when  "fantasy" is selected
+        $(this).find("form .tagtypefantasy").change(function(data) {
+          var checked = data.srcElement.checked;
+          if (checked) {
+            $(this).parents(".customTask").find(".annotorious-editor-text").hide();
+            $(this).parents(".customTask").find(".annotorious-editor-text").val("~~fantasy~~");
+          }
+        });
+
+        //bind to show the save button if validation succeeds
+        $(this).find(".annotorious-editor-text").keyup(function() {
+          validateEditor($(this));
+        });
+        $(this).find("input").change(function() {
+          validateEditor($(this));
+        });
+      });
+    });
+
+    anno.addHandler('onAnnotationCreated', function(annotation) {
+      //flower name or I don't know explanantion are stored in the annotation text
+      //also add the choice ("name", "unable", "fantasy" to the annotation)
+      //get the image for which the annotation was created
+      var img = $("img[src='" + annotation.src + "']");
+      //get the value of the selected option
+      annotation.type = img.parents(".customTask").find(".tagtypeselection input:checked").val();
+      annotation.certainty = img.parents(".customTask").find("table.ratings input:checked").val();
+      updateRectangleCount(annotation.src);
+      resetEditor(annotation.src);
+    });
+
+    anno.addHandler('onAnnotationUpdated', function(annotation) {
+      //flower name or I don't know explanantion are stored in the annotation text
+      //also add the choice ("name", "unable", "fantasy" to the annotation)
+      //get the image for which the annotation was created
+      var img = $("img[src='" + annotation.src + "']");
+      //get the value of the selected options
+      annotation.type = img.parents(".customTask").find(".tagtypeselection input:checked").val();
+      annotation.certainty = img.parents(".customTask").find("table.ratings input:checked").val();
+      resetEditor(annotation.src);
+    });
+
+    anno.addHandler('onAnnotationRemoved', function(annotation) {
+      updateRectangleCount(annotation.src);
+      resetEditor(annotation.src);
+    });
+  });
+
+  function validateEditor(elem) {
+    //check if a type is selected
+    var typeSelected = elem.parents(".customTask").find(".tagtypeselection input:checked").length;
+    var certaintySelected = elem.parents(".customTask").find(".ratings input:checked").length;
+    var textbox = elem.parents(".customTask").find(".annotorious-editor-text:visible");
+    if (typeSelected === 1 && certaintySelected === 1 && (!textbox.length || textbox.val().length >= 4)) {
+      elem.parents(".customTask").find(".annotorious-editor-button-save").show();
+    } else {
+      elem.parents(".customTask").find(".annotorious-editor-button-save").hide();
+    }
+  }
+
+  function updateRectangleCount(image) {
+    //get the right labels objects
+    var img = $("img[src='" + image + "']");
+    var nrRectangles = img.parents(".customTask").find(".nrTags");
+    var count = anno.getAnnotations(image).length;
+    nrRectangles.text(count);
+  }
+
+  /**
+   * Creates the star rating. The starIndex is used to give the each set of ratings a unique name.
+   */
+  var starIndex = 1;
+
+  function getStarRating(src) {
+    var start = "<table class='ratings'><thead><tr><th></th><th class=''>1</th><th class=''>2</th><th class=''>3</th><th class=''>4</th><th class=''>5</th><th></th></tr></thead><tbody><tr><td>Uncertain</td>";
+    var radios = "";
+    for (var i = 1; i <= 5; i++) {
+      radios += "<td class=''><input name='confidence" + starIndex + "' type='radio' value='" + i + "' class=''></td>";
+    }
+    var end = "<td>Certain</td></tr></tbody></table>";
+    starIndex++;
+    return start + radios + end;
+  }
+
+  //capture when the worker clicked the full-size image
+  $(".fullsizeimage").click(function(e) {
+    $(this).parents(".customTask").find(".fullsizeimageclicked").val(true);
+  });
+
+
+  //start timer logic for onfocus for the text field
+  $("input[type='text'],textarea").focus(function(event) {
+    //full unique name: job[field]
+    var name = $(event.currentTarget).attr('name');
+    timers[name] = new Date().getTime();
+  });
+
+  //stop timer logic for blur for the text field
+  $("input[type='text'],textarea").blur(function(event) {
+    //the unique name of the fiels job[field]
+    var name = $(event.currentTarget).attr('name');
+    //current value of the field
+    var value = $(event.currentTarget).val();
+    //calculate the ms 
+    var ms = new Date().getTime() - timers[name];
+    //split the name into job and field
+    var job = name.split("[")[0];
+    var field = name.split("[")[1].replace("]", "");
+    //check if the timings info contains the job object
+    if (!timings.hasOwnProperty(job)) {
+      //create the property
+      timings[job] = new Object();
+    }
+    //the job object exists, check if the timing array also exists
+    if (timings[job][field] === undefined) {
+      //create the array 
+      timings[job][field] = new Array();
+    }
+    //the data to add to the timing array
+    var data = {
+      "ms": ms,
+      "tag": value,
+      "startTime": timers[name]
+    };
+    timings[job][field].push(data);
+    //Stringify and set the timing info
+    var t = JSON.stringify(timings);
+    $(this).parents(".customTask").find(".tagtiming").val(t);
+  });
+
+  //logic for submitting a result
+  $("input[type='submit']").click(function(e) {
+    //if custom  validation fails, do not submit
+    if (!validate()) {
+      e.preventDefault();
+    }
+
+    //Store the timing information
+    var endTime = new Date().getTime();
+    var totalTime = endTime - startTime;
+    $(".starttime").val(startTime);
+    $(".endtime").val(endTime);
+    $(".totaltime").val(totalTime);
+
+    //store the annotations for each image
+    $(".annotatable").each(function() {
+      //get the annotations
+      var an = anno.getAnnotations(this.src);
+      var str_an = JSON.stringify(an);
+      //find the right element to store it in
+      var elem = $("img[src='" + this.src + "']").parents(".customTask").find(".annotations");
+      elem.val(str_an);
+    });
+    return validate();
+  });
+
+
+  /**
+   * Resets the editor for the specified image.
+   * @param image is the URL
+   */
+
+  function resetEditor(image) {
+    //pre-select the "name" selection
+    $("img[src='" + image + "']").parents(".customTask").find(".tagtypeselection input[value='name']").click();
+    //do not pre-select any certainty score
+    $("img[src='" + image + "']").parents(".customTask").find(".ratings input:checked").prop("checked", false);
+    //disable the save button
+    var save = $("img[src='" + image + "']").parents(".customTask").find(".annotorious-editor-button-save");
+    save.hide();
+  }
+
+/*
+  * Show the validation message for the given field. Optional parameter to remove
+  * current validation messages (default = true)
+  */
+  function showValidationMessage(field, message, removeOtherValidation) {
+    //removeOtherValidation defaults to true;
+    removeOtherValidation = (typeof removeOtherValidation === "undefined") ? true : removeOtherValidation;
+
+    //find the cml_row the field belongs to
+    var row = field.parents(".cml_row").first();
+
+    //remove previous validation
+    if (removeOtherValidation) {
+      removeValidationMessage(field);
+    }
+
+    //create the outer div
+    var outerDiv = $(document.createElement("div"));
+    outerDiv.css("margin", "0px");
+    outerDiv.css("position", "relative");
+    outerDiv.css("overflow", "hidden");
+    outerDiv.css("height", "41px");
+    //create the inner div
+    var innerDiv = $(document.createElement("div"));
+    innerDiv.addClass("errorMessage");
+    innerDiv.css("margin", "0px");
+    innerDiv.css("overflow", "hidden");
+    //create the text of the message
+    var text = $(document.createElement("p")).append(message);
+    //add the text to the inner div
+    innerDiv.html(text);
+    //add the innerdiv to the outer div
+    outerDiv.append(innerDiv);
+    //hide the div
+    outerDiv.hide();
+    //add the outer div to the DOM before the cml_row of the field
+    outerDiv.insertBefore(row);
+    //show the outer div with a smoots animation
+    outerDiv.slideDown();
+  }
+
+/*
+  * Find the cml_row this field belongs to and removes all validation messages present
+  */
+  function removeValidationMessage(field) {
+    //find the cml_row the field belongs to
+    var row = field.parents(".cml_row").first();
+    //validation is the previous DOM element before the cml_row
+    var potentialValidation = row.prev("div");
+    //it should contain an element with class "errorMessage"
+    var hasError = potentialValidation.find(".errorMessage");
+    if (hasError.length > 0) {
+      //hide the validation with a nice animation
+      potentialValidation.slideUp();
+      //remove the validation from the DOM
+      potentialValidation.remove();
+      //recurse this method to delete other existing validation for the field
+      removeValidationMessage(field);
+    }
+  }
+
+  /**
+   * Validates all the tasks in the job
+   */
+
+  function validate() {
+    var validates = true;
+    var duplicateMessage = "Please enter different names in the fields";
+
+    //loop over the tasks
+    var tasks = $(".name1").parents(".customTask");
+    tasks.each(function(index) {
+      //get the values of the name fields
+      var name1 = $(this).find(".name1");
+      var name2 = $(this).find(".name2");
+      var name3 = $(this).find(".name3");
+      var n1 = name1.hasClass("has_default") ? "" : name1.val();
+      var n2 = name2.hasClass("has_default") ? "" : name2.val();
+      var n3 = name3.hasClass("has_default") ? "" : name3.val();
+
+      //if name2 is not empty and equals name1
+      if (n1.length > 0 && n2.length > 0 && n1 === n2) {
+        //validation fails
+        validates = false;
+        //display a validation message
+        showValidationMessage(name2, duplicateMessage);
+      } else {
+        removeValidationMessage(name2);
+      }
+      //if name3 is not empty and equals name1
+      if (n1.length > 0 && n3.length > 0 && n1 === n3) {
+        //validation fails
+        validates = false;
+        //display a validation message
+        showValidationMessage(name3, duplicateMessage);
+      } else {
+        removeValidationMessage(name3);
+      }
+
+      //if name3 is not empty and equals name2
+      if (n2.length > 0 && n3.length > 0 && n2 === n3) {
+        //validation fails
+        validates = false;
+        //display a validation message
+        showValidationMessage(name3, duplicateMessage);
+      } else {
+        removeValidationMessage(name3);
+      }
+    });
+
+    //if validation fails, scroll upwards to the first failed field
+    if (!validates) {
+      $(".errorMessage:visible").first().parents(".border")[0].scrollIntoView();
+    }
+
+    return validates;
+  }
+
+  //adding low and high to the ratings
+  $(".confidence tr td:first-child").text("Uncertain");
+  $(".confidence tr td:last-child").text("Certain");
+});

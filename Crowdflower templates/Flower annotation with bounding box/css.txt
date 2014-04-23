@@ -1,0 +1,112 @@
+div.border
+{
+  border: 2px solid gray;
+  padding: 0px 10px 0px 10px;
+  border-radius: 15px;
+  margin-bottom:5px;
+}
+
+div.border > .text
+{
+  margin-bottom:15px; 
+}
+
+table.ratings
+{
+  margin:auto; 
+  width:75%;
+}
+table.ratings th, table.ratings tr
+{
+  text-align:center;
+}
+table.ratings input
+{
+  margin-left:10%;
+  margin-right:10%;
+}
+
+.annotatable
+{
+ width:100%; 
+}
+
+textarea.annotorious-editor-text
+{
+ width:95%;
+ background-color:#4b4b4b;
+ margin:auto; 
+}
+
+.annotorious-editor
+{
+ min-width: 340px; 
+}
+
+.border .cml_row > input[type=text]
+{
+  max-width:100%; 
+}
+
+.example_images
+{
+  height: 200px;
+}
+.example_images div
+{
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.example_image1
+{
+  background-image: url("https://www.st.ewi.tudelft.nl/~jasper/images/example_image1.png");
+}
+.example_image2
+{
+  background-image: url("https://www.st.ewi.tudelft.nl/~jasper/images/example_image2.png");
+}
+.example_image3
+{
+  background-image: url("https://www.st.ewi.tudelft.nl/~jasper/images/example_image3.png");
+}
+.example_image4
+{
+  background-image: url("https://www.st.ewi.tudelft.nl/~jasper/images/example_image4.png");
+}
+.example_image5
+{
+  background-image: url("https://www.st.ewi.tudelft.nl/~jasper/images/example_image5.png");
+}
+
+#assignment-instructions
+{
+ text-align:justify; 
+}
+
+i.icon-delete
+{
+  cursor: pointer; 
+}
+.tagtypeselection
+{
+ margin:5px; 
+}
+
+.instruction .badge
+{
+ position:relative;
+ float:left;
+}
+.instruction div
+{
+ margin-bottom:10px; 
+}
+.instruction .instruction
+{
+ margin-left:10px; 
+}
+.instruction div
+{
+ padding-left:35px; 
+}
