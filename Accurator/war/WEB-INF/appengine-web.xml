@@ -18,11 +18,16 @@
     <include path="**.cache.*" expiration="365d" />
     <exclude path="**.gwt.rpc" />
   </static-files>
+ 
+  <resource-files>
+  	<include path="/**.properties" />
+  </resource-files>
 
   <!-- Configure java.util.logging -->
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
   </system-properties>
+  
 
   <!--
     HTTP Sessions are disabled by default. To enable HTTP sessions specify:

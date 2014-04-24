@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.google.gwt.http.client.Response;
 import com.hp.hpl.jena.datatypes.xsd.XSDDateTime;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -200,7 +201,7 @@ public class Utility {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			return -1;
+			return Response.SC_INTERNAL_SERVER_ERROR;
 		}
 	}
 

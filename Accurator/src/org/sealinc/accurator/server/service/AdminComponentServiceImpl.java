@@ -21,6 +21,7 @@ public class AdminComponentServiceImpl extends RemoteServiceServlet implements A
 
 	@Override
 	public boolean register(String user, String password, String realName) {
+		Utility.login();
 		boolean success = Utility.register(user, realName, password);
 		return success;
 	}
@@ -36,12 +37,10 @@ public class AdminComponentServiceImpl extends RemoteServiceServlet implements A
 			e.printStackTrace();
 			return null;
 		}
-		if(u.getQuery()==null)
-			url+= "?";
-		else
-			url+="&";
-		url+="nocache="+new Random().nextInt();
-			
+		if (u.getQuery() == null) url += "?";
+		else url += "&";
+		url += "nocache=" + new Random().nextInt();
+
 		return Utility.getHTMLContent(url);
 	}
 
@@ -51,7 +50,8 @@ public class AdminComponentServiceImpl extends RemoteServiceServlet implements A
 		// identified this application
 		String applicationId = SystemProperty.applicationId.get();
 		// get the Configuration if it exists
-		LoadResult<Configuration> refConfig = ofy().load().type(Configuration.class).filter("version", version).filter("applicationId", applicationId).first();
+		LoadResult<Configuration> refConfig = ofy().load().type(Configuration.class).filter("version", version).filter("applicationId",
+				applicationId).first();
 		Configuration config = refConfig.now();
 
 		// If there is a config

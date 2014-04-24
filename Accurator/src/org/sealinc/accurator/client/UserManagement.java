@@ -7,6 +7,7 @@ import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.storage.client.Storage;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -38,7 +39,7 @@ public class UserManagement {
 							language = entries.get(0).getValueAsString();
 						}
 
-						//if the user indicated a preference
+						// if the user indicated a preference
 						if (language != null && !language.isEmpty()) {
 							// check if that is the same as the current language
 							if (!language.equals(locale)) {
@@ -49,10 +50,10 @@ public class UserManagement {
 						}
 						// either the user does not have a preference or the preference
 						// matches the current locale
-						
+
 						// clear login status message
 						acc.lblLoginMessage.setText("");
-						
+
 						// normal login procedure: first login
 						if (renewLoginTimer == null) {
 							// clear the datastore
@@ -72,11 +73,10 @@ public class UserManagement {
 								}
 							};
 							renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
-							
-							// now we are logged in show the logout button
-							acc.dvlogoutBlock.setVisible(true);
-							acc.lblLoginName.setText(username);
-							//check whether this is the first visit ever for this user
+							// User is logged in, show the menu button
+							DOM.getElementById("menuButton").removeClassName("hide");
+
+							// check whether this is the first visit ever for this user
 							determineLandingPage();
 						}
 						// needs to be refreshed every login
@@ -91,9 +91,10 @@ public class UserManagement {
 				});
 
 	}
-	
+
 	protected void determineLandingPage() {
-		// if this is the first time the user visits accurator show the about box and the profile page
+		// if this is the first time the user visits accurator show the about box
+		// and the profile page
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "firstVisit", null, "Accurator", new RequestCallback() {
 			@Override
 			public void onResponseReceived(Request request, Response response) {
@@ -117,7 +118,7 @@ public class UserManagement {
 	private void loginFailed() {
 		acc.lblLoginMessage.setText(Utility.constants.loginFailed());
 		Utility.deleteStoredUserCredentials();
-		//TODO Handle login failed
+		// TODO Handle login failed
 	}
 
 	private void resetLoginTimer() {
@@ -150,7 +151,7 @@ public class UserManagement {
 			login(user, pass);
 		}
 		else {
-		//TODO Handle login not available in local storage
+			// TODO Handle login not available in local storage
 		}
 	}
 
@@ -173,7 +174,7 @@ public class UserManagement {
 							$wnd.jQuery("#dialog-login").dialog("close");
 						} catch (err) {
 						}
-								//close the login box
+						//close the login box
 						$wnd.jQuery('#modalLogin').modal('hide')
 						management.@org.sealinc.accurator.client.UserManagement::loginSuccessful(Ljava/lang/String;Ljava/lang/String;)(username,password);
 					} else {
@@ -196,7 +197,7 @@ public class UserManagement {
 		}
 	}
 
-	private void register(final String user, final String password, String realName) {
+	protected void register(final String user, final String password, String realName) {
 		Utility.adminService.register(user, password, realName, new AsyncCallback<Boolean>() {
 			@Override
 			public void onSuccess(Boolean isSuccess) {
@@ -217,38 +218,9 @@ public class UserManagement {
 		});
 	}
 
-	public native void openRegister()/*-{
-		var management = this;
-		var cancel = @org.sealinc.accurator.client.Utility::getLocalString(Ljava/lang/String;)("cancel");
-		var register = @org.sealinc.accurator.client.Utility::getLocalString(Ljava/lang/String;)("register");
-
-		var localButtons = {};
-		localButtons[cancel] = function() {
-			$wnd.jQuery("#dialog-register").dialog("close");
-			$wnd.jQuery("#dialog-login").dialog("open");
-		};
-		localButtons[register] = function() {
-			var user = $wnd.jQuery("#regname").val();
-			var password = $wnd.jQuery("#regpassword").val();
-			var realName = $wnd.jQuery("#regrealName").val();
-			management.@org.sealinc.accurator.client.UserManagement::register(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,password,realName);
-		};
-
-		$wnd.jQuery("#dialog-register").dialog({
-			autoOpen : false,
-			modal : true,
-			draggable : false,
-			resizable : false,
-			closeOnEscape : false,
-			buttons : localButtons,
-		});
-		$wnd.jQuery("#dialog-register").dialog("open");
-		$wnd.jQuery(".ui-dialog-titlebar-close").hide();
-	}-*/;
-
 	private native void closeRegister()/*-{
-																			$wnd.jQuery("#dialog-register").dialog("close");
-																			}-*/;
+		$wnd.jQuery("#modalRegister").modal("hide");
+	}-*/;
 
 	private void setRegistrationFailed(boolean failed) {
 		if (failed) acc.lblRegisterMessage.setText(Utility.constants.registrationFailed());

@@ -1,0 +1,15 @@
+li>ul>li:first-child,li>ol>li:first-child {
+	margin-top: 0px;
+}
+
+ul>li {
+	padding-left: 0px;
+}
+
+li,dt,dd {
+	margin: 0px;
+}
+
+ul>li:before {
+	content: "";
+}

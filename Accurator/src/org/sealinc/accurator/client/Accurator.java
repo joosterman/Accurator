@@ -14,8 +14,6 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -32,7 +30,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
@@ -51,19 +48,17 @@ public class Accurator implements EntryPoint {
 	};
 
 	@UiField
-	HTMLPanel dvlogoutBlock;
-	@UiField
 	Panel content, header;
 	@UiField
-	Label lblLoginMessage, lblRegisterMessage, lblLoginName;
+	Label lblLoginMessage, lblRegisterMessage;
 	@UiField
 	Button btnDone, btnLogin;
 	@UiField
 	Anchor lnkLogout, lnkAbout, lnkLicenses;
 	@UiField
-	PasswordTextBox txtLoginPassword;
+	PasswordTextBox txtLoginPassword, txtRegisterPassword;
 	@UiField
-	TextBox txtLoginName;
+	TextBox txtLoginName, txtRegisterName, txtRegisterFullName;
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 	private List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
@@ -81,7 +76,7 @@ public class Accurator implements EntryPoint {
 	private static final String castleTopic = "castle";
 	private static final String floraTopic = "flora";
 	private static final String birdTopic = "bird";
-	
+
 	private AnnotateScreen getAnnotateScreen() {
 		if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
 		return annotateScreen;
@@ -115,6 +110,15 @@ public class Accurator implements EntryPoint {
 		getManagement().login(user, pass);
 	}
 
+	@UiHandler("btnRegister")
+	void btnRegisterClick(ClickEvent e) {
+		// get the entered fields
+		String user = txtRegisterName.getText();
+		String pass = txtRegisterPassword.getText();
+		String fullName = txtRegisterFullName.getText();
+		getManagement().register(user, pass, fullName);
+	}
+
 	@UiHandler("lnkAbout")
 	void lnkAboutClick(ClickEvent e) {
 		openAboutDialog();
@@ -143,27 +147,17 @@ public class Accurator implements EntryPoint {
 		rootPanel.add(w);
 		initHistorySupport();
 
-		dvlogoutBlock.setVisible(false);
 		btnDone.setVisible(false);
 
-		//resizeContent();
-		/*Window.addResizeHandler(new ResizeHandler() {
+		// resizeContent();
+		/*
+		 * Window.addResizeHandler(new ResizeHandler() { Timer resizeTimer = new
+		 * Timer() {
+		 * @Override public void run() { resizeContent(); } };
+		 * @Override public void onResize(ResizeEvent event) { resizeTimer.cancel();
+		 * resizeTimer.schedule(250); } });
+		 */
 
-			Timer resizeTimer = new Timer() {
-				@Override
-				public void run() {
-					resizeContent();
-				}
-			};
-
-			@Override
-			public void onResize(ResizeEvent event) {
-				resizeTimer.cancel();
-				resizeTimer.schedule(250);
-			}
-		});*/
-
-		// getManagement().login();
 		LoadState(State.Intro.toString());
 	}
 
@@ -282,7 +276,8 @@ public class Accurator implements EntryPoint {
 		}
 		else if (castleTopic.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
-		} else if (birdTopic.equals(topic)) {
+		}
+		else if (birdTopic.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorBirdDemoUi";
 		}
 		// complete url for the iframe containing the annotation component
