@@ -3,131 +3,133 @@
 	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel>
-	<g:HTMLPanel styleName="profileContent">
-		<div class="leftColumn infoblock">
-			<fieldset>
-				<legend>
-					<ui:msg description="Recommendations">Recommendations</ui:msg>
-				</legend>
-				<span><ui:msg description="Introtext recommendations">Introtext recommendations</ui:msg></span>
-				<g:Hyperlink targetHistoryToken="Recommendation"
-					styleName="button">
-					<ui:msg description="Goto recommendations">Goto recommendations</ui:msg>
-				</g:Hyperlink>
-			</fieldset>
-			<fieldset>
-				<legend>
-					<ui:msg description="Prints annotated">Prints annotated</ui:msg>
-				</legend>
-				<ui:msg description="Total prints annotated">Total prints annotated</ui:msg>
-				:
-				<g:InlineLabel ui:field="lblTotalAnnotated"></g:InlineLabel>
-				<br />
-				<br />
-				<strong>
-					<ui:msg description="Latest annotated prints">Latest annotated prints</ui:msg>
-				</strong>
-				<g:Grid ui:field="grAnnotatedPrints"></g:Grid>
-			</fieldset>
-		</div>
-		<div class="rightColumn infoblock">
-			<fieldset>
-				<legend>
-					<ui:msg description="Interests">Interests</ui:msg>
-				</legend>
-				<g:TextBox ui:field="tbInterest" maxLength="20"></g:TextBox>
-				<g:Button ui:field="btnAddInterest" styleName="button">
-					<ui:msg description="Add interest">Add interest</ui:msg>
-				</g:Button>
-				<g:FlowPanel ui:field="pnlInterests" styleName="pnlInterests"></g:FlowPanel>
-				<br />
-				<br />
-				<strong>
-					<ui:msg description="What kind of prints would you like to see?">What kind of prints would you like to
-						see?
-					</ui:msg>
-				</strong>
-				<g:Grid>
-					<g:row>
-						<g:cell styleName="spaceRight">
-							<ui:msg description="Not many">Not many</ui:msg>
-							<ui:msg description="castles">castles</ui:msg>
-						</g:cell>
-						<g:cell>
-							<div id="castleSlider" class="expertiseSlider"></div>
-						</g:cell>
-						<g:cell styleName="spaceLeft">
-							<ui:msg description="Many">Many</ui:msg>
-							<ui:msg description="castles">castles</ui:msg>
-						</g:cell>
-					</g:row>
-					<g:row>
-						<g:cell styleName="spaceRight">
-							<ui:msg description="Not much">Not much</ui:msg>
-							<ui:msg description="flora">flora</ui:msg>
-						</g:cell>
-						<g:cell>
-							<div id="floraSlider" class="expertiseSlider"></div>
-						</g:cell>
-						<g:cell styleName="spaceLeft">
-							<ui:msg description="Much">Much</ui:msg>
-							<ui:msg description="flora">flora</ui:msg>
-						</g:cell>
-					</g:row>
-					<g:row>
-						<g:cell styleName="spaceRight">
-							<ui:msg description="Not much">Not much</ui:msg>
-							<ui:msg description="birds">birds</ui:msg>
-						</g:cell>
-						<g:cell>
-							<div id="birdsSlider" class="expertiseSlider"></div>
-						</g:cell>
-						<g:cell styleName="spaceLeft">
-							<ui:msg description="Much">Much</ui:msg>
-							<ui:msg description="birds">birds</ui:msg>
-						</g:cell>
-					</g:row>
-				</g:Grid>
+		<g:HTMLPanel styleName="profileContent">
+			<div class="col-md-6">
+				<fieldset>
+					<legend>
+						<ui:msg description="Recommendations">Recommendations</ui:msg>
+					</legend>
+					<span>
+						<ui:msg description="Introtext recommendations">Introtext recommendations</ui:msg>
+					</span>
+					<g:Hyperlink targetHistoryToken="Recommendation"
+						styleName="button">
+						<ui:msg description="Goto recommendations">Goto recommendations</ui:msg>
+					</g:Hyperlink>
+				</fieldset>
+				<fieldset>
+					<legend>
+						<ui:msg description="Prints annotated">Prints annotated</ui:msg>
+					</legend>
+					<ui:msg description="Total prints annotated">Total prints annotated</ui:msg>
+					:
+					<g:InlineLabel ui:field="lblTotalAnnotated"></g:InlineLabel>
+					<br />
+					<br />
+					<strong>
+						<ui:msg description="Latest annotated prints">Latest annotated prints</ui:msg>
+					</strong>
+					<g:Grid ui:field="grAnnotatedPrints"></g:Grid>
+				</fieldset>
+			</div>
+			<div class="col-md-6">
+				<fieldset>
+					<legend>
+						<ui:msg description="Interests">Interests</ui:msg>
+					</legend>
+					<g:TextBox ui:field="tbInterest" maxLength="20"></g:TextBox>
+					<g:Button ui:field="btnAddInterest" styleName="button">
+						<ui:msg description="Add interest">Add interest</ui:msg>
+					</g:Button>
+					<g:FlowPanel ui:field="pnlInterests" styleName="pnlInterests"></g:FlowPanel>
+					<br />
+					<br />
+					<strong>
+						<ui:msg description="What kind of prints would you like to see?">What kind of prints would you like to
+							see?
+						</ui:msg>
+					</strong>
+					<g:Grid>
+						<g:row>
+							<g:cell styleName="spaceRight">
+								<ui:msg description="Not many">Not many</ui:msg>
+								<ui:msg description="castles">castles</ui:msg>
+							</g:cell>
+							<g:cell>
+								<div id="castleSlider" class="expertiseSlider"></div>
+							</g:cell>
+							<g:cell styleName="spaceLeft">
+								<ui:msg description="Many">Many</ui:msg>
+								<ui:msg description="castles">castles</ui:msg>
+							</g:cell>
+						</g:row>
+						<g:row>
+							<g:cell styleName="spaceRight">
+								<ui:msg description="Not much">Not much</ui:msg>
+								<ui:msg description="flora">flora</ui:msg>
+							</g:cell>
+							<g:cell>
+								<div id="floraSlider" class="expertiseSlider"></div>
+							</g:cell>
+							<g:cell styleName="spaceLeft">
+								<ui:msg description="Much">Much</ui:msg>
+								<ui:msg description="flora">flora</ui:msg>
+							</g:cell>
+						</g:row>
+						<g:row>
+							<g:cell styleName="spaceRight">
+								<ui:msg description="Not much">Not much</ui:msg>
+								<ui:msg description="birds">birds</ui:msg>
+							</g:cell>
+							<g:cell>
+								<div id="birdsSlider" class="expertiseSlider"></div>
+							</g:cell>
+							<g:cell styleName="spaceLeft">
+								<ui:msg description="Much">Much</ui:msg>
+								<ui:msg description="birds">birds</ui:msg>
+							</g:cell>
+						</g:row>
+					</g:Grid>
 
-			</fieldset>
-			<fieldset>
-				<legend>
-					<ui:msg description="Preferences">Preferences</ui:msg>
-				</legend>
-				<div id="language">
-					<input type="radio" id="languageEN" name="language" class="languageButton"
-						checked="checked" value="en" />
-					<label for="languageEN">
-						<ui:msg description="English">English</ui:msg>
-					</label>
-					<input type="radio" id="languageNL" value="nl" name="language"
-						class="languageButton" />
-					<label for="languageNL">
-						<ui:msg description="Dutch">Dutch</ui:msg>
-					</label>
-					<p>
-						<em>
-							<ui:msg description="Message to indicate pagereload">Changing this property reloads the
-								page
-							</ui:msg>
-						</em>
-					</p>
-				</div>
-			</fieldset>
-		</div>
+				</fieldset>
+				<fieldset>
+					<legend>
+						<ui:msg description="Preferences">Preferences</ui:msg>
+					</legend>
+					<div id="language">
+						<input type="radio" id="languageEN" name="language" class="languageButton"
+							checked="checked" value="en" />
+						<label for="languageEN">
+							<ui:msg description="English">English</ui:msg>
+						</label>
+						<input type="radio" id="languageNL" value="nl" name="language"
+							class="languageButton" />
+						<label for="languageNL">
+							<ui:msg description="Dutch">Dutch</ui:msg>
+						</label>
+						<p>
+							<em>
+								<ui:msg description="Message to indicate pagereload">Changing this property reloads the
+									page
+								</ui:msg>
+							</em>
+						</p>
+					</div>
+				</fieldset>
+			</div>
+		</g:HTMLPanel>
+		<g:HTMLPanel>
+			<div class="leftColumn infoblock">
+				<fieldset>
+					<legend>
+						<ui:msg description="Instructions">Instructions</ui:msg>
+					</legend>
+				</fieldset>
+
+
+
+
+			</div>
+		</g:HTMLPanel>
 	</g:HTMLPanel>
-<g:HTMLPanel>
-<div class="leftColumn infoblock">
-			<fieldset>
-				<legend>
-					<ui:msg description="Instructions">Instructions</ui:msg>
-				</legend>
-			</fieldset>
-			
-			
-			
-			
-</div>
-</g:HTMLPanel>
-</g:HTMLPanel>
 </ui:UiBinder>

@@ -99,7 +99,6 @@ public class ProfileScreen extends Composite {
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "interest", interest, Utility.getQualifiedUsername(), callback);
 	}
 
-
 	private void loadInterests() {
 		// clear the current
 		pnlInterests.clear();
@@ -119,8 +118,6 @@ public class ProfileScreen extends Composite {
 				}
 			});
 		}
-		// reload theme element
-		loadUIThemeElements();
 	}
 
 	public void loadData() {
@@ -204,20 +201,17 @@ public class ProfileScreen extends Composite {
 		// get expertise
 		getExpertise("flora");
 		getExpertise("castle");
-		/*Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise", null, Utility.getQualifiedUsername(), new RequestCallback() {
-
-			@Override
-			public void onResponseReceived(Request request, Response response) {
-				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
-				for (int i = 0; i < entries.length(); i++) {
-					JsUserProfileEntry entry = entries.get(i);
-					updateExpertise(entry.getScope(), entry.getValueAsDouble());
-				}
-			}
-
-			@Override
-			public void onError(Request request, Throwable exception) {}
-		});*/
+		/*
+		 * Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise",
+		 * null, Utility.getQualifiedUsername(), new RequestCallback() {
+		 * @Override public void onResponseReceived(Request request, Response
+		 * response) { JsArray<JsUserProfileEntry> entries =
+		 * Utility.parseUserProfileEntry(response.getText()); for (int i = 0; i <
+		 * entries.length(); i++) { JsUserProfileEntry entry = entries.get(i);
+		 * updateExpertise(entry.getScope(), entry.getValueAsDouble()); } }
+		 * @Override public void onError(Request request, Throwable exception) {}
+		 * });
+		 */
 		/*
 		 * // for each expertise topic create a slider for (final String topic :
 		 * Config.profileExpertises) { // used for the class of the slider String
@@ -319,24 +313,6 @@ public class ProfileScreen extends Composite {
 	private void changeLanguage(String language) {
 		accurator.changeLanguage(language);
 	}
-
-	public native void loadUIThemeElements()/*-{
-		var pscreen = this;
-
-		$wnd.jQuery("a.interest").button({
-			icons : {
-				secondary : "ui-icon-close"
-			}
-		});
-
-		//load language buttons
-		$wnd.jQuery("#language").buttonset();
-		$wnd.jQuery(".languageButton").click(function() {
-			var val = $wnd.jQuery(this).val();
-			pscreen.@org.sealinc.accurator.client.component.ProfileScreen::changeLanguage(Ljava/lang/String;)(val);
-		});
-		pscreen.@org.sealinc.accurator.client.component.ProfileScreen::getLanguage()();
-	}-*/;
 
 	public ProfileScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));

@@ -13,15 +13,12 @@ public class Config {
 	static {
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		URL path = loader.getResource("admin.properties");
-		System.out.println(path);
 		Properties p = new Properties();
 		try {
 			InputStream stream = path.openStream();
 			p.load(stream);
 			adminUsername = p.getProperty("adminUsername");
 			adminPassword = p.getProperty("adminPassword");
-			System.out.println(adminUsername);
-			System.out.println(adminPassword);
 		}
 		catch (IOException e) {
 			e.printStackTrace();

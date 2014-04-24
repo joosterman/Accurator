@@ -12,6 +12,7 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -280,8 +281,10 @@ public class Utility {
 		URL u;
 		try {
 			u = new URL(url);
+			URLConnection con = u.openConnection();
+			con.setConnectTimeout(0);
 			StringBuilder builder = new StringBuilder();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(u.openStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String line = reader.readLine();
 			while (line != null) {
 				builder.append(line);

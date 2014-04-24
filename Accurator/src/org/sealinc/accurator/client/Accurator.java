@@ -146,7 +146,6 @@ public class Accurator implements EntryPoint {
 		Widget w = uiBinder.createAndBindUi(this);
 		rootPanel.add(w);
 		initHistorySupport();
-
 		btnDone.setVisible(false);
 
 		// resizeContent();
@@ -157,8 +156,10 @@ public class Accurator implements EntryPoint {
 		 * @Override public void onResize(ResizeEvent event) { resizeTimer.cancel();
 		 * resizeTimer.schedule(250); } });
 		 */
-
 		LoadState(State.Intro.toString());
+		// try to login the user with known credentials
+		getManagement().login();
+
 	}
 
 	public native void showLoading(boolean show) /*-{
@@ -224,7 +225,14 @@ public class Accurator implements EntryPoint {
 			public void onSuccess(String json) {
 				// if json == null, retry
 				if (json == null) {
-					loadRecommendations();
+					Timer t = new Timer() {
+						@Override
+						public void run() {
+							loadRecommendations();
+						}
+					};
+					// wait for 0.5 seconds, then retry.
+					t.schedule(500);
 				}
 				else {
 					recommendedItems = new LinkedList<JsRecommendedItem>();
@@ -412,7 +420,6 @@ public class Accurator implements EntryPoint {
 					break;
 				case Profile:
 					content.add(getProfileScreen());
-					getProfileScreen().loadUIThemeElements();
 					getProfileScreen().loadData();
 					break;
 				case Quality:
