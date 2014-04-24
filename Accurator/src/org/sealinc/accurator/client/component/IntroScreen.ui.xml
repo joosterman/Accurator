@@ -60,7 +60,9 @@
 			</div>
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
-					SEALINCMedia group picture?
+					<img src="/images/SEALINCMedia.png" alt="Logo of SEALINCMedia project" class="logo">
+						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+					</img>
 				</div>
 				<div class="row col-md-4">
 				    <h3>SEALINCMedia</h3>
@@ -82,7 +84,9 @@
 			</div>
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
-					COMMIT/ logo?
+					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="logo">
+						<ui:attribute name="alt" description="Alt text COMMIT logo" />
+					</img>
 				</div>
 				<div class="row col-md-4">
 				    <h3>COMMIT/</h3>

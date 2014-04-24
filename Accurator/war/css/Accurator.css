@@ -107,6 +107,11 @@ a:hover {
 }
 
 .introContent .bottom .row {
+	height: 250px;
+}
+
+/* Logos */
+.logo {
 	height: 150px;
 }
 
