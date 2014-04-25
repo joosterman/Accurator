@@ -147,19 +147,10 @@ public class Accurator implements EntryPoint {
 		rootPanel.add(w);
 		initHistorySupport();
 		btnDone.setVisible(false);
+		loadCurrentHistory();
 
-		// resizeContent();
-		/*
-		 * Window.addResizeHandler(new ResizeHandler() { Timer resizeTimer = new
-		 * Timer() {
-		 * @Override public void run() { resizeContent(); } };
-		 * @Override public void onResize(ResizeEvent event) { resizeTimer.cancel();
-		 * resizeTimer.schedule(250); } });
-		 */
-		LoadState(State.Intro.toString());
 		// try to login the user with known credentials
 		getManagement().login();
-
 	}
 
 	public native void showLoading(boolean show) /*-{
@@ -203,24 +194,11 @@ public class Accurator implements EntryPoint {
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), callback);
 	}
 
-	protected void resizeContent() {
-		int headerHeight = header.getOffsetHeight();
-		// int footerHeight = footer.getOffsetHeight();
-		int windowHeight = Window.getClientHeight();
-		int height = windowHeight - headerHeight;// - footerHeight;
-		String mainContentHeight = height + "px";
-		content.setHeight(mainContentHeight);
-	}
-
 	protected void loadRecommendations() {
 		String url = Config.assignComponentURL + "?" + "strategy=" + Config.assignComponentStrategy + "&nritems="
 				+ Config.assignComponentNrItems + "&user=" + Utility.getQualifiedUsername();
 
-		// show the loader image if we are on the recommendation screen
-		if (State.Recommendation.toString().equals(History.getToken())) showLoading(true);
-
 		Utility.adminService.getJSON(url, new AsyncCallback<String>() {
-
 			@Override
 			public void onSuccess(String json) {
 				// if json == null, retry
@@ -248,8 +226,14 @@ public class Accurator implements EntryPoint {
 			@Override
 			public void onFailure(Throwable caught) {
 				caught.printStackTrace();
-				// try again
-				loadRecommendations();
+				Timer t = new Timer() {
+					@Override
+					public void run() {
+						loadRecommendations();
+					}
+				};
+				// wait for 0.5 seconds, then retry.
+				t.schedule(500);
 			}
 		});
 	}
@@ -335,11 +319,13 @@ public class Accurator implements EntryPoint {
 			public void onResponseReceived(Request request, Response response) {
 				String json = response.getText();
 				JsArray<JsUserProfileEntry> entries = parseExpertise(json);
+				System.out.println("Found " + entries.length() + " expertise entries");
 				expertise = new HashMap<String, Double>();
 				for (int i = 0; i < entries.length(); i++) {
 					JsUserProfileEntry entry = entries.get(i);
 					double value = entry.getValueAsDouble();
 					expertise.put(entry.getScope(), value);
+					System.out.println(entry.getScope() + " - " + value);
 				}
 			}
 
@@ -407,7 +393,7 @@ public class Accurator implements EntryPoint {
 				state = State.valueOf(token);
 			}
 			catch (IllegalArgumentException ex) {
-				state = State.Annotate;
+				state = State.Intro;
 			}
 			btnDone.setVisible(false);
 			content.clear();
@@ -432,6 +418,8 @@ public class Accurator implements EntryPoint {
 				case Intro:
 					content.add(getIntroScreen());
 					break;
+				default:
+					content.add(getIntroScreen());
 			}
 		}
 		catch (Exception ex) {
@@ -443,7 +431,7 @@ public class Accurator implements EntryPoint {
 	protected void loadCurrentHistory() {
 		String token = History.getToken();
 		if (token == null || token.isEmpty()) {
-			History.newItem(State.Recommendation.toString());
+			History.newItem(State.Intro.toString());
 		}
 		else {
 			LoadState(token);

@@ -1,9 +1,6 @@
 package org.sealinc.accurator.client.service;
 
-import java.util.Map;
-import org.sealinc.accurator.shared.ConfigurationSetting;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 
 public interface AdminComponentServiceAsync {
 
@@ -11,7 +8,4 @@ public interface AdminComponentServiceAsync {
 
 	void getJSON(String url, AsyncCallback<String> callback);
 
-	void getConfiguration(String version, AsyncCallback<Map<String, ConfigurationSetting>> callback);
-
-	
 }

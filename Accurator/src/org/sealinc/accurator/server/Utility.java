@@ -461,7 +461,7 @@ public class Utility {
 			URL url = new URL(String.format("%s?query=%s", Config.sparqlEndpoint, URLEncoder.encode(sparql, "UTF-8")));
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.addRequestProperty("Accept", "application/sparql-results+xml");
-			con.setReadTimeout(60000);
+			con.setReadTimeout(0);
 			con.setRequestMethod("GET");
 			con.setUseCaches(false);
 			con.connect();

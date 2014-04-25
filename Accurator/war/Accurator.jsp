@@ -10,6 +10,7 @@
 <link type="text/css" rel="stylesheet" media="screen" href="css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="css/Accurator.css" />
 <link type="text/css" rel="stylesheet" href="css/Accurator_rmafix.css" />
+<link type="text/css" rel="stylesheet" href="css/rangeslider.css" />
 <meta name="gwt:property" content="locale=nl" />
 <title>Accurator</title>
 <!--                                           -->
@@ -21,6 +22,7 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/bootbox.js"></script>
+<script type="text/javascript" src="js/rangeslider.min.js"></script>
 
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

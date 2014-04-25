@@ -201,7 +201,13 @@ a:hover {
 	font-size: 1.1em; font-weight: bold;
 }
 
-/* Profile  */
+/* Profile screen  */
+
+.profileContent
+{
+	padding-top:20px;
+}
+
 .infoblock {
 	position: relative; float: left; width: 45%; margin-right: 10px;
 }

@@ -62,8 +62,8 @@ public class UserManagement {
 							Utility.setUser(username, password);
 
 							acc.loadExpertise();
-							acc.loadRecommendations();
-							acc.loadFirstPrintForAnnotation();
+							// acc.loadRecommendations();
+							// acc.loadFirstPrintForAnnotation();
 
 							// renew login every 4 minutes
 							renewLoginTimer = new Timer() {

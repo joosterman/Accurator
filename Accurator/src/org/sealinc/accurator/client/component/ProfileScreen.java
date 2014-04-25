@@ -201,39 +201,12 @@ public class ProfileScreen extends Composite {
 		// get expertise
 		getExpertise("flora");
 		getExpertise("castle");
-		/*
-		 * Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise",
-		 * null, Utility.getQualifiedUsername(), new RequestCallback() {
-		 * @Override public void onResponseReceived(Request request, Response
-		 * response) { JsArray<JsUserProfileEntry> entries =
-		 * Utility.parseUserProfileEntry(response.getText()); for (int i = 0; i <
-		 * entries.length(); i++) { JsUserProfileEntry entry = entries.get(i);
-		 * updateExpertise(entry.getScope(), entry.getValueAsDouble()); } }
-		 * @Override public void onError(Request request, Throwable exception) {}
-		 * });
-		 */
-		/*
-		 * // for each expertise topic create a slider for (final String topic :
-		 * Config.profileExpertises) { // used for the class of the slider String
-		 * sanitizedTopic = topic.replace(" ", ""); // the translated version of the
-		 * topic String localTopic = null; try { localTopic =
-		 * Utility.constants.getString(topic); } catch (MissingResourceException ex)
-		 * { localTopic = topic; } // capitalize the first letter of the topic
-		 * localTopic = localTopic.substring(0, 1); // first add the header with the
-		 * expertise Label header = new Label("<h3>" + localTopic + " " +
-		 * "expertise</h3>"); pnlExpertises.add(header); // add a vertical panel
-		 * that includes the lay/expert and slider HorizontalPanel pnlSlider = new
-		 * HorizontalPanel(); Label lay = new Label(Utility.constants.lay());
-		 * SimplePanel slider = new SimplePanel();
-		 * slider.setStyleName(sanitizedTopic); Label expert = new
-		 * Label(Utility.constants.expert()); pnlSlider.add(lay);
-		 * pnlSlider.add(slider); pnlSlider.add(expert);
-		 * pnlExpertises.add(pnlSlider); }
-		 */
+		getExpertise("birds");
+
 	}
 
 	private native void setExpertiseSlider(String topic, double value) /*-{
-		$wnd.jQuery("#" + topic + "Slider").slider("value", value);
+		$wnd.jQuery("#" + topic + "Slider").val(value);
 	}-*/;
 
 	private void getExpertise(final String topic) {
@@ -262,25 +235,35 @@ public class ProfileScreen extends Composite {
 			public void onResponseReceived(Request request, Response response) {
 				String json = response.getText();
 				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(json);
+				// set the language buttons to the right language
 				if (entries.length() > 0) {
 					String language = entries.get(0).getValueAsString();
 					updateLanguageButtons(language);
 				}
+				else {
+					// default to dutch
+					updateLanguageButtons("nl");
+				}
+				// add a change handler
+				bindLanguageButtons();
 			}
 
 			@Override
-			public void onError(Request request, Throwable exception) {
-				// TODO Auto-generated method stub
-
-			}
+			public void onError(Request request, Throwable exception) {}
 		};
 		// Execute the call
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), callback);
 	}
 
+	private native void bindLanguageButtons() /*-{
+		var pscreen = this;
+		$wnd.jQuery("input[name=language]").click(function() {
+			pscreen.@org.sealinc.accurator.client.component.ProfileScreen::changeLanguage(Ljava/lang/String;)($wnd.jQuery(this).val());
+		});
+	}-*/;
+
 	private native void updateLanguageButtons(String language) /*-{
-		$wnd.jQuery("#language" + language.toUpperCase()).attr("checked", true);
-		$wnd.jQuery("#language").buttonset("refresh");
+		$wnd.jQuery("#language" + language.toUpperCase()).prop("checked", true);
 	}-*/;
 
 	private void updateExpertise(String topic, double value) {
@@ -291,22 +274,17 @@ public class ProfileScreen extends Composite {
 		accurator.userPropertyChanged(dimension);
 	}
 
-	private native void initSlider(String topic, double val)/*-{
+	private native void initSlider(String topic, double value)/*-{
 		var user = @org.sealinc.accurator.client.Utility::getQualifiedUsername()();
 		var pscreen = this;
+		$wnd.jQuery("#" + topic + "Slider").val(value);
 		$wnd
 			.jQuery("#" + topic + "Slider")
-			.slider({
-				min : 0,
-				max : 1,
-				step : 0.1,
-				range : "min",
-				value : val,
-				stop : function(event, ui) {
-					@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise",topic,user,""+ui.value,"double");
-					pscreen.@org.sealinc.accurator.client.component.ProfileScreen::updateExpertise(Ljava/lang/String;D)(topic,ui.value);
-					pscreen.@org.sealinc.accurator.client.component.ProfileScreen::userPropertyChanged(Ljava/lang/String;)("expertise");
-				},
+			.change(function() {
+				var newValue = $wnd.jQuery("#" + topic + "Slider").val();
+				@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise",topic,user,""+newValue,"double");
+				pscreen.@org.sealinc.accurator.client.component.ProfileScreen::updateExpertise(Ljava/lang/String;D)(topic,newValue);
+				pscreen.@org.sealinc.accurator.client.component.ProfileScreen::userPropertyChanged(Ljava/lang/String;)("expertise");
 			});
 	}-*/;
 
@@ -317,5 +295,7 @@ public class ProfileScreen extends Composite {
 	public ProfileScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.accurator = acc;
+		getLanguage();
+
 	}
 }
