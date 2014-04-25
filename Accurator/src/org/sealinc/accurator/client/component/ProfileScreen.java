@@ -201,7 +201,7 @@ public class ProfileScreen extends Composite {
 		// get expertise
 		getExpertise("flora");
 		getExpertise("castle");
-		getExpertise("birds");
+		getExpertise("bird");
 
 	}
 

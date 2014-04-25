@@ -82,7 +82,7 @@
 						<ui:msg description="birds">birds</ui:msg>
 					</div>
 					<div class="col-md-4">
-						<input id="birdsSlider" type="range" min="0" max="10" step="1"
+						<input id="birdSlider" type="range" min="0" max="10" step="1"
 							value="5" />
 					</div>
 					<div class="col-md-3">
