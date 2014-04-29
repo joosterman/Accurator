@@ -55,7 +55,7 @@
 					facilitate searching through the museum's collection.</p>
 				</div>
 				<div class="row">
-				<img src="/images/video.png" alt="screenshot of video">
+				<img src="/images/bird.png" alt="screenshot of video" height="200" width="300" align="centre" >
 						<ui:attribute name="alt" description="Alt text video screenshot" />
 					</img>
 				
@@ -63,14 +63,15 @@
 				</div>
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
-					<img src="/images/SEALINCMedia.png" alt="Logo of SEALINCMedia project" class="logo">
+					<img src="/images/commit_sealinc.jpg" alt="Logo of SEALINCMedia project" class="logo">
 						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
 					</img>
 				</div>
 				<div class="row col-md-4">
 				    <h3>SEALINCMedia</h3>
 					<p align="justify"> Accurator is designed as part of the SEALINCMedia project. The collaborating institutions are 
-					Vrije University (VU) Amsterdam, Technical University Delft (TuD), Centrum Wiskunde &amp; Informatica (CWI), Rijksmuseum Amsterdam, Naturalis and the National Library of The Netherlands.
+					Vrije University (VU) Amsterdam, Technical University Delft (TuD), Centrum Wiskunde &amp; Informatica (CWI), Rijksmuseum Amsterdam, Naturalis and the National Library of The Netherlands. SEALINCMedia is part of the COMMIT/ project which brings together academic research and (non-)profit organizations to solve challenges in ICT. 
+					
 				</p>
 				</div>
 			</div>
@@ -85,27 +86,10 @@
 				</p>
 				</div>
 				<div class="row col-md-4">
-					
-				    <div id="partners">
-  <div class="logo-image">
-    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
-  </div>
-  <div class="logo-image">
-    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
-  </div>
-  <div class="logo-image">
-    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
-  </div>
-  <div class="logo-image">
-    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
-  </div>
-  <div class="logo-image">
-    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
-  </div>
-  <div class="logo-image">
-    <img src="http://placehold.it/120x80" alt="Placeholder Image" />
-  </div>
-</div>
+					<img src="/images/logo_partners.jpg" alt="Logo of SEALINCMedia project" class="logo">
+						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+					</img>
+				    
 				    
 				    
 				</div>
