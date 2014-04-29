@@ -55,8 +55,10 @@
 					facilitate searching through the museum's collection.</p>
 				</div>
 				<div class="row">
-				<img src="/images/bird.png" alt="screenshot of video" height="200" width="300" align="centre" >
-						<ui:attribute name="alt" description="Alt text video screenshot" />
+<!-- 				<a href="https://www.rijksmuseum.nl"> 
+ -->				    <img src="/images/bird.png" alt="screenshot of video" height="200" width="300" align="centre" >
+<!-- 				    </a>
+ -->						<ui:attribute name="alt" description="Alt text video screenshot" />
 					</img>
 				
 				</div>
