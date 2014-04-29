@@ -49,10 +49,10 @@
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
 					<h3>About Accurator</h3>
-					Accurator is a platform that allows users to help museum professionals with describing collection items of the 
-					Rijksmuseum Amsterdam with expert knowledge. This could, for example, be the annotation of the depicted species 
-					of an animal or plant. Apart from contributing to very detailed descriptions, this information can also be used to 
-					facilitate searching the museum's collection.
+					Accurator is platform that allows web users to help museum professionals with describing museum collection items specifically of the 
+					Rijksmuseum,Amsterdam by providing expert knowledge. This could, for example, be the annotation of the depicted species 
+					of an animal or a plant. Apart from contributing to very detailed descriptions of the collection items, this information can also be used to 
+					facilitate searching through the museum's collection.
 				</div>
 				<div class="row col-md-4">
 					Screenshot?
@@ -67,13 +67,13 @@
 				<div class="row col-md-4">
 				    <h3>SEALINCMedia</h3>
 					Accurator is designed as part of the SEALINCMedia project. The collaborating institutions are 
-					VU University Amsterdam, TU University Delft, Centrum Wiskunde &amp; Informatica, Rijksmuseum Amsterdam and the National Library of The Netherlands.
+					Vrije University(VU) Amsterdam, Technical University Delft(TuD), Centrum Wiskunde &amp; Informatica(CWI), Rijksmuseum Amsterdam, Naturalis and the National Library of The Netherlands.
 				</div>
 			</div>
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
 					<h3>Accurator for research</h3>
-					 The research challenges of the project are to identify the niche of relevant experts and to motivate them to contribute to the 
+					 The research challenges of the project are: to identify the niche of relevant experts and to motivate them to contribute to the 
 					 annotation of artworks; developping the personalization mechanisms to make sure that the experts are shown items that correspond 
 					 to their expertise; evaluating the quality of the annotations and annotators using trust algorithms and to present all these aspects 
 					 in an appropriate interface. To test our hypotheses, we continuously develop and evaluate Accurator. 
