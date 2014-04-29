@@ -54,13 +54,11 @@
 					of an animal or a plant. Apart from contributing to very detailed descriptions of the collection items, this information can also be used to 
 					facilitate searching through the museum's collection.</p>
 				</div>
-				<div class="row col-md-4">
-					Screenshot?/ video
-					
-			
-					
-					
-					
+				<div class="row">
+				<img src="/images/video.png" alt="screenshot of video">
+						<ui:attribute name="alt" description="Alt text video screenshot" />
+					</img>
+				
 				</div>
 				</div>
 			<div class="row">
@@ -87,10 +85,32 @@
 				</p>
 				</div>
 				<div class="row col-md-4">
-					IMAGE 3
+					
+				    <div id="partners">
+  <div class="logo-image">
+    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
+  </div>
+  <div class="logo-image">
+    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
+  </div>
+  <div class="logo-image">
+    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
+  </div>
+  <div class="logo-image">
+    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
+  </div>
+  <div class="logo-image">
+    <img src="/images/SEALINCMedia.png" alt="Placeholder Image" />
+  </div>
+  <div class="logo-image">
+    <img src="http://placehold.it/120x80" alt="Placeholder Image" />
+  </div>
+</div>
+				    
+				    
 				</div>
 			</div>
-			<div class="row">
+			<!-- <div class="row">
 				<div class="row col-md-4 col-md-offset-2">
 					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="logo">
 						<ui:attribute name="alt" description="Alt text COMMIT logo" />
@@ -101,8 +121,8 @@
 				    
 					SEALINCMedia is part of the COMMIT/ project which brings together academic research and (non-)profit organizations to solve challenges in ICT. 
 				</div>
-			</div>
-		</div>
+			</div> -->
+		</div> 
 
 		<!-- Intro footer -->
 		<div class="introFooter">
