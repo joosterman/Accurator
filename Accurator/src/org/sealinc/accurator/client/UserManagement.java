@@ -62,7 +62,7 @@ public class UserManagement {
 							Utility.setUser(username, password);
 
 							acc.loadExpertise();
-							// acc.loadRecommendations();
+							acc.loadRecommendations();
 							// acc.loadFirstPrintForAnnotation();
 
 							// renew login every 4 minutes

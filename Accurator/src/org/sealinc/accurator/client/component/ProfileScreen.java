@@ -281,7 +281,7 @@ public class ProfileScreen extends Composite {
 		$wnd
 			.jQuery("#" + topic + "Slider")
 			.change(function() {
-				var newValue = $wnd.jQuery("#" + topic + "Slider").val();
+				var newValue = parseFloat($wnd.jQuery("#" + topic + "Slider").val());
 				@org.sealinc.accurator.client.Utility::storeUserProfileEntry(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(user,"expertise",topic,user,""+newValue,"double");
 				pscreen.@org.sealinc.accurator.client.component.ProfileScreen::updateExpertise(Ljava/lang/String;D)(topic,newValue);
 				pscreen.@org.sealinc.accurator.client.component.ProfileScreen::userPropertyChanged(Ljava/lang/String;)("expertise");
