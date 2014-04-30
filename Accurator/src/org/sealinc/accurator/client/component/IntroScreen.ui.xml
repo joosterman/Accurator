@@ -25,8 +25,8 @@
 								</g:InlineHyperlink>
 							</small>
 						</h2>
-						<button class="button-overlay"
-							data-toggle="modal" data-target="#modalRegister">Sign up</button>
+						<button class="button-overlay" data-toggle="modal"
+							data-target="#modalRegister">Sign up</button>
 						<button class="btn btn-link introLink" data-toggle="modal"
 							data-target="#modalLogin">or Sign in</button>
 					</div>
@@ -35,89 +35,113 @@
 			<!-- Learn more (link to bottom) -->
 			<div id="learn-more">
 				<div id="learn-more-text">
-					<h3><g:InlineLabel ui:field="lblLearnMore">
-						Learn more&nbsp;</g:InlineLabel></h3>
+					<h3>
+						<g:InlineLabel ui:field="lblLearnMore">
+							Learn more&nbsp;</g:InlineLabel>
+					</h3>
 					<g:InlineLabel stylePrimaryName="glyphicon glyphicon-chevron-down"></g:InlineLabel>
 				</div>
 			</div>
 		</div>
-		
+
 		<div id="divider"></div>
-		
+
 		<!-- Bottom Half Intro Page -->
 		<div class="bottom container">
 			<div class="row">
 				<div class="row col-md-4 col-md-offset-2">
-					<h3  >About Accurator</h3>
-					<p align="justify"> Accurator is platform that enables Web users to help museum professionals with describing museum collection items by providing expert knowledge. This could, for example, be the annotation of the depicted species 
-					of an animal or a plant. Apart from enhancing the descriptions of the collection items, this information can be used to 
-					facilitate searching the museum's collection.</p>
+					<h3>About Accurator</h3>
+					<p align="justify"> Accurator is platform that enables Web users to help
+						museum professionals with describing museum collection items by
+						providing expert knowledge. This could, for example, be the
+						annotation of the depicted species
+						of an animal or a plant. Apart
+						from enhancing the descriptions of
+						the collection items, this
+						information can be used to
+						facilitate searching the museum's
+						collection.</p>
 				</div>
 				<div class="row">
-<!-- 				<a href="https://www.rijksmuseum.nl"> 
- -->				    <img src="/images/bird.png" alt="screenshot of video" height="200" width="300" align="centre" >
-<!-- 				    </a>
- -->						<ui:attribute name="alt" description="Alt text video screenshot" />
-					</img>
-				
+					<iframe width="420" height="345"
+						src="http://www.youtube.com/embed/XGSy3_Czz8k">
+					</iframe>
 				</div>
+				<div class="row">
+					<div class="row col-md-4 col-md-offset-2">
+						<img src="/images/commit_sealinc.jpg" alt="Logo of SEALINCMedia project"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+						</img>
+					</div>
+					<div class="row col-md-4">
+						<h3>SEALINCMedia</h3>
+						<p align="justify"> Accurator is developed as part of the SEALINCMedia
+							project. The collaborating institutions are
+							Vrije University (VU)
+							Amsterdam, Technical University Delft (TuD),
+							Centrum Wiskunde
+							&amp; Informatica (CWI), Rijksmuseum Amsterdam,
+							Naturalis and the
+							National Library of The Netherlands.
+							SEALINCMedia is part of the
+							COMMIT/ project which brings together
+							academic research and
+							(non-)profit organizations to solve
+							challenges in ICT.
+
+						</p>
+					</div>
 				</div>
-			<div class="row">
-				<div class="row col-md-4 col-md-offset-2">
-					<img src="/images/commit_sealinc.jpg" alt="Logo of SEALINCMedia project" class="logo">
-						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
-					</img>
-				</div>
-				<div class="row col-md-4">
-				    <h3>SEALINCMedia</h3>
-					<p align="justify"> Accurator is developed as part of the SEALINCMedia project. The collaborating institutions are 
-					Vrije University (VU) Amsterdam, Technical University Delft (TuD), Centrum Wiskunde &amp; Informatica (CWI), Rijksmuseum Amsterdam, Naturalis and the National Library of The Netherlands. SEALINCMedia is part of the COMMIT/ project which brings together academic research and (non-)profit organizations to solve challenges in ICT. 
-					
-				</p>
+				<div class="row">
+					<div class="row col-md-4 col-md-offset-2">
+						<h3>Accurator for research</h3>
+						<p align="justify">
+							The research challenges of the project are: to identify
+							the niche of
+							relevant experts and to motivate them to contribute
+							to the
+							annotation of artworks; developing the personalization
+							mechanisms
+							to make sure that the experts are shown items that
+							correspond
+							to their expertise; evaluating the quality of the
+							annotations and
+							annotators using trust algorithms and to present
+							all these
+							aspects
+							in an appropriate interface. To test our
+							hypotheses, we
+							continuously develop and evaluate Accurator.
+						</p>
+					</div>
+					<div class="row col-md-4">
+						<img src="/images/logo_partners.jpg" alt="Logo of SEALINCMedia project"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+						</img>
+					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="row col-md-4 col-md-offset-2">
-					<h3>Accurator for research</h3>
-					<p align="justify">
-					 The research challenges of the project are: to identify the niche of relevant experts and to motivate them to contribute to the 
-					 annotation of artworks; developing the personalization mechanisms to make sure that the experts are shown items that correspond 
-					 to their expertise; evaluating the quality of the annotations and annotators using trust algorithms and to present all these aspects 
-					 in an appropriate interface. To test our hypotheses, we continuously develop and evaluate Accurator. 
-				</p>
-				</div>
-				<div class="row col-md-4">
-					<img src="/images/logo_partners.jpg" alt="Logo of SEALINCMedia project" class="logo">
-						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
-					</img>
-				    
-				    
-				    
-				</div>
-			</div>
-			<!-- <div class="row">
-				<div class="row col-md-4 col-md-offset-2">
-					<img src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="logo">
-						<ui:attribute name="alt" description="Alt text COMMIT logo" />
-					</img>
-				</div>
-				<div class="row col-md-4">
-				    <h3>COMMIT/</h3>
-				    
-					SEALINCMedia is part of the COMMIT/ project which brings together academic research and (non-)profit organizations to solve challenges in ICT. 
-				</div>
-			</div> -->
-		</div> 
+			<!-- <div class="row"> <div class="row col-md-4 col-md-offset-2"> <img 
+				src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="logo"> <ui:attribute 
+				name="alt" description="Alt text COMMIT logo" /> </img> </div> <div class="row 
+				col-md-4"> <h3>COMMIT/</h3> SEALINCMedia is part of the COMMIT/ project which 
+				brings together academic research and (non-)profit organizations to solve 
+				challenges in ICT. </div> </div> -->
+		</div>
 
 		<!-- Intro footer -->
 		<div class="introFooter">
 			<a href="https://www.rijksmuseum.nl/">
-				<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam" class="footerLogo" id="footerLogoRijksmuseum">
+				<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
+					class="footerLogo" id="footerLogoRijksmuseum">
 					<ui:attribute name="alt" description="Alt text RMA logo" />
 				</img>
 			</a>
 			<a href="http://commit-nl.nl/">
-				<img src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="footerLogo" id="footerLogoCommit">
+				<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
+					class="footerLogo" id="footerLogoCommit">
 					<ui:attribute name="alt" description="Alt text COMMIT logo" />
 				</img>
 			</a>
