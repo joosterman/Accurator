@@ -1,3 +1,7 @@
+@IMPORT url("https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web-fonts.css");
+@IMPORT url("https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web.css");
+
+
 body{
 	background-color: white;
 	height:100px;

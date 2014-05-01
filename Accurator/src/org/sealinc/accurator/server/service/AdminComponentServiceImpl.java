@@ -25,7 +25,6 @@ public class AdminComponentServiceImpl extends RemoteServiceServlet implements A
 			u = new URL(url);
 		}
 		catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}

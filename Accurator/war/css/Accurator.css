@@ -98,7 +98,6 @@ a:hover {
 		
 	/* Preserve aspect ratio */
 	min-width: 100%;
-	min-height: 100%;
 }
 
 .introContent .bottom {

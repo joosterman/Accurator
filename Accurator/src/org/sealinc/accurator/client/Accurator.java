@@ -73,9 +73,9 @@ public class Accurator implements EntryPoint {
 	private int nrInitialPrints = 50;
 	private boolean hasPredefinedAnnotationOrder = false;
 
-	private static final String castleTopic = "castle";
-	private static final String floraTopic = "flora";
-	private static final String birdTopic = "bird";
+	private static final String CASTLE_TOPIC = "castle";
+	private static final String FLORA_TOPIC = "flora";
+	private static final String BIRD_TOPIC = "birds";
 
 	private AnnotateScreen getAnnotateScreen() {
 		if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
@@ -201,20 +201,12 @@ public class Accurator implements EntryPoint {
 		Utility.adminService.getJSON(url, new AsyncCallback<String>() {
 			@Override
 			public void onSuccess(String json) {
-				// if json == null, retry
-				if (json == null) {
-					Timer t = new Timer() {
-						@Override
-						public void run() {
-							loadRecommendations();
-						}
-					};
-					// wait for 0.5 seconds, then retry.
-					t.schedule(500);
-				}
-				else {
+				// null signals a problem
+				System.out.println("Could not load recommendations.");
+				if (json != null) {
 					recommendedItems = new LinkedList<JsRecommendedItem>();
 					JsArray<JsRecommendedItem> recs = parseRecommendations(json);
+					System.out.println("Recommended items retrieved: " + recs.length());
 					for (int i = 0; i < recs.length(); i++) {
 						recommendedItems.add(recs.get(i));
 					}
@@ -263,13 +255,13 @@ public class Accurator implements EntryPoint {
 		String stylesheet = Window.Location.getProtocol() + "//" + Window.Location.getHost() + "/css/jacconator.css";
 		String url = Config.annotationComponentURL + "?target=" + resourceURI + "&stylesheet=" + stylesheet;
 		String ui = "";
-		if (floraTopic.equals(topic)) {
+		if (FLORA_TOPIC.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorFlowerDemoUi";
 		}
-		else if (castleTopic.equals(topic)) {
+		else if (CASTLE_TOPIC.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
 		}
-		else if (birdTopic.equals(topic)) {
+		else if (BIRD_TOPIC.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorBirdDemoUi";
 		}
 		// complete url for the iframe containing the annotation component

@@ -63,7 +63,7 @@ public class UserManagement {
 
 							acc.loadExpertise();
 							acc.loadRecommendations();
-							// acc.loadFirstPrintForAnnotation();
+							acc.loadFirstPrintForAnnotation();
 
 							// renew login every 4 minutes
 							renewLoginTimer = new Timer() {

@@ -12,7 +12,6 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -281,8 +280,9 @@ public class Utility {
 		URL u;
 		try {
 			u = new URL(url);
-			URLConnection con = u.openConnection();
+			HttpURLConnection con = (HttpURLConnection) u.openConnection();
 			con.setConnectTimeout(0);
+			int responseCode = con.getResponseCode();
 			StringBuilder builder = new StringBuilder();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 			String line = reader.readLine();
@@ -291,7 +291,14 @@ public class Utility {
 				line = reader.readLine();
 			}
 			reader.close();
-			return builder.toString();
+			String result = builder.toString();
+			// if the request did not give an OK
+			if (responseCode != 200) {
+				System.out.println("GetHTML not successful for URL:" + url + "\n" + result);
+				return null;
+			}
+
+			return result;
 		}
 		catch (MalformedURLException e) {
 			e.printStackTrace();
