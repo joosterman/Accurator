@@ -12,6 +12,10 @@ body,.content,.mainContent,.introContent {
 	margin-top: 50px;
 }
 
+button.done {
+	top: 53px; position: fixed; right: 3px; z-index: 1000;
+}
+
 .loading {
 	position: fixed; top: 50%; left: 50%; z-index: 5000; display: none;
 }
@@ -52,7 +56,7 @@ a:hover {
 }
 
 .footerLogo {
-	max-height: 90%; position: relative;	
+	max-height: 90%; position: relative;
 }
 
 #footerLogoCommit {
@@ -80,8 +84,6 @@ a:hover {
 	margin-top: 0;
 }
 
-
- 
 /* Intro screen */
 .introContent .top {
 	position: relative; height: 100%; overflow: hidden;
@@ -92,17 +94,12 @@ a:hover {
 }
 
 .backgroundImage {
-	position: relative; 
-	top: 0; 
-	left: 0; 
-		
-	/* Preserve aspect ratio */
-	min-width: 100%;
+	position: relative; top: 0; left: 0;
+	/* Preserve aspect ratio */ min-width: 100%;
 }
 
 .introContent .bottom {
-	min-height: 600px;
-	margin-top:50px;
+	min-height: 600px; margin-top: 50px;
 }
 
 .introContent .bottom .row {
@@ -201,10 +198,8 @@ a:hover {
 }
 
 /* Profile screen  */
-
-.profileContent
-{
-	padding-top:20px;
+.profileContent {
+	padding-top: 20px;
 }
 
 .infoblock {

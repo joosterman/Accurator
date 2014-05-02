@@ -131,6 +131,7 @@ public class Accurator implements EntryPoint {
 		// logout the annotation component
 		getManagement().logout();
 		// refresh the page to show the loginpage again and reset GWT state.
+		History.newItem(State.Intro.toString(), false);
 		Window.Location.reload();
 	}
 
@@ -201,8 +202,7 @@ public class Accurator implements EntryPoint {
 		Utility.adminService.getJSON(url, new AsyncCallback<String>() {
 			@Override
 			public void onSuccess(String json) {
-				// null signals a problem
-				System.out.println("Could not load recommendations.");
+
 				if (json != null) {
 					recommendedItems = new LinkedList<JsRecommendedItem>();
 					JsArray<JsRecommendedItem> recs = parseRecommendations(json);
@@ -212,6 +212,10 @@ public class Accurator implements EntryPoint {
 					}
 					getRecommendationScreen().loadNextRecommendations();
 					if (State.Recommendation.toString().equals(History.getToken())) showLoading(false);
+				}
+				else {
+					// null signals a problem
+					System.out.println("Could not load recommendations.");
 				}
 			}
 

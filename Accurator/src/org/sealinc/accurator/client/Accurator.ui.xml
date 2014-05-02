@@ -52,7 +52,7 @@
 				</div>
 			</nav>
 
-			<g:Button ui:field="btnDone" styleName="done button">
+			<g:Button ui:field="btnDone" styleName="done button button-primary">
 				<ui:msg description="Done">Done</ui:msg>
 			</g:Button>
 		</g:HTMLPanel>

@@ -1,5 +1,7 @@
+/*
 @IMPORT url("https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web-fonts.css");
 @IMPORT url("https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web.css");
+*/
 
 
 body{
@@ -7,9 +9,10 @@ body{
 	height:100px;
 	
 }
+/*
 #media .resource img
 {
-	/*max-height: 480px;*/
+	max-height: 480px;
 }
 #media .resource
 {
@@ -32,4 +35,4 @@ a {
 a:hover {
 	color: chocolate;
 	cursor: pointer;
-}
+}*/
