@@ -70,7 +70,6 @@ public class Accurator implements EntryPoint {
 	private IntroScreen introScreen;
 	private RecommendedItems recommendationScreen;
 	private UserManagement management;
-	private int nrInitialPrints = 50;
 	private boolean hasPredefinedAnnotationOrder = false;
 
 	private static final String CASTLE_TOPIC = "castle";

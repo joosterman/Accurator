@@ -32,7 +32,7 @@ public class Config {
 	public static final String annotationComponentChangePreferenceURL = baseURL + "admin/changePreferences";
 	public static final String assignComponentURL = baseURL + "assign";
 	public static final String assignComponentStrategy = "user";
-	public static final int assignComponentNrItems = 30;
+	public static final int assignComponentNrItems = 50;
 	public static final int qualityComponentNrRecentAnnotations = 10;
 	public static final String qualityComponentTrustworthinessURL = baseURL + "quality";
 	public static String qualityComponentTrustworthinessStrategy = "valid";
