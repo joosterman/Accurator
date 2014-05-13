@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="span11">
+   <p><span class="badge">1</span> Each image contains at least one flower. Click the image to view the full-size image in a new page. Identify, count and enter the total number of flowers and the number of different types of flowers.</p>
+   <div class="well">
+   <strong>We define a flower in these images as the flowering part of a plant which clearly has petals and is distinguishable from leaves. A single branch can have multiple flowers (but of the same type).</strong>
+   </div>
+   <p><span class="badge">2</span> Provide for up to three identified flower types the common name in English (e.g. Sunflower) or the botanical name (e.g. Helianthus annuus). Please enter only the botanical name if you know both for the same flower type. </p>
+   <p><span class="badge">3</span> For each provided flower type name indicate how certain you are the name is correct. Select 1: uncertain, 3: reasonably certain, 5: certain and 2 or 4 for intermediate values. </p>
+   <p><span class="badge">4</span> In the references field provide the method (strategy, URLs, books titles, etc.) you used to arrived at your answer.</p>
+   <p><span class="badge">5</span> However, if you think the flowers are not real (fantasy flowers), or if you are unable to identify or name any flower on the image, click the appropriate checkbox below and provide a reasonable explanation.</p>
+  </div>
+</div>
+<div class="row">
+ <div class="span11">
+  <h4>The following images illustrate how flowers occur on the images. Sometimes they are prominent, sometimes only a detail.</h4>
+ </div>
+</div>
+<div class="row example_images">
+ <div class="example_image1 span2">
+ </div>
+ <div class="example_image2 span2">
+ </div>
+ <div class="example_image3 span2">
+ </div>
+ <div class="example_image4 span2">
+ </div>
+ <div class="example_image5 span2">
+ </div>
+</div>
