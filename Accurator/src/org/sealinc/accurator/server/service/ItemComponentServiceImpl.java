@@ -19,7 +19,8 @@ import org.sealinc.accurator.shared.Config;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.hp.hpl.jena.rdf.model.Literal;
 
-public class ItemComponentServiceImpl extends RemoteServiceServlet implements ItemComponentService {
+public class ItemComponentServiceImpl extends RemoteServiceServlet implements
+		ItemComponentService {
 	/**
 	 * 
 	 */
@@ -27,35 +28,29 @@ public class ItemComponentServiceImpl extends RemoteServiceServlet implements It
 
 	@Override
 	public List<CollectionItem> getItems(List<String> resourceURIs) {
-		if(resourceURIs==null)
+		if (resourceURIs == null)
 			return null;
-		else if (resourceURIs.size()==0)
+		else if (resourceURIs.size() == 0)
 			return new ArrayList<CollectionItem>();
-		else{
-			List<CollectionItem> cis =  Utility.getObjectsByURI(resourceURIs, CollectionItem.class,CollectionItem.rdfType);
-			//get the makers
-				for(CollectionItem ci :cis){
-					String sparql = String.format("%s SELECT ?x WHERE { <%s> rma:maker ?y . ?y rdf:value ?z . ?z rma:name ?x . }" , Config.sparqlPrefixes, ci.uri);
-					List<Literal> ls = Utility.getLiteralValue(sparql);
-					ci.maker = new ArrayList<String>();
-					for(Literal l:ls){
-						ci.maker.add(l.getString());
-					}
-				}
-				return cis;
-		}		
+		else {
+			// List<CollectionItem> cis = Utility.getObjectsByURI(resourceURIs,
+			// CollectionItem.class,CollectionItem.rdfType);
+			List<CollectionItem> cis = Utility.getCollectionItems(resourceURIs);
+			return cis;
+		}
 	}
 
 	@Override
 	public String getTopic(String resourceURI) {
-		String sparql = String.format("%1$s SELECT ?x WHERE { {<%2$s> dcterms:description ?x} UNION {<%2$s> dcterms:title ?x}	}", Config.sparqlPrefixes, resourceURI);
-		List<Literal> descriptions =  Utility.getLiteralValue(sparql);
-		for(Literal l:descriptions){
+		String sparql = String
+				.format("%1$s SELECT ?x WHERE { {<%2$s> dcterms:description ?x} UNION {<%2$s> dcterms:title ?x}	}",
+						Config.sparqlPrefixes, resourceURI);
+		List<Literal> descriptions = Utility.getLiteralValue(sparql);
+		for (Literal l : descriptions) {
 			String desc = l.getString().toLowerCase();
-			if(desc.contains("bloem")){
+			if (desc.contains("bloem")) {
 				return "flora";
-			}
-			else if(desc.contains("kasteel")){
+			} else if (desc.contains("kasteel")) {
 				return "castle";
 			}
 		}

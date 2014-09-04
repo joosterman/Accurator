@@ -25,14 +25,16 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class RecommendedItems extends Composite {
 
-	interface MyUiBinder extends UiBinder<Widget, RecommendedItems> {}
+	interface MyUiBinder extends UiBinder<Widget, RecommendedItems> {
+	}
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 
 	Accurator accurator;
 
 	@UiField
-	Label lblCreator1, lblTitle1, lblCreator2, lblTitle2, lblCreator3, lblTitle3, lblPrintmaker1, lblPrintmaker2, lblPrintmaker3;
+	Label lblCreator1, lblTitle1, lblCreator2, lblTitle2, lblCreator3,
+			lblTitle3, lblPrintmaker1, lblPrintmaker2, lblPrintmaker3;
 	@UiField
 	Image img1, img2, img3;
 	@UiField
@@ -61,25 +63,28 @@ public class RecommendedItems extends Composite {
 	@UiHandler("btnSearch")
 	void btnSearchClickHandler(ClickEvent e) {
 		String text = tbSearch.getText();
-		Utility.assignService.search(text, new AsyncCallback<List<CollectionItem>>() {
+		Utility.assignService.search(text,
+				new AsyncCallback<List<CollectionItem>>() {
 
-			@Override
-			public void onSuccess(List<CollectionItem> result) {
-				loadItems(result);
-			}
+					@Override
+					public void onSuccess(List<CollectionItem> result) {
+						loadItems(result);
+					}
 
-			@Override
-			public void onFailure(Throwable caught) {}
-		});
+					@Override
+					public void onFailure(Throwable caught) {
+					}
+				});
 	}
-	
+
 	public RecommendedItems(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));
 		accurator = acc;
 		titles = new Label[] { lblTitle1, lblTitle2, lblTitle3 };
 		creators = new Label[] { lblCreator1, lblCreator2, lblCreator3 };
 		images = new Image[] { img1, img2, img3 };
-		printmakers = new Label[] { lblPrintmaker1, lblPrintmaker2, lblPrintmaker3 };
+		printmakers = new Label[] { lblPrintmaker1, lblPrintmaker2,
+				lblPrintmaker3 };
 		clearRecommendation();
 	}
 
@@ -97,8 +102,10 @@ public class RecommendedItems extends Composite {
 		for (int i = 0; i < titles.length; i++) {
 			if (items.size() > i) {
 				final CollectionItem ci = items.get(i);
-				if (ci.maker != null && ci.maker.size() > 0) creators[i].setText(ci.maker.get(0));
-				else creators[i].setText("Onbekend");
+				if (ci.maker != null)
+					creators[i].setText(ci.maker);
+				else
+					creators[i].setText("Onbekend");
 				titles[i].setText(ci.title);
 				images[i].setUrl(ci.imageURL + "&aria/maxwidth_288");
 				images[i].setVisible(true);
@@ -111,8 +118,7 @@ public class RecommendedItems extends Composite {
 						loadNextRecommendations();
 					}
 				}));
-			}
-			else {
+			} else {
 				creators[i].setText("");
 				titles[i].setText("");
 				images[i].setVisible(false);
@@ -123,9 +129,10 @@ public class RecommendedItems extends Composite {
 	}
 
 	public void loadPreviousRecommendations() {
-		//check if we can go back
-		if (seenPrints.size() <=3) return;
-		
+		// check if we can go back
+		if (seenPrints.size() <= 3)
+			return;
+
 		clearRecommendation();
 		accurator.showLoading(true);
 		// put the currently visible prints in the backlog
@@ -140,24 +147,25 @@ public class RecommendedItems extends Composite {
 			uris.add(seenPrints.get(index));
 		}
 
-		Utility.itemService.getItems(uris, new AsyncCallback<List<CollectionItem>>() {
-			@Override
-			public void onSuccess(List<CollectionItem> result) {
-				loadItems(result);
-				accurator.showLoading(false);
-			}
+		Utility.itemService.getItems(uris,
+				new AsyncCallback<List<CollectionItem>>() {
+					@Override
+					public void onSuccess(List<CollectionItem> result) {
+						loadItems(result);
+						accurator.showLoading(false);
+					}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				System.err.println(caught.toString());
-			}
-		});
+					@Override
+					public void onFailure(Throwable caught) {
+						System.err.println(caught.toString());
+					}
+				});
 	}
 
 	public void loadNextRecommendations() {
 		clearRecommendation();
 		accurator.showLoading(true);
-		// Either get the recommended items form the backlog or, when empty, new
+		// Either get the recommended items from the backlog or, when empty, new
 		// ones
 		List<String> uris = new ArrayList<String>();
 		if (backlog.size() > 0) {
@@ -167,8 +175,7 @@ public class RecommendedItems extends Composite {
 				uris.add(elem);
 				seenPrints.addLast(elem);
 			}
-		}
-		else {
+		} else {
 			uris = accurator.getNextPrintsToAnnotate(3);
 			// retry if there are at this moment no next prints
 			if (uris.size() == 0) {
@@ -188,18 +195,19 @@ public class RecommendedItems extends Composite {
 			}
 		}
 		// get the data and show the items
-		Utility.itemService.getItems(uris, new AsyncCallback<List<CollectionItem>>() {
-			@Override
-			public void onSuccess(List<CollectionItem> result) {
-				loadItems(result);
-				accurator.showLoading(false);
-			}
+		Utility.itemService.getItems(uris,
+				new AsyncCallback<List<CollectionItem>>() {
+					@Override
+					public void onSuccess(List<CollectionItem> result) {
+						loadItems(result);
+						accurator.showLoading(false);
+					}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				System.err.println(caught.toString());
-			}
-		});
+					@Override
+					public void onFailure(Throwable caught) {
+						System.err.println(caught.toString());
+					}
+				});
 	}
 
 	private void clearRecommendation() {

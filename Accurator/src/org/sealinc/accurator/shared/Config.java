@@ -48,7 +48,7 @@ public class Config {
 	public static final String sparqlPrefixes = "PREFIX rmaschema: <http://purl.org/collections/nl/rma/schema#> "
 			+ "PREFIX rmaterms: <http://purl.org/collections/nl/rma/terms/> " + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
 			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX acc: <http://purl.org/accurator/NS/> "
-			+ "PREFIX rev: <http://purl.org/stuff/rev#>";
+			+ "PREFIX rev: <http://purl.org/stuff/rev#>"+" PREFIX edm: <http://www.europeana.eu/schemas/edm/>";
 
 	public static String[] profileExpertises = new String[] { "castle", "flower" };
 	public static boolean profileShowExpertises = true;

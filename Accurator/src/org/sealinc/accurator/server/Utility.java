@@ -21,12 +21,16 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
+
+import org.sealinc.accurator.shared.CollectionItem;
 import org.sealinc.accurator.shared.Config;
 import org.sealinc.accurator.shared.Namespace;
 import org.sealinc.accurator.shared.RDFObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.utils.SystemProperty;
 import com.google.gson.Gson;
@@ -546,6 +550,64 @@ public class Utility {
 		else return null;
 	}
 
+	public static List<CollectionItem> getCollectionItems(List<String> uris){
+		StringBuilder sb = new StringBuilder();
+		String lt = "<";
+		String gt = ">";
+		for (String uri : uris) {
+			sb.append(lt);
+			sb.append(uri);
+			sb.append(gt);
+			sb.append(" ");
+		}
+		// @formatter:off
+		String sparql = ""
+		+"SELECT ?subject ?title ?description ?creator ?image "
+		+"WHERE {"
+		+"?subject rdf:type edm:ProvidedCHO ."  
+		+"?aggregation edm:aggregatedCHO ?subject . "
+		+"?aggregation edm:isShownBy ?image . "
+		+"?subject dc:title ?title . "
+		+"?subject dc:creator ?c . "
+		+"?c skos:prefLabel ?creator . "
+		+"VALUES ?subject { "
+		+ sb.toString()  
+		+"} "
+		//+"   FILTER(langMatches(lang(?title), \"EN\"))"
+		+"}";
+		
+		// 	@formatter:on
+		
+		ResultSet rs = getRDFFromEndpoint(sparql);
+		List<CollectionItem> items = new ArrayList<CollectionItem>();
+		QuerySolution qs = null;
+		String id;
+		Literal title, description, creator;
+		Resource image;
+		CollectionItem item;
+		while (rs.hasNext()) {
+			qs = rs.next();
+			id = qs.getResource("subject").getURI();
+			item = new CollectionItem(id);
+			//skip if we already have the resource
+			if(items.contains(item)){
+				continue;
+			}
+			title = qs.getLiteral("title");
+			if(title!=null)item.title = title.getString();
+			description = qs.getLiteral("description");
+			if(description!=null) item.description = description.getString();
+			creator = qs.getLiteral("creator");
+			if(creator!=null) item.maker = creator.getString();
+			image = qs.getResource("image");
+			if(image!=null)item.imageURL = image.getURI();
+			items.add(item);
+		}
+		
+		return items;
+		
+	}
+	
 	public static <T extends RDFObject> List<T> getObjectsByURI(List<String> uris, Class<T> clazz, String rdfType) {
 		// generate sparql
 		StringBuilder sb = new StringBuilder();
@@ -654,6 +716,9 @@ public class Utility {
 	public static List<String> getURIs(String sparql) {
 		ResultSet rs = getRDFFromEndpoint(sparql);
 		List<String> uris = new ArrayList<String>();
+		if(rs==null){
+			return uris;
+		}
 		if (rs.getResultVars() == null || rs.getResultVars().size() != 1) {
 			return null;
 		}
