@@ -3,9 +3,12 @@ package org.sealinc.accurator.client.component;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.sealinc.accurator.client.Accurator;
 import org.sealinc.accurator.client.Utility;
 import org.sealinc.accurator.shared.CollectionItem;
+import org.sealinc.accurator.shared.Config;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -107,7 +110,7 @@ public class RecommendedItems extends Composite {
 				else
 					creators[i].setText("Onbekend");
 				titles[i].setText(ci.title);
-				images[i].setUrl(ci.imageURL + "&aria/maxwidth_288");
+				images[i].setUrl(Config.imageCacheThumbURL+"?uri="+ ci.imageURL);
 				images[i].setVisible(true);
 				printmakers[i].setVisible(true);
 				regs.add(images[i].addClickHandler(new ClickHandler() {

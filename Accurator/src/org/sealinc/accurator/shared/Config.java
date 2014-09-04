@@ -41,6 +41,8 @@ public class Config {
 	public static final String adminRegisterUserURL = baseURL + "admin/selfRegister";
 	public static final String userComponentUserURI = baseURL + "user/";
 	public static final String adminComponentUploadDataURL = baseURL + "servlets/uploadData";
+	public static final String imageCacheOriginalURL = baseURL + "cache/original";
+	public static final String imageCacheThumbURL = baseURL + "cache/thumbnail";
 	public static final String adminComponentBaseURI = "http://purl.org/accurator/";
 	public static final String recommendationComponentSearchURL = baseURL
 			+ "assign?strategy=literal_matching&predicate=http://purl.org/dc/terms/description&nritems=3";
