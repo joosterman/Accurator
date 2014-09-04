@@ -4,18 +4,11 @@
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel styleName="profileContent">
 		<div class="col-md-6">
-			<fieldset>
-				<legend>
-					<ui:msg description="Recommendations">Recommendations</ui:msg>
-				</legend>
-				<span>
-					<ui:msg description="Introtext recommendations">Introtext recommendations</ui:msg>
-				</span>
-				<g:Hyperlink targetHistoryToken="Recommendation"
-					styleName="button">
-					<ui:msg description="Goto recommendations">Goto recommendations</ui:msg>
-				</g:Hyperlink>
-			</fieldset>
+			<g:Hyperlink targetHistoryToken="Recommendation"
+				styleName="btn btn-danger btn-lg">
+				<ui:msg description="Start annotating!">Start annotating!</ui:msg>
+			</g:Hyperlink>
+			<br /><br />
 			<fieldset>
 				<legend>
 					<ui:msg description="Prints annotated">Prints annotated</ui:msg>

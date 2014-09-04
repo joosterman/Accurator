@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionItem extends RDFObject {
-	public String id;
 	public String title;
 	public String description;
 	public String thumbnailURL;
@@ -20,9 +19,9 @@ public class CollectionItem extends RDFObject {
 		contentClassification = new ArrayList<String>();
 	}
 
-	public CollectionItem(String id) {
+	public CollectionItem(String uri) {
 		this();
-		this.id = id;
+		this.uri = uri;
 	}
 
 	@Override
@@ -34,6 +33,6 @@ public class CollectionItem extends RDFObject {
 		if (!(other instanceof CollectionItem))
 			return false;
 		CollectionItem otherMyClass = (CollectionItem) other;
-		return otherMyClass.id == this.id;
+		return otherMyClass.uri == this.uri;
 	}
 }
