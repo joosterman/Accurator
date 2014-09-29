@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.sealinc.accurator.client.component.AnnotateScreen;
 import org.sealinc.accurator.client.component.IntroScreen;
 import org.sealinc.accurator.client.component.ProfileScreen;
 import org.sealinc.accurator.client.component.RecommendedItems;
 import org.sealinc.accurator.shared.Config;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -41,7 +43,8 @@ import com.google.gwt.user.client.ui.Widget;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Accurator implements EntryPoint {
-	interface MyUiBinder extends UiBinder<Widget, Accurator> {}
+	interface MyUiBinder extends UiBinder<Widget, Accurator> {
+	}
 
 	public enum State {
 		Annotate, Profile, Quality, Admin, Recommendation, Intro
@@ -76,29 +79,38 @@ public class Accurator implements EntryPoint {
 	private static final String FLORA_TOPIC = "flora";
 	private static final String BIRD_TOPIC = "birds";
 
-	private AnnotateScreen getAnnotateScreen() {
-		if (annotateScreen == null) annotateScreen = new AnnotateScreen(this);
+	AnnotateScreen getAnnotateScreen() {
+		if (annotateScreen == null)
+			annotateScreen = new AnnotateScreen(this);
 		return annotateScreen;
 	}
 
 	private ProfileScreen getProfileScreen() {
-		if (profileScreen == null) profileScreen = new ProfileScreen(this);
+		if (profileScreen == null)
+			profileScreen = new ProfileScreen(this);
 		return profileScreen;
 	}
 
 	private IntroScreen getIntroScreen() {
-		if (introScreen == null) introScreen = new IntroScreen(this);
+		if (introScreen == null)
+			introScreen = new IntroScreen(this);
 		return introScreen;
 	}
 
 	private RecommendedItems getRecommendationScreen() {
-		if (recommendationScreen == null) recommendationScreen = new RecommendedItems(this);
+		if (recommendationScreen == null)
+			recommendationScreen = new RecommendedItems(this);
 		return recommendationScreen;
 	}
 
 	public UserManagement getManagement() {
-		if (management == null) management = new UserManagement(this);
+		if (management == null)
+			management = new UserManagement(this);
 		return management;
+	}
+
+	public void login_demo() {
+		getManagement().login_demo();
 	}
 
 	@UiHandler("btnLogin")
@@ -149,15 +161,17 @@ public class Accurator implements EntryPoint {
 		btnDone.setVisible(false);
 		loadCurrentHistory();
 
-		// try to login the user with known credentials
-		getManagement().login();
+		// TODO: For demo purposes
+		Utility.setUser(UserManagement.demoUP, UserManagement.demoUP);
+		loadRecommendations();
+
 	}
 
 	public native void showLoading(boolean show) /*-{
-		if (show)
-			$wnd.jQuery(".loading").show();
-		else
-			$wnd.jQuery(".loading").hide();
+//		if (show)
+//			$wnd.jQuery(".loading").show();
+//		else
+//			$wnd.jQuery(".loading").hide();
 	}-*/;
 
 	protected native void openAboutDialog() /*-{
@@ -179,8 +193,7 @@ public class Accurator implements EntryPoint {
 				if (entries != null && entries.length() > 0) {
 					String language = entries.get(0).getValueAsString();
 					getAnnotateScreen().setLanguage(language);
-				}
-				else {
+				} else {
 					// default to dutch
 					getAnnotateScreen().setLanguage("nl");
 				}
@@ -191,7 +204,8 @@ public class Accurator implements EntryPoint {
 				exception.printStackTrace();
 			}
 		};
-		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), callback);
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null,
+				Utility.getQualifiedUsername(), callback);
 	}
 
 	protected void loadRecommendations() {
@@ -209,10 +223,14 @@ public class Accurator implements EntryPoint {
 					for (int i = 0; i < recs.length(); i++) {
 						recommendedItems.add(recs.get(i));
 					}
+					// TODO: for demo purposes, always add the duarian redstart
+					JsRecommendedItem redstart = getDuarianRedstart();
+					recommendedItems.add(8, redstart);
+
 					getRecommendationScreen().loadNextRecommendations();
-					if (State.Recommendation.toString().equals(History.getToken())) showLoading(false);
-				}
-				else {
+					if (State.Recommendation.toString().equals(History.getToken()))
+						showLoading(false);
+				} else {
 					// null signals a problem
 					System.out.println("Could not load recommendations.");
 				}
@@ -233,6 +251,14 @@ public class Accurator implements EntryPoint {
 		});
 	}
 
+	public native JsRecommendedItem getDuarianRedstart() /*-{
+		var bird = @org.sealinc.accurator.client.Accurator::BIRD_TOPIC;
+		return {
+			scope : bird,
+			uri : "http://purl.org/collections/nl/rma/RP-P-2004-508A-9"
+		};
+	}-*/;
+
 	/**
 	 * Reloads the complete page with the new language. All GWT state is lost.
 	 * 
@@ -240,10 +266,11 @@ public class Accurator implements EntryPoint {
 	 */
 	public void changeLanguage(String language) {
 		// store the new preference
-		Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(), language,
-				"string");
+		Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null,
+				Utility.getQualifiedUsername(), language, "string");
 		// load Accurator with the new locale
-		String newURL = Window.Location.createUrlBuilder().setParameter(LocaleInfo.getLocaleQueryParam(), language).buildString();
+		String newURL = Window.Location.createUrlBuilder().setParameter(LocaleInfo.getLocaleQueryParam(), language)
+				.buildString();
 		Window.Location.replace(newURL);
 	}
 
@@ -260,11 +287,9 @@ public class Accurator implements EntryPoint {
 		String ui = "";
 		if (FLORA_TOPIC.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorFlowerDemoUi";
-		}
-		else if (CASTLE_TOPIC.equals(topic)) {
+		} else if (CASTLE_TOPIC.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorCastleDemoUi";
-		}
-		else if (BIRD_TOPIC.equals(topic)) {
+		} else if (BIRD_TOPIC.equals(topic)) {
 			ui = "&ui=http://semanticweb.cs.vu.nl/annotate/nicheAccuratorBirdDemoUi";
 		}
 		// complete url for the iframe containing the annotation component
@@ -288,10 +313,10 @@ public class Accurator implements EntryPoint {
 				}
 
 				@Override
-				public void onFailure(Throwable caught) {}
+				public void onFailure(Throwable caught) {
+				}
 			});
-		}
-		else {
+		} else {
 			annotate(resourceURI, topic);
 		}
 	}
@@ -305,7 +330,8 @@ public class Accurator implements EntryPoint {
 	}-*/;
 
 	public void updateExpertise(String topic, double value) {
-		if (expertise != null) expertise.put(topic, value);
+		if (expertise != null)
+			expertise.put(topic, value);
 	}
 
 	protected void loadExpertise() {
@@ -325,7 +351,8 @@ public class Accurator implements EntryPoint {
 			}
 
 			@Override
-			public void onError(Request request, Throwable exception) {}
+			public void onError(Request request, Throwable exception) {
+			}
 		};
 		// get all expertises
 		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "expertise", null, null, callback);
@@ -341,8 +368,7 @@ public class Accurator implements EntryPoint {
 				}
 			};
 			t.schedule(400);
-		}
-		else {
+		} else {
 			// we have the prints and expertise
 			List<String> uris = getNextPrintsToAnnotate(1);
 			if (uris.size() > 0) {
@@ -351,8 +377,8 @@ public class Accurator implements EntryPoint {
 				// recommendation screen
 				getRecommendationScreen().addFirstSeenPrint(uri);
 				annotate(uri);
-			}
-			else System.err.println("Could not annotate next print. No print available. Waiting and trying again...");
+			} else
+				System.err.println("Could not annotate next print. No print available. Waiting and trying again...");
 		}
 
 	}
@@ -386,8 +412,7 @@ public class Accurator implements EntryPoint {
 		try {
 			try {
 				state = State.valueOf(token);
-			}
-			catch (IllegalArgumentException ex) {
+			} catch (IllegalArgumentException ex) {
 				state = State.Intro;
 			}
 			btnDone.setVisible(false);
@@ -395,29 +420,28 @@ public class Accurator implements EntryPoint {
 
 			switch (state) {
 
-				case Annotate:
-					btnDone.setVisible(true);
-					content.add(getAnnotateScreen());
-					break;
-				case Profile:
-					content.add(getProfileScreen());
-					getProfileScreen().loadData();
-					break;
-				case Quality:
-					break;
-				case Admin:
-					break;
-				case Recommendation:
-					content.add(getRecommendationScreen());
-					break;
-				case Intro:
-					content.add(getIntroScreen());
-					break;
-				default:
-					content.add(getIntroScreen());
+			case Annotate:
+				btnDone.setVisible(true);
+				content.add(getAnnotateScreen());
+				break;
+			case Profile:
+				content.add(getProfileScreen());
+				getProfileScreen().loadData();
+				break;
+			case Quality:
+				break;
+			case Admin:
+				break;
+			case Recommendation:
+				content.add(getRecommendationScreen());
+				break;
+			case Intro:
+				content.add(getIntroScreen());
+				break;
+			default:
+				content.add(getIntroScreen());
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			// state not parsable
 		}
@@ -427,8 +451,7 @@ public class Accurator implements EntryPoint {
 		String token = History.getToken();
 		if (token == null || token.isEmpty()) {
 			History.newItem(State.Intro.toString());
-		}
-		else {
+		} else {
 			LoadState(token);
 		}
 	}

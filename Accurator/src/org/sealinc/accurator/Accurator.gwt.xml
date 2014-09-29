@@ -7,9 +7,9 @@
 	
 	
 	
-	<extend-property name="locale" values="nl" />
-	<extend-property name="locale" values="en" />
-	<set-property-fallback name="locale" value="nl"/>
+	<extend-property name="locale" values="nl" />	
+	<extend-property name="locale" values="en" />	
+	<set-property-fallback name="locale" value="en"/>
 
 	<!-- Inherit the default GWT style sheet. You can change -->
 	<!-- the theme of your GWT application by uncommenting -->

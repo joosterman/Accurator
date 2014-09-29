@@ -6,57 +6,100 @@
 	<g:HTMLPanel styleName="recommendedContent">
 		<div class="recommendation">
 			<h2>
-				<ui:msg description="Recommended prints">Recommended prints</ui:msg>
+				Recommended prints
 			</h2>
-			<div class="search">
-				<g:TextBox ui:field="tbSearch" styleName="searchBox"></g:TextBox>
-				<g:Button ui:field="btnSearch" text="Zoeken">
-					<ui:attribute description="Zoeken" name="text" />
-				</g:Button>
-			</div>
-			<div class="previous">
-				<g:Image ui:field="imgPrevious" styleName="imageButton"
-					altText="Previous recommendations" url="/images/arrowPrevious.png">
-					<ui:attribute name="altText" description="Next recommendation" />
-				</g:Image>
-			</div>
-			<div class="recommendationItem">
+			<div class="row recRow">
+				<div class="col-md-3">
+					<g:Label ui:field="lblTitle1" styleName="recTitle"></g:Label>
+					Printmaker:
+					<g:InlineLabel ui:field="lblCreator1" styleName="recCreator"></g:InlineLabel>
+					<br />
+					<g:Image ui:field="img1" styleName="recImage imageButton"></g:Image>
 
-				<g:Image ui:field="img1" styleName="recImage imageButton"></g:Image>
-				<br />
-				<g:Label ui:field="lblTitle1" styleName="recTitle"></g:Label>
-				<g:Label ui:field="lblPrintmaker1">
-					<ui:msg description="Printmaker">Printmaker</ui:msg>
-					:
-				</g:Label>
-				<g:Label ui:field="lblCreator1" styleName="recCreator"></g:Label>
-			</div>
-			<div class="recommendationItem">
-				<g:Image ui:field="img2" styleName="recImage imageButton"></g:Image>
-				<br />
-				<g:Label ui:field="lblTitle2" styleName="recTitle"></g:Label>
-				<g:Label ui:field="lblPrintmaker2">
-					<ui:msg description="Printmaker">Printmaker</ui:msg>
-					:
-				</g:Label>
-				<g:Label ui:field="lblCreator2" styleName="recCreator"></g:Label>
-			</div>
-			<div class="recommendationItem">
+					<g:Label ui:field="lblPrintmaker1"></g:Label>
 
-				<g:Image ui:field="img3" styleName="recImage imageButton"></g:Image>
-				<br />
-				<g:Label ui:field="lblTitle3" styleName="recTitle"></g:Label>
-				<g:Label ui:field="lblPrintmaker3">
-					<ui:msg description="Printmaker">Printmaker</ui:msg>
-					:
-				</g:Label>
-				<g:Label ui:field="lblCreator3" styleName="recCreator"></g:Label>
+				</div>
+				<div class="col-md-3">
+					<g:Label ui:field="lblTitle2" styleName="recTitle"></g:Label>
+					Printmaker:
+					<g:InlineLabel ui:field="lblCreator2" styleName="recCreator"></g:InlineLabel>
+					<br />
+					<g:Image ui:field="img2" styleName="recImage imageButton"></g:Image>
+					<g:Label ui:field="lblPrintmaker2">
+					</g:Label>
+
+				</div>
+				<div class="col-md-3">
+					<g:Label ui:field="lblTitle3" styleName="recTitle"></g:Label>
+					Printmaker:
+					<g:InlineLabel ui:field="lblCreator3" styleName="recCreator"></g:InlineLabel>
+					<br />
+					<g:Image ui:field="img3" styleName="recImage imageButton"></g:Image>
+					<g:Label ui:field="lblPrintmaker3"></g:Label>
+
+				</div>
+				<div class="col-md-3">
+					<g:Label ui:field="lblTitle4" styleName="recTitle"></g:Label>
+					Printmaker:
+					<g:InlineLabel ui:field="lblCreator4" styleName="recCreator"></g:InlineLabel>
+					<br />
+					<g:Image ui:field="img4" styleName="recImage imageButton"></g:Image>
+					<g:Label ui:field="lblPrintmaker4">
+					</g:Label>
+
+				</div>
 			</div>
-			<div class="next">
-				<g:Image ui:field="imgNext" styleName="imageButton"
-					url="/images/arrowNext.png" altText="Next recommendation">
-					<ui:attribute name="altText" description="Next recommendation" />
-				</g:Image>
+			<div class="row recRow">
+				<div class="col-md-3">
+					<g:Label ui:field="lblTitle5" styleName="recTitle"></g:Label>
+					Printmaker:
+					<g:InlineLabel ui:field="lblCreator5" styleName="recCreator"></g:InlineLabel>
+					<br />
+					<g:Image ui:field="img5" styleName="recImage imageButton"></g:Image>
+					<g:Label ui:field="lblPrintmaker5"></g:Label>
+
+				</div>
+				<div class="col-md-3">
+					<g:Label ui:field="lblTitle6" styleName="recTitle"></g:Label>
+					Printmaker:
+					<g:InlineLabel ui:field="lblCreator6" styleName="recCreator"></g:InlineLabel>
+					<br />
+					<g:Image ui:field="img6" styleName="recImage imageButton"></g:Image>
+					<g:Label ui:field="lblPrintmaker6">
+					</g:Label>
+
+				</div>
+				<div class="col-md-3">
+					<g:Label ui:field="lblTitle7" styleName="recTitle"></g:Label>
+					Printmaker:
+					<g:InlineLabel ui:field="lblCreator7" styleName="recCreator"></g:InlineLabel>
+					<br />
+					<g:Image ui:field="img7" styleName="recImage imageButton"></g:Image>
+					<g:Label ui:field="lblPrintmaker7">
+					</g:Label>
+
+				</div>
+				<div class="col-md-3">
+					<g:Label ui:field="lblTitle8" styleName="recTitle"></g:Label>
+					Printmaker:
+					<g:InlineLabel ui:field="lblCreator8" styleName="recCreator"></g:InlineLabel>
+					<br />
+					<g:Image ui:field="img8" styleName="recImage imageButton"></g:Image>
+					<br />
+					<g:Label ui:field="lblPrintmaker8">
+					</g:Label>
+
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-2">
+					<g:Button ui:field="btnPrevious" styleName="btn btn-primary btn-lg"><span class="glyphicon glyphicon-chevron-left"></span> Previous
+						recommendations</g:Button>
+				</div>
+				<div class="col-md-2 col-md-offset-8">
+					<g:Button ui:field="btnNext" styleName="btn btn-primary btn-lg"> Next
+						recommendations <span class="glyphicon glyphicon-chevron-right"></span></g:Button>
+				</div>
 			</div>
 		</div>
 	</g:HTMLPanel>

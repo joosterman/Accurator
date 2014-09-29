@@ -1,11 +1,16 @@
 /* General */
-html,body {
-	margin: 0px; font-family: Arial, Helvetica, sans-serif;
-	background: white; height: 100%; width: 100%;
+html, body {
+	margin: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	background: white;
+	height: 100%;
+	width: 100%;
 }
 
-body,.content,.mainContent,.introContent {
-	position: relative; width: 100%; height: 100%;
+body, .content, .mainContent, .introContent {
+	position: relative;
+	width: 100%;
+	height: 100%;
 }
 
 .mainContent {
@@ -13,11 +18,18 @@ body,.content,.mainContent,.introContent {
 }
 
 button.done {
-	top: 53px; position: fixed; right: 3px; z-index: 1000;
+	top: 53px;
+	position: fixed;
+	right: 3px;
+	z-index: 1000;
 }
 
 .loading {
-	position: fixed; top: 50%; left: 50%; z-index: 5000; display: none;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 5000;
+	display: none;
 }
 
 a {
@@ -25,7 +37,8 @@ a {
 }
 
 a:hover {
-	color: #909090; cursor: pointer;
+	color: #909090;
+	cursor: pointer;
 }
 
 .spaceRight {
@@ -36,13 +49,17 @@ a:hover {
 	padding-left: 7px;
 }
 
-.profileContent,.recommendedContent {
-	overflow: scroll; height: 100%;
+.profileContent, .recommendedContent {
+	overflow: scroll;
+	height: 100%;
 }
 
 /* Header */
 .logoutBlock .username {
-	position: relative; color: white; top: 5px; right: 150px;
+	position: relative;
+	color: white;
+	top: 5px;
+	right: 150px;
 	font-size: 80%;
 }
 
@@ -50,22 +67,6 @@ a:hover {
 	height: 20px;
 }
 
-/* Footer */
-.introFooter {
-	height: 20px; position: fixed; bottom: 10px; left: 20px; right: 20px;
-}
-
-.footerLogo {
-	max-height: 90%; position: relative;
-}
-
-#footerLogoCommit {
-	float: right;
-}
-
-#footerLogoRijksmuseum {
-	float: left;
-}
 
 /* Login and registration */
 .dialog {
@@ -73,11 +74,15 @@ a:hover {
 }
 
 .dialog input.text {
-	margin-bottom: 12px; width: 95%; padding: .4em;
+	margin-bottom: 12px;
+	width: 95%;
+	padding: .4em;
 }
 
 .dialog fieldset {
-	padding: 0; border: 0; margin-top: 25px;
+	padding: 0;
+	border: 0;
+	margin-top: 25px;
 }
 
 .modal-footer {
@@ -86,20 +91,27 @@ a:hover {
 
 /* Intro screen */
 .introContent .top {
-	position: relative; height: 100%; overflow: hidden;
+	position: relative;
+	height: 100%;
+	overflow: hidden;
 }
 
 .introText {
-	position: absolute; top: 75px;
+	position: absolute;
+	top: 75px;
 }
 
 .backgroundImage {
-	position: relative; top: 0; left: 0;
-	/* Preserve aspect ratio */ min-width: 100%;
+	position: relative;
+	top: 0;
+	left: 0;
+	/* Preserve aspect ratio */
+	min-width: 100%;
 }
 
 .introContent .bottom {
-	min-height: 600px; margin-top: 50px;
+	min-height: 600px;
+	margin-top: 50px;
 }
 
 .introContent .bottom .row {
@@ -117,7 +129,8 @@ a:hover {
 }
 
 .introLink:hover {
-	color: #909090; cursor: pointer;
+	color: #909090;
+	cursor: pointer;
 }
 
 .introLink:focus {
@@ -125,13 +138,18 @@ a:hover {
 }
 
 #learn-more {
-	position: absolute; bottom: 90px; left: 0; width: 100%;
+	position: absolute;
+	bottom: 90px;
+	left: 0;
+	width: 100%;
 	text-align: center;
 }
 
 #learn-more-text {
 	margin: auto; /*background-color: rgba(255, 255, 255, 0.6);*/
-	cursor: pointer; padding: 5px; border-radius: 5px;
+	cursor: pointer;
+	padding: 5px;
+	border-radius: 5px;
 }
 
 #learn-more :FIRST-CHILD {
@@ -143,58 +161,46 @@ a:hover {
 }
 
 .imageButton:hover {
-	opacity: 0.4; cursor: pointer;
+	opacity: 0.4;
+	cursor: pointer;
 }
 
 /* Annotation screen */
 .annotationFrame {
-	position: relative; float: left; border: none; width: 100%;
+	position: relative;
+	float: left;
+	border: none;
+	width: 100%;
 	height: 100%;
 }
 
 /* Recommendation screen  */
 .recommendation {
-	margin-left: auto; margin-right: auto; width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	width: 95%;
 }
 
 .recommendation h2 {
-	text-align: center; width: 100%;
+	text-align: center;
+	width: 100%;
 }
 
-.recommendation .previous,.recommendation .next {
-	position: relative; float: left; margin-top: auto; margin-bottom: auto;
-	top: 125px; width: 5%;
+.recRow
+{
+	max-height:300px;
+	overflow:hidden;
+	margin-bottom:15px;
 }
 
-.recommendation .previous img,.recommendation .next img {
-	position: relative; top: 40%;
-}
 
-.recommendation .previous img {
-	float: left
-}
-
-.recommendation .next img {
-	float: right;
-}
-
-.recommendation .search {
-	position: relative; width: 100%; text-align: center;
-	margin-bottom: 20px; display: none;
-}
-
-.recommendationItem {
-	position: relative; float: left; text-align: center; width: 28%;
-	height: 100%; margin: 8px;
-}
-
-.recommendationItem img {
-	max-height: 100%; max-width: 90%; postition: relative;
-	margin-right: auto; margin-left: auto;
+.recImage {
+	width: 60%;	
 }
 
 .recTitle {
-	font-size: 1.1em; font-weight: bold;
+	font-size: 1.1em;
+	font-weight: bold;
 }
 
 /* Profile screen  */
@@ -203,7 +209,10 @@ a:hover {
 }
 
 .infoblock {
-	position: relative; float: left; width: 45%; margin-right: 10px;
+	position: relative;
+	float: left;
+	width: 45%;
+	margin-right: 10px;
 }
 
 .pnlInterests {
@@ -218,12 +227,72 @@ a:hover {
 	width: 100%;
 }
 
-
 /*
 * RECOMMENDATION SCREEN
 *
 */
-.recommendedContent{
-	margin-top:80px;
+.recommendedContent {
+	margin-top: 80px;
 }
 
+/*
+*
+* INTRODUCTION SCREEN
+*/
+/* Carousel base class */
+.introText {
+	width: 100%
+}
+
+.carousel {
+	height: 648px;
+	width: 1152px;
+	margin-bottom: 60px;
+	margin-left: auto;
+	margin-right: auto;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+	z-index: 10;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius:25px;
+	left:24%;
+	right:24%;
+	padding-top:0px;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+	height: 648px;
+	background-color: #777;
+}
+
+.carousel-inner>.item>img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	min-width: 100%;
+	height: 684px;
+}
+
+.carousel-inner {
+	height: 648px;
+}
+
+/* Footer */
+.introFooter {
+	height: 40px; position: fixed; bottom: 10px; left: 20px; right: 20px;
+}
+
+.footerLogo {
+	max-height: 90%; position: relative;
+}
+
+#footerLogoCommit {
+	float: right;
+}
+
+#footerLogoRijksmuseum {
+	float: left;
+}

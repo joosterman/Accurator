@@ -63,7 +63,8 @@ public class Utility {
 	private static String cookie = null;
 	private static Date cookieDate = null;
 
-	private Utility() {}
+	private Utility() {
+	}
 
 	/**
 	 * Creates triples from the RDFObject o and stores them in a new Model
@@ -76,7 +77,8 @@ public class Utility {
 	}
 
 	/**
-	 * Makes sure that the response from a servlet is not chached (in any browser)
+	 * Makes sure that the response from a servlet is not chached (in any
+	 * browser)
 	 * 
 	 * @param response
 	 */
@@ -101,11 +103,12 @@ public class Utility {
 		if (o instanceof String) {
 			String s = (String) o;
 			// uri
-			if (s.startsWith("http")) result = m.createResource(s);
+			if (s.startsWith("http"))
+				result = m.createResource(s);
 			// plain string
-			else result = m.createTypedLiteral(s);
-		}
-		else if (o instanceof Date) {
+			else
+				result = m.createTypedLiteral(s);
+		} else if (o instanceof Date) {
 			Date d = (Date) o;
 			Calendar c = GregorianCalendar.getInstance();
 			c.setTime(d);
@@ -128,8 +131,7 @@ public class Utility {
 	public static Model toRDF(RDFObject o, Model m) {
 		if (m == null) {
 			return null;
-		}
-		else if (o == null) {
+		} else if (o == null) {
 			return m;
 		}
 		String propertyNS, propertyName;
@@ -148,12 +150,11 @@ public class Utility {
 					p = m.createProperty(propertyNS, propertyName);
 					value = field.get(o);
 
-					if (value != null) m.add(r, p, createRDFNode(value, m));
-				}
-				catch (IllegalArgumentException e) {
+					if (value != null)
+						m.add(r, p, createRDFNode(value, m));
+				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
-				}
-				catch (IllegalAccessException e) {
+				} catch (IllegalAccessException e) {
 					e.printStackTrace();
 				}
 			}
@@ -202,8 +203,7 @@ public class Utility {
 			reader.close();
 			logger.info(String.format("Get statuscode response:(%s) %s", code, result));
 			return code;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.SC_INTERNAL_SERVER_ERROR;
 		}
@@ -213,18 +213,18 @@ public class Utility {
 		// encode the real name
 		try {
 			realname = URLEncoder.encode(realname, "UTF-8");
-		}
-		catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return false;
 		}
 
-		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.adminRegisterUserURL, user, realname, password);
+		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.adminRegisterUserURL, user, realname,
+				password);
 		int statusCode = getStatusCode(url);
 		if (statusCode == 200) {
 			return true;
-		}
-		else return false;
+		} else
+			return false;
 	}
 
 	/**
@@ -241,7 +241,8 @@ public class Utility {
 			}
 		}
 		// get new cookie
-		String url = String.format("%s?user=%s&password=%s", Config.loginURL, Config.adminUsername, Config.adminPassword);
+		String url = String.format("%s?user=%s&password=%s", Config.loginURL, Config.adminUsername,
+				Config.adminPassword);
 		int code = -1;
 		try {
 			URL u = new URL(url);
@@ -258,13 +259,12 @@ public class Utility {
 				cookie = cookie.substring(0, cookie.indexOf(";")).trim();
 				cookieDate = new Date();
 				return true;
-			}
-			else {
-				logger.warn("Could not log in. responsecode: " + code + " Cookie: " + cookie + "\nHeaders: " + con.getHeaderFields());
+			} else {
+				logger.warn("Could not log in. responsecode: " + code + " Cookie: " + cookie + "\nHeaders: "
+						+ con.getHeaderFields());
 				return false;
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.warn("Could not log in: " + e.toString());
 			return false;
 		}
@@ -303,21 +303,19 @@ public class Utility {
 			}
 
 			return result;
-		}
-		catch (MalformedURLException e) {
+		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			return null;
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
 	/**
-	 * Performs a HTTP request using the specified method. The data is written to
-	 * the outputstream or, if data is null, the provided parameters in key/value
-	 * pairs.
+	 * Performs a HTTP request using the specified method. The data is written
+	 * to the outputstream or, if data is null, the provided parameters in
+	 * key/value pairs.
 	 * 
 	 * @param method
 	 * @param url
@@ -326,7 +324,8 @@ public class Utility {
 	 * @param data
 	 * @return
 	 */
-	public static WebResponseData doRequest(HTTPMethod method, URL url, String contentType, String accepts, Map<String, String[]> params, String outputData) {
+	public static WebResponseData doRequest(HTTPMethod method, URL url, String contentType, String accepts,
+			Map<String, String[]> params, String outputData) {
 		WebResponseData data = new WebResponseData();
 		try {
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -353,8 +352,10 @@ public class Utility {
 
 				// write either the data or the parameters
 				DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-				if (outputData == null) wr.writeBytes(builder.toString());
-				else wr.writeBytes(outputData);
+				if (outputData == null)
+					wr.writeBytes(builder.toString());
+				else
+					wr.writeBytes(outputData);
 				wr.flush();
 				wr.close();
 			}
@@ -370,8 +371,7 @@ public class Utility {
 			}
 			reader.close();
 			data.data = result.toString();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			data.statusCode = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 			data.data = ex.toString();
 		}
@@ -385,15 +385,15 @@ public class Utility {
 	@SuppressWarnings("unchecked")
 	public static <T> T getParsedJSONFromURL(String url) {
 		String content = getHTMLContent(url);
-		if (content == null) return null;
+		if (content == null)
+			return null;
 		else {
 			Type typeOfT = new TypeToken<T>() {
 			}.getType();
 			try {
 				Object o = gson.fromJson(content, typeOfT);
 				return (T) o;
-			}
-			catch (JsonSyntaxException e) {
+			} catch (JsonSyntaxException e) {
 				// e.printStackTrace();
 				return null;
 			}
@@ -453,8 +453,7 @@ public class Utility {
 			reader.close();
 			responseCode = con.getResponseCode();
 			logger.info(String.format("Add data response: (%s) %s", responseCode, result));
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			logger.warn("Upload data failed: " + e.toString());
 			return false;
@@ -480,17 +479,14 @@ public class Utility {
 			InputStream stream = con.getInputStream();
 			try {
 				rs = ResultSetFactory.fromXML(stream);
-			}
-			catch (ResultSetException e) {
+			} catch (ResultSetException e) {
 				rs = null;
 			}
 			return rs;
-		}
-		catch (MalformedURLException e) {
+		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			return null;
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -498,9 +494,9 @@ public class Utility {
 	}
 
 	/**
-	 * Converts the values of first found variable from the executed sparql into a
-	 * list of type T. Caller should make sure that resulting RDF can be converted
-	 * to T
+	 * Converts the values of first found variable from the executed sparql into
+	 * a list of type T. Caller should make sure that resulting RDF can be
+	 * converted to T
 	 * 
 	 * @param rs
 	 * @return
@@ -517,14 +513,15 @@ public class Utility {
 			qs = rs.next();
 			node = qs.get(varName);
 			value = node.visitWith(getRDFVisitor());
-			if (value != null) ret.add((T) value);
+			if (value != null)
+				ret.add((T) value);
 		}
 		return ret;
 	}
 
 	/**
-	 * Assumes a ResultSet with at least the variables 'subject', 'predicate' and
-	 * 'object'
+	 * Assumes a ResultSet with at least the variables 'subject', 'predicate'
+	 * and 'object'
 	 * 
 	 * @param rs
 	 * @return Model loaded with triples from ResultSet
@@ -546,11 +543,13 @@ public class Utility {
 		List<String> uris = new ArrayList<String>();
 		uris.add(uri);
 		List<T> objs = getObjectsByURI(uris, clazz, rdfType);
-		if (objs.size() > 0) return objs.get(0);
-		else return null;
+		if (objs.size() > 0)
+			return objs.get(0);
+		else
+			return null;
 	}
 
-	public static List<CollectionItem> getCollectionItems(List<String> uris){
+	public static List<CollectionItem> getCollectionItems(List<String> uris) {
 		StringBuilder sb = new StringBuilder();
 		String lt = "<";
 		String gt = ">";
@@ -577,7 +576,7 @@ public class Utility {
 		+"}";
 		
 		// 	@formatter:on
-		
+
 		ResultSet rs = getRDFFromEndpoint(sparql);
 		List<CollectionItem> items = new ArrayList<CollectionItem>();
 		QuerySolution qs = null;
@@ -589,25 +588,29 @@ public class Utility {
 			qs = rs.next();
 			id = qs.getResource("subject").getURI();
 			item = new CollectionItem(id);
-			//skip if we already have the resource
-			if(items.contains(item)){
-				continue;
+			// remove the existing item (update the content)
+			if (items.contains(item)) {
+				items.remove(item);
 			}
 			title = qs.getLiteral("title");
-			if(title!=null)item.title = title.getString();
+			if (title != null)
+				item.title = title.getString();
 			description = qs.getLiteral("description");
-			if(description!=null) item.description = description.getString();
+			if (description != null)
+				item.description = description.getString();
 			creator = qs.getLiteral("creator");
-			if(creator!=null) item.maker = creator.getString();
+			if (creator != null)
+				item.maker = creator.getString();
 			image = qs.getResource("image");
-			if(image!=null)item.imageURL = image.getURI();
+			if (image != null)
+				item.imageURL = image.getURI();
 			items.add(item);
 		}
-		
+
 		return items;
-		
+
 	}
-	
+
 	public static <T extends RDFObject> List<T> getObjectsByURI(List<String> uris, Class<T> clazz, String rdfType) {
 		// generate sparql
 		StringBuilder sb = new StringBuilder();
@@ -619,9 +622,9 @@ public class Utility {
 			sb.append(gt);
 			sb.append(" ");
 		}
-		String sparql = String.format(
-				"%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . ?subject rdf:type <%s> . VALUES ?subject { %s }}",
-				Config.sparqlPrefixes, rdfType, sb.toString());
+		String sparql = String
+				.format("%s SELECT ?subject ?predicate ?object WHERE { ?subject ?predicate ?object . ?subject rdf:type <%s> . VALUES ?subject { %s }}",
+						Config.sparqlPrefixes, rdfType, sb.toString());
 		List<T> cis = Utility.getObjects(sparql, clazz);
 		return cis;
 	}
@@ -629,8 +632,10 @@ public class Utility {
 	/**
 	 * Returns all Object of Type T based on a sparql query
 	 * 
-	 * @param sparql with variables 'subject' 'predicate' and 'object'
-	 * @param clazz Class of the resulting objects
+	 * @param sparql
+	 *            with variables 'subject' 'predicate' and 'object'
+	 * @param clazz
+	 *            Class of the resulting objects
 	 * @return List of Objects of Type clazz or null if Objects of type T could
 	 *         not created TODO: Set the value of an field based on the
 	 *         namespace+name instead of only name
@@ -639,7 +644,8 @@ public class Utility {
 		ResultSet rs = getRDFFromEndpoint(sparql);
 		List<T> objs = new ArrayList<T>();
 
-		if (rs == null) return objs;
+		if (rs == null)
+			return objs;
 		QuerySolution qs = null;
 
 		String uri, fieldName;
@@ -653,12 +659,10 @@ public class Utility {
 			// check if already exists
 			try {
 				obj = clazz.newInstance();
-			}
-			catch (InstantiationException e1) {
+			} catch (InstantiationException e1) {
 				e1.printStackTrace();
 				return null;
-			}
-			catch (IllegalAccessException e1) {
+			} catch (IllegalAccessException e1) {
 				e1.printStackTrace();
 				return null;
 			}
@@ -666,8 +670,7 @@ public class Utility {
 			int index = objs.lastIndexOf(obj);
 			if (index >= 0) {
 				obj = objs.get(index);
-			}
-			else {
+			} else {
 				objs.add(obj);
 			}
 			fieldName = qs.get("predicate").asNode().getLocalName();
@@ -676,13 +679,14 @@ public class Utility {
 			// add value to field of object if exists
 			try {
 				setFieldValue(obj, fieldName, fieldValue);
-			}
-			catch (Exception e) {
-				if (!unknownFields.contains(fieldName)) unknownFields.add(fieldName);
+			} catch (Exception e) {
+				if (!unknownFields.contains(fieldName))
+					unknownFields.add(fieldName);
 			}
 		}
 		// notify of fields that do not exist
-		logger.info("Class " + clazz.getName() + " does not have the following fields (accessable): \n" + unknownFields.toString());
+		logger.info("Class " + clazz.getName() + " does not have the following fields (accessable): \n"
+				+ unknownFields.toString());
 		return objs;
 	}
 
@@ -691,13 +695,11 @@ public class Utility {
 		if (requiredType.equals(Date.class)) {
 			if (value instanceof XSDDateTime) {
 				return ((XSDDateTime) value).asCalendar().getTime();
-			}
-			else if (value instanceof String) {
+			} else if (value instanceof String) {
 				DateFormat df = DateFormat.getDateTimeInstance();
 				try {
 					return df.parse((String) value);
-				}
-				catch (ParseException e) {
+				} catch (ParseException e) {
 					e.printStackTrace();
 					return null;
 				}
@@ -711,18 +713,18 @@ public class Utility {
 	 * only one variable.
 	 * 
 	 * @param sparql
-	 * @return List of uris string or null if more that 1 bound variable was found
+	 * @return List of uris string or null if more that 1 bound variable was
+	 *         found
 	 */
 	public static List<String> getURIs(String sparql) {
 		ResultSet rs = getRDFFromEndpoint(sparql);
 		List<String> uris = new ArrayList<String>();
-		if(rs==null){
+		if (rs == null) {
 			return uris;
 		}
 		if (rs.getResultVars() == null || rs.getResultVars().size() != 1) {
 			return null;
-		}
-		else {
+		} else {
 			String var = rs.getResultVars().get(0);
 			QuerySolution qs = null;
 			RDFNode node;
@@ -755,8 +757,7 @@ public class Utility {
 		List<Literal> ls = new ArrayList<Literal>();
 		if (rs.getResultVars() == null || rs.getResultVars().size() != 1) {
 			return null;
-		}
-		else {
+		} else {
 			String var = rs.getResultVars().get(0);
 			QuerySolution qs = null;
 			RDFNode node;
@@ -768,8 +769,7 @@ public class Utility {
 					// if it is literal
 					if (node.isLiteral()) {
 						ls.add(node.asLiteral());
-					}
-					else {
+					} else {
 						return null;
 					}
 
@@ -780,8 +780,8 @@ public class Utility {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> void setFieldValue(T obj, String fieldName, Object fieldValue) throws NoSuchFieldException, IllegalArgumentException,
-			IllegalAccessException {
+	private static <T> void setFieldValue(T obj, String fieldName, Object fieldValue) throws NoSuchFieldException,
+			IllegalArgumentException, IllegalAccessException {
 		Field field = obj.getClass().getDeclaredField(fieldName);
 		Type fieldType = field.getType();
 		// special scenario for lists
@@ -789,8 +789,7 @@ public class Utility {
 			// get the current value of the field (the list)
 			Object curValue = field.get(obj);
 			((List<Object>) curValue).add(fieldValue);
-		}
-		else {
+		} else {
 			Object value = convertValue(fieldValue, fieldType);
 			field.set(obj, value);
 		}

@@ -52,8 +52,8 @@
 				</div>
 			</nav>
 
-			<g:Button ui:field="btnDone" styleName="done button button-primary">
-				<ui:msg description="Done">Done</ui:msg>
+			<g:Button ui:field="btnDone" styleName="done btn btn-danger btn-lg">
+				<ui:msg description="Done">Done annotating</ui:msg>
 			</g:Button>
 		</g:HTMLPanel>
 		
@@ -170,6 +170,6 @@
 		</div>
 		
 		<!-- Loading image fig -->
-		<g:Image url="./images/ajax-loader.gif" styleName="loading"></g:Image>
+		<!-- <g:Image url="./images/ajax-loader.gif" styleName="loading"></g:Image>-->
 	</g:HTMLPanel>
 </ui:UiBinder>

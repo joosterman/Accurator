@@ -1,6 +1,7 @@
 package org.sealinc.accurator.client;
 
 import org.sealinc.accurator.client.Accurator.State;
+
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestCallback;
@@ -17,9 +18,41 @@ public class UserManagement {
 	private Accurator acc;
 	Timer renewLoginTimer = null;
 	private Storage localStorage;
+	protected static String demoUP = "jasper";
 
 	protected UserManagement(Accurator acc) {
 		this.acc = acc;
+	}
+
+	private void loginSuccessful_demo() {
+		// store the credentials
+		Utility.setUser(demoUP, demoUP);
+		// normal login procedure: first login
+		if (renewLoginTimer == null) {
+			// clear the datastore
+			Utility.clearLocalStorage();
+			// re-add the username/password
+			Utility.setUser(demoUP, demoUP);
+
+			acc.loadExpertise();
+
+			// renew login every 4 minutes
+			renewLoginTimer = new Timer() {
+				@Override
+				public void run() {
+					renewLogin();
+				}
+			};
+			renewLoginTimer.scheduleRepeating(1000 * 60 * 4);
+			// User is logged in, show the menu button
+			DOM.getElementById("menuButton").removeClassName("hide");
+
+			// check whether this is the first visit ever for
+			// this user
+			determineLandingPage_demo();
+		}
+		// needs to be refreshed every login
+		acc.getAnnotateScreen().setLanguage("en");
 	}
 
 	private void loginSuccessful(final String username, final String password) {
@@ -28,8 +61,8 @@ public class UserManagement {
 		// get the current (URL) locale
 		final String locale = Window.Location.getParameter(LocaleInfo.getLocaleQueryParam());
 		// get the users language preference
-		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null, Utility.getQualifiedUsername(),
-				new RequestCallback() {
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "languagePreference", null,
+				Utility.getQualifiedUsername(), new RequestCallback() {
 					@Override
 					public void onResponseReceived(Request request, Response response) {
 						String json = response.getText();
@@ -43,12 +76,14 @@ public class UserManagement {
 						if (language != null && !language.isEmpty()) {
 							// check if that is the same as the current language
 							if (!language.equals(locale)) {
-								// change to the users preference (page is reloaded)
+								// change to the users preference (page is
+								// reloaded)
 								acc.changeLanguage(language);
 								return;
 							}
 						}
-						// either the user does not have a preference or the preference
+						// either the user does not have a preference or the
+						// preference
 						// matches the current locale
 
 						// clear login status message
@@ -62,7 +97,10 @@ public class UserManagement {
 							Utility.setUser(username, password);
 
 							acc.loadExpertise();
-							acc.loadRecommendations();
+							// TODO: For demo purposes recommendation loading
+							// disabled
+							// loadRecommendations();
+							// acc.loadRecommendations();
 							acc.loadFirstPrintForAnnotation();
 
 							// renew login every 4 minutes
@@ -76,7 +114,8 @@ public class UserManagement {
 							// User is logged in, show the menu button
 							DOM.getElementById("menuButton").removeClassName("hide");
 
-							// check whether this is the first visit ever for this user
+							// check whether this is the first visit ever for
+							// this user
 							determineLandingPage();
 						}
 						// needs to be refreshed every login
@@ -92,27 +131,34 @@ public class UserManagement {
 
 	}
 
-	protected void determineLandingPage() {
-		// if this is the first time the user visits accurator show the about box
-		// and the profile page
-		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "firstVisit", null, "Accurator", new RequestCallback() {
-			@Override
-			public void onResponseReceived(Request request, Response response) {
-				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
-				if (entries.length() == 0) {
-					// this is the first visit
-					History.newItem(State.Profile.toString());
-					acc.openAboutDialog();
-				}
-				else {
-					acc.loadCurrentHistory();
-				}
-				Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "firstVisit", null, "Accurator", Boolean.FALSE.toString(), null);
-			}
+	protected void determineLandingPage_demo() {
+		History.newItem(State.Recommendation.toString());
+	}
 
-			@Override
-			public void onError(Request request, Throwable exception) {}
-		});
+	protected void determineLandingPage() {
+		// if this is the first time the user visits accurator show the about
+		// box
+		// and the profile page
+		Utility.getUserProfileEntry(Utility.getQualifiedUsername(), "firstVisit", null, "Accurator",
+				new RequestCallback() {
+					@Override
+					public void onResponseReceived(Request request, Response response) {
+						JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
+						if (entries.length() == 0) {
+							// this is the first visit
+							History.newItem(State.Profile.toString());
+							acc.openAboutDialog();
+						} else {
+							acc.loadCurrentHistory();
+						}
+						Utility.storeUserProfileEntry(Utility.getQualifiedUsername(), "firstVisit", null, "Accurator",
+								Boolean.FALSE.toString(), null);
+					}
+
+					@Override
+					public void onError(Request request, Throwable exception) {
+					}
+				});
 	}
 
 	private void loginFailed() {
@@ -122,7 +168,8 @@ public class UserManagement {
 	}
 
 	private void resetLoginTimer() {
-		if (renewLoginTimer != null) renewLoginTimer.cancel();
+		if (renewLoginTimer != null)
+			renewLoginTimer.cancel();
 	}
 
 	protected native void logout()/*-{
@@ -149,41 +196,69 @@ public class UserManagement {
 		String pass = Utility.getStoredPassword();
 		if (user != null && pass != null) {
 			login(user, pass);
-		}
-		else {
+		} else {
 			// TODO Handle login not available in local storage
 		}
 	}
+
+	public native void login_demo()/*-{
+		var management = this;
+		var loginURL = @org.sealinc.accurator.shared.Config::loginURL;
+		var demoUP = @org.sealinc.accurator.client.UserManagement::demoUP;
+		$wnd.jQuery
+				.ajax({
+					type : 'GET',
+					url : loginURL,
+					dataType : 'jsonp',
+					data : {
+						"user" : demoUP,
+						"password" : demoUP
+					},
+					timeout : 5000,
+					error : function(xhr, ajaxOptions, thrownError) {
+						if (xhr.status === 200) {
+							management.@org.sealinc.accurator.client.UserManagement::loginSuccessful_demo()();
+						} else {
+							//show failed!
+							management.@org.sealinc.accurator.client.UserManagement::loginFailed()();
+						}
+					}
+				});
+	}-*/;
 
 	protected native void login(String username, String password)/*-{
 		var management = this;
 		var loginURL = @org.sealinc.accurator.shared.Config::loginURL;
 		$wnd.jQuery
-			.ajax({
-				type : 'GET',
-				url : loginURL,
-				dataType : 'jsonp',
-				data : {
-					"user" : username,
-					"password" : password
-				},
-				timeout : 5000,
-				error : function(xhr, ajaxOptions, thrownError) {
-					if (xhr.status === 200) {
-						try {
-							$wnd.jQuery("#dialog-login").dialog("close");
-						} catch (err) {
+				.ajax({
+					type : 'GET',
+					url : loginURL,
+					dataType : 'jsonp',
+					data : {
+						"user" : username,
+						"password" : password
+					},
+					timeout : 5000,
+					error : function(xhr, ajaxOptions, thrownError) {
+						if (xhr.status === 200) {
+							try {
+								$wnd.jQuery("#dialog-login").dialog("close");
+							} catch (err) {
+							}
+							//close the login box
+							$wnd.jQuery('#modalLogin').modal('hide')
+							management.@org.sealinc.accurator.client.UserManagement::loginSuccessful(Ljava/lang/String;Ljava/lang/String;)(username,password);
+						} else {
+							//show failed!
+							management.@org.sealinc.accurator.client.UserManagement::loginFailed()();
 						}
-						//close the login box
-						$wnd.jQuery('#modalLogin').modal('hide')
-						management.@org.sealinc.accurator.client.UserManagement::loginSuccessful(Ljava/lang/String;Ljava/lang/String;)(username,password);
-					} else {
-						//show failed!
-						management.@org.sealinc.accurator.client.UserManagement::loginFailed()();
 					}
-				}
-			});
+				});
 	}-*/;
+
+	private void renewLogin_demo() {
+		login_demo();
+	}
 
 	private void renewLogin() {
 		localStorage = Storage.getLocalStorageIfSupported();
@@ -205,15 +280,15 @@ public class UserManagement {
 					setRegistrationFailed(false);
 					closeRegister();
 					login(user, password);
-				}
-				else {
+				} else {
 					setRegistrationFailed(true);
 				}
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-				acc.lblRegisterMessage.setText("Account kon niet aangemaakt worden. Probeer nogmaals of neem contact op met de beheerder.");
+				acc.lblRegisterMessage
+						.setText("Account kon niet aangemaakt worden. Probeer nogmaals of neem contact op met de beheerder.");
 			}
 		});
 	}
@@ -223,7 +298,9 @@ public class UserManagement {
 	}-*/;
 
 	private void setRegistrationFailed(boolean failed) {
-		if (failed) acc.lblRegisterMessage.setText(Utility.constants.registrationFailed());
-		else acc.lblRegisterMessage.setText("");
+		if (failed)
+			acc.lblRegisterMessage.setText(Utility.constants.registrationFailed());
+		else
+			acc.lblRegisterMessage.setText("");
 	}
 }

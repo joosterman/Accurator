@@ -13,24 +13,92 @@
 			<!-- Slogan, Register and Login buttons -->
 			<div class="container introText ">
 				<div class="row">
-					<div class="col-md-8 col-md-offset-2">
-						<h2>
-							<ui:msg description="Slogan">Accurate Art Annotations</ui:msg>
-							<small>
-								<ui:msg description="SubSlogan">Help us add information to the
-									artworks of the Rijksmuseum Amsterdam.
-								</ui:msg>
-								<g:InlineHyperlink targetHistoryToken="Profile">
-									<ui:msg description="linkTryIt">Give it a try!</ui:msg>
-								</g:InlineHyperlink>
-							</small>
-						</h2>
-						<button class="button-overlay" data-toggle="modal"
-							data-target="#modalRegister">Sign up</button>
-						<button class="btn btn-link introLink" data-toggle="modal"
-							data-target="#modalLogin">or Sign in</button>
+					<div id="carousel-components" class="carousel slide" data-ride="carousel">
+						<!-- Indicators -->
+						<ol class="carousel-indicators">
+							<li data-target="#carousel-components" data-slide-to="0"
+								class="active"></li>
+							<li data-target="#carousel-components" data-slide-to="1"></li>
+							<li data-target="#carousel-components" data-slide-to="2"></li>
+							<li data-target="#carousel-components" data-slide-to="3"></li>
+							<li data-target="#carousel-components" data-slide-to="4"></li>
+						</ol>
+
+						<!-- Wrapper for slides -->
+						<div class="carousel-inner">
+							<div class="item active">
+								<img src="../images/accurator_bird.png" alt="Accurator" />
+								<div class="carousel-caption">
+									<h1>Semantic annotation</h1>
+									<p>Share your knowledge and annotate artworks from the
+										Rijksmuseum</p>
+									<p>
+										<g:Anchor ui:field="btnLogin" styleName="btn btn-lg btn-danger">Start
+											annotating!</g:Anchor>
+									</p>
+								</div>
+							</div>
+							<div class="item">
+								<img src="../images/arttagger.png" alt="Game" />
+								<div class="carousel-caption">
+									<h1>Gamesourcing Expert Annotations</h1>
+									<p>
+										<a class="btn btn-lg btn-danger" href="http://sealincmedia.project.cwi.nl/arttagger/"
+											target="_blank" role="button">View DEMO</a>
+									</p>
+								</div>
+							</div>
+							<div class="item">
+								<img src="../images/trust.jpg" alt="Trust Computation" />
+								<div class="carousel-caption">
+									<h1>Trust Computation</h1>
+									<p>We develop algorithms to determine trustworthiness of the
+										annotator and quality of the annotations</p>
+								</div>
+							</div>
+							<div class="item">
+								<img src="../images/expertise_finding.png" alt="Expertise Finding" />
+								<div class="carousel-caption">
+									<h1>Expertise Finding</h1>
+									<p>How can we identify knowledgable contributors in the crowd?
+										How can they be engaged?</p>
+									<p>
+										<a class="btn btn-lg btn-danger" href="#" role="button">View DEMO</a>
+									</p>
+								</div>
+							</div>
+							<div class="item">
+								<img src="../images/cluster_interface.png" alt="Cluster Search" />
+								<div class="carousel-caption">
+									<h1>Cluster Search</h1>
+									<p>Clustering cultural heritage objects using Linked Data</p>
+									<p>
+										<a class="btn btn-lg btn-danger" href="http://sealinc.ops.few.vu.nl/clustersearch/"
+											target="_blank" role="button">View DEMO</a>
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<!-- Controls -->
+						<a class="left carousel-control" href="#carousel-components"
+							role="button" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left"></span>
+						</a>
+						<a class="right carousel-control" href="#carousel-components"
+							role="button" data-slide="next">
+							<span class="glyphicon glyphicon-chevron-right"></span>
+						</a>
 					</div>
 				</div>
+				<!-- <div class="row"> <div class="col-md-8 col-md-offset-2"> <h2> <ui:msg 
+					description="Slogan">Accurate Art Annotations</ui:msg> <small> <ui:msg description="SubSlogan">Help 
+					us add information to the artworks of the Rijksmuseum Amsterdam. </ui:msg> 
+					<g:InlineHyperlink targetHistoryToken="Profile"> <ui:msg description="linkTryIt">Give 
+					it a try!</ui:msg> </g:InlineHyperlink> </small> </h2> <button class="button-overlay" 
+					data-toggle="modal" data-target="#modalRegister">Sign up</button> <button 
+					class="btn btn-link introLink" data-toggle="modal" data-target="#modalLogin">or 
+					Sign in</button> </div> </div> -->
 			</div>
 			<!-- Learn more (link to bottom) -->
 			<div id="learn-more">
@@ -49,7 +117,7 @@
 		<!-- Bottom Half Intro Page -->
 		<div class="bottom container">
 			<div class="row">
-				<div class="row col-md-4 col-md-offset-2">
+				<div class="col-md-4 col-md-offset-2">
 					<h3>About Accurator</h3>
 					<p align="justify"> Accurator is platform that enables Web users to help
 						museum professionals with describing museum collection items by
@@ -62,80 +130,91 @@
 						facilitate searching the museum's
 						collection.</p>
 				</div>
-				<div class="row">
-<object width="200" height="200"><param name="movie" value="//www.youtube.com/v/OJAJbxzOV7o?version=3&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="//www.youtube.com/v/OJAJbxzOV7o?version=3&amp;hl=en_US" type="application/x-shockwave-flash" width="380" height="190" allowscriptaccess="always" allowfullscreen="true"></embed></object>				</div>
-				<div class="row">
-					<div class="row col-md-4 col-md-offset-2">
-					<a href="http://www.commit-nl.nl/projects/socially-enriched-access-to-linked-cultural-media">	<img src="/images/commit_sealinc.jpg" alt="Logo of SEALINCMedia project"
-							class="logo">
-							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
-						</img> </a>
-					</div>
-					<div class="row col-md-4">
-						<h3>SEALINCMedia</h3>
-						<p align="justify"> Accurator is developed as part of the SEALINCMedia
-							project. The collaborating institutions are
-							Vrije University (VU)
-							Amsterdam, Technical University Delft (TuD),
-							Centrum Wiskunde
-							&amp; Informatica (CWI), Rijksmuseum Amsterdam,
-							Naturalis and the
-							National Library of The Netherlands.
-							SEALINCMedia is part of the
-							COMMIT/ project which brings together
-							academic research and
-							(non-)profit organizations to solve
-							challenges in ICT.
-
-						</p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="row col-md-4 col-md-offset-2">
-						<h3>Accurator for research</h3>
-						<p align="justify">
-							The research challenges of the project are: to identify
-							the niche of
-							relevant experts and to motivate them to contribute
-							to the
-							annotation of artworks; developing the personalization
-							mechanisms
-							to make sure that the experts are shown items that
-							correspond
-							to their expertise; evaluating the quality of the
-							annotations and
-							annotators using trust algorithms and to present
-							all these
-							aspects
-							in an appropriate interface. To test our
-							hypotheses, we
-							continuously develop and evaluate Accurator.
-						</p>
-					</div>
-					<div class="row col-md-4">
-						 <img src="/images/logo_partners.jpg" alt="Logo of SEALINCMedia project"
-							class="logo"> 
-							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
-						</img>
-					</div>
+				<div class="col-md-4">
+					<object width="200" height="200">
+						<param name="movie"
+							value="//www.youtube.com/v/OJAJbxzOV7o?version=3&amp;hl=en_US"></param>
+						<param name="allowFullScreen" value="true"></param>
+						<param name="allowscriptaccess" value="always"></param>
+						<embed src="//www.youtube.com/v/OJAJbxzOV7o?version=3&amp;hl=en_US"
+							type="application/x-shockwave-flash" width="380" height="190"
+							allowscriptaccess="always" allowfullscreen="true"></embed>
+					</object>
 				</div>
 			</div>
-			<!-- <div class="row"> <div class="row col-md-4 col-md-offset-2"> <img 
-				src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="logo"> <ui:attribute 
-				name="alt" description="Alt text COMMIT logo" /> </img> </div> <div class="row 
-				col-md-4"> <h3>COMMIT/</h3> SEALINCMedia is part of the COMMIT/ project which 
-				brings together academic research and (non-)profit organizations to solve 
-				challenges in ICT. </div> </div> -->
+			<div class="row">
+				<div class="col-md-4 col-md-offset-2">
+					<a
+						href="http://www.commit-nl.nl/projects/socially-enriched-access-to-linked-cultural-media">
+						<img src="/images/commit_sealinc.jpg" alt="Logo of SEALINCMedia project"
+							class="logo">
+							<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+						</img>
+					</a>
+				</div>
+				<div class="col-md-4">
+					<h3>SEALINCMedia</h3>
+					<p align="justify"> Accurator is developed as part of the SEALINCMedia
+						project. The collaborating institutions are
+						Vrije University (VU)
+						Amsterdam, Technical University Delft (TuD),
+						Centrum Wiskunde
+						&amp;
+						Informatica (CWI), Rijksmuseum Amsterdam,
+						Naturalis and the
+						National Library of The Netherlands.
+						SEALINCMedia is part of the
+						COMMIT/ project which brings together
+						academic research and
+						(non-)profit organizations to solve
+						challenges in ICT.
+
+					</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-2">
+					<h3>Accurator for research</h3>
+					<p align="justify">
+						The research challenges of the project are: to identify
+						the niche of
+						relevant experts and to motivate them to contribute
+						to
+						the
+						annotation of artworks; developing the personalization
+						mechanisms
+						to make sure that the experts are shown items that
+						correspond
+						to their expertise; evaluating the quality of the
+						annotations and
+						annotators using trust algorithms and to present
+						all these
+						aspects
+						in an appropriate interface. To test our
+						hypotheses, we
+						continuously develop and evaluate Accurator.
+					</p>
+				</div>
+				<div class="col-md-4">
+					<img src="/images/logo_partners.jpg" alt="Logo of SEALINCMedia project"
+						class="logo">
+						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
+					</img>
+				</div>
+			</div>
 		</div>
+		<!-- <div class="row"> <div class="row col-md-4 col-md-offset-2"> <img 
+			src="/images/COMMIT.png" alt="Logo of the COMMIT project" class="logo"> <ui:attribute 
+			name="alt" description="Alt text COMMIT logo" /> </img> </div> <div class="row 
+			col-md-4"> <h3>COMMIT/</h3> SEALINCMedia is part of the COMMIT/ project which 
+			brings together academic research and (non-)profit organizations to solve 
+			challenges in ICT. </div> </div> -->
 
 		<!-- Intro footer -->
 		<div class="introFooter">
-			<a href="https://www.rijksmuseum.nl/">
-				<img src="/images/RMA.png" alt="Logo of the Rijksmuseum Amsterdam"
-					class="footerLogo" id="footerLogoRijksmuseum">
-					<ui:attribute name="alt" description="Alt text RMA logo" />
-				</img>
-			</a>
+			<!-- <a href="https://www.rijksmuseum.nl/"> <img src="/images/RMA.png" 
+				alt="Logo of the Rijksmuseum Amsterdam" class="footerLogo" id="footerLogoRijksmuseum"> 
+				<ui:attribute name="alt" description="Alt text RMA logo" /> </img> </a> -->
 			<a href="http://commit-nl.nl/">
 				<img src="/images/COMMIT.png" alt="Logo of the COMMIT project"
 					class="footerLogo" id="footerLogoCommit">
