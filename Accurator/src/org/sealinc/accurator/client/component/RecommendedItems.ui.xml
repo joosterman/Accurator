@@ -6,7 +6,7 @@
 	<g:HTMLPanel styleName="recommendedContent">
 		<div class="recommendation">
 			<h2>
-				Recommended prints
+				Select a recommended print to start
 			</h2>
 			<div class="row recRow">
 				<div class="col-md-3">

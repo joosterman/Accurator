@@ -19,13 +19,14 @@ public class Config {
 			p.load(stream);
 			adminUsername = p.getProperty("adminUsername");
 			adminPassword = p.getProperty("adminPassword");
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static final String baseURL = "http://sealinc.ops.few.vu.nl/accurator/";
+	// public static final String baseURL =
+	// "http://sealinc.ops.few.vu.nl/accurator/";
+	public static final String baseURL = "http://localhost:3020/";
 
 	public static final String sparqlEndpoint = baseURL + "sparql/";
 	public static final String annotationComponentURL = baseURL + "annotate";
@@ -48,13 +49,16 @@ public class Config {
 			+ "assign?strategy=literal_matching&predicate=http://purl.org/dc/terms/description&nritems=3";
 
 	public static final String sparqlPrefixes = "PREFIX rmaschema: <http://purl.org/collections/nl/rma/schema#> "
-			+ "PREFIX rmaterms: <http://purl.org/collections/nl/rma/terms/> " + "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
-			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " + "PREFIX acc: <http://purl.org/accurator/NS/> "
-			+ "PREFIX rev: <http://purl.org/stuff/rev#>"+" PREFIX edm: <http://www.europeana.eu/schemas/edm/>";
+			+ "PREFIX rmaterms: <http://purl.org/collections/nl/rma/terms/> "
+			+ "PREFIX oa: <http://www.w3.org/ns/openannotation/core/> "
+			+ "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
+			+ "PREFIX acc: <http://purl.org/accurator/NS/> " + "PREFIX rev: <http://purl.org/stuff/rev#>"
+			+ " PREFIX edm: <http://www.europeana.eu/schemas/edm/>";
 
 	public static String[] profileExpertises = new String[] { "castle", "flower" };
 	public static boolean profileShowExpertises = true;
 
-	private Config() {}
+	private Config() {
+	}
 
 }

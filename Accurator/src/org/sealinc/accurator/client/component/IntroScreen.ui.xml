@@ -31,10 +31,10 @@
 								<div class="carousel-caption">
 									<h1>Semantic annotation</h1>
 									<p>Share your knowledge and annotate artworks from the
-										Rijksmuseum</p>
+										Rijksmuseum.</p>
 									<p>
-										<g:Anchor ui:field="btnLogin" styleName="btn btn-lg btn-danger">Start
-											annotating!</g:Anchor>
+										<g:Anchor ui:field="btnLogin" target="_blank" styleName="btn btn-lg btn-danger">Start
+											ANNOTATING!</g:Anchor>
 									</p>
 								</div>
 							</div>
@@ -42,18 +42,19 @@
 								<img src="../images/arttagger.png" alt="Game" />
 								<div class="carousel-caption">
 									<h1>Gamesourcing Expert Annotations</h1>
+									<p>Playing will make you an expert if you’re not one already.</p>
 									<p>
 										<a class="btn btn-lg btn-danger" href="http://sealincmedia.project.cwi.nl/arttagger/"
-											target="_blank" role="button">View DEMO</a>
+											target="_blank" role="button">Play the GAME!</a>
 									</p>
 								</div>
 							</div>
 							<div class="item">
-								<img src="../images/trust.jpg" alt="Trust Computation" />
+								<img src="../images/trust.png" alt="Trust Computation" />
 								<div class="carousel-caption">
 									<h1>Trust Computation</h1>
 									<p>We develop algorithms to determine trustworthiness of the
-										annotator and quality of the annotations</p>
+										annotator and quality of the annotations.</p>
 								</div>
 							</div>
 							<div class="item">
@@ -63,7 +64,7 @@
 									<p>How can we identify knowledgable contributors in the crowd?
 										How can they be engaged?</p>
 									<p>
-										<a class="btn btn-lg btn-danger" href="#" role="button">View DEMO</a>
+										<a class="btn btn-lg btn-danger" target="_blank" href="http://crowdery.st.ewi.tudelft.nl:8080/ExpertiseFinding/" role="button">Find EXPERTS!</a>
 									</p>
 								</div>
 							</div>
@@ -71,10 +72,10 @@
 								<img src="../images/cluster_interface.png" alt="Cluster Search" />
 								<div class="carousel-caption">
 									<h1>Cluster Search</h1>
-									<p>Clustering cultural heritage objects using Linked Data</p>
+									<p>Clustering cultural heritage objects using Linked Data.</p>
 									<p>
 										<a class="btn btn-lg btn-danger" href="http://sealinc.ops.few.vu.nl/clustersearch/"
-											target="_blank" role="button">View DEMO</a>
+											target="_blank" role="button">Experience the SEARCH!</a>
 									</p>
 								</div>
 							</div>
@@ -196,9 +197,8 @@
 					</p>
 				</div>
 				<div class="col-md-4">
-					<img src="/images/logo_partners.jpg" alt="Logo of SEALINCMedia project"
+					<img src="/images/logo_partners.png" alt="Logos of the partners in the SEALINCMedia project"
 						class="logo">
-						<ui:attribute name="alt" description="Alt text SEALINCMedia logo" />
 					</img>
 				</div>
 			</div>
