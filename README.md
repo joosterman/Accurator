@@ -1,7 +1,8 @@
 Accurator
 =========
 
-Accurator is the demonstrator of the process of enrichment of Cultural Heritage data, specifically that of the Rijksmuseum. A live demo can be seen on http://rma-accurator.appspot.com.
+Accurator is the demonstrator of the process of enrichment of Cultural Heritage data, specifically that of the Rijksmuseum. This repository contaions the frontend code that is based on the Google App Engine. Other components are added using HTTP calls.
+A live demo can be found at http://accurator.nl/.
 
 Available datasets
 ====
