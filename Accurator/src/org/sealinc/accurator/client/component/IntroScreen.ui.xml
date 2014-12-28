@@ -22,8 +22,8 @@
 								</ui:msg>
 							</small>
 						</h2>
-						<button class="button-overlay" data-toggle="modal"
-							data-target="#modalRegister">Sign up</button>
+						<g:Button ui:field="btnRegister" stylePrimaryName="button-overlay"
+							text="Sign up"></g:Button>
 						<button class="btn btn-link introLink" data-toggle="modal"
 							data-target="#modalLogin">or Sign in</button>
 					</div>

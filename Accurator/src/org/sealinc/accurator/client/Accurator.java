@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import org.sealinc.accurator.client.component.AnnotateScreen;
 import org.sealinc.accurator.client.component.IntroScreen;
 import org.sealinc.accurator.client.component.ProfileScreen;
 import org.sealinc.accurator.client.component.RecommendedItems;
+import org.sealinc.accurator.client.component.RegisterScreen;
 import org.sealinc.accurator.shared.Config;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
@@ -44,7 +47,7 @@ public class Accurator implements EntryPoint {
 	interface MyUiBinder extends UiBinder<Widget, Accurator> {}
 
 	public enum State {
-		Annotate, Profile, Quality, Admin, Recommendation, Intro
+		Annotate, Profile, Quality, Admin, Recommendation, Intro, Register
 	};
 
 	@UiField
@@ -68,6 +71,7 @@ public class Accurator implements EntryPoint {
 	private AnnotateScreen annotateScreen;
 	private ProfileScreen profileScreen;
 	private IntroScreen introScreen;
+	private RegisterScreen registerScreen;
 	private RecommendedItems recommendationScreen;
 	private UserManagement management;
 	private boolean hasPredefinedAnnotationOrder = false;
@@ -91,6 +95,11 @@ public class Accurator implements EntryPoint {
 		return introScreen;
 	}
 
+	public RegisterScreen getRegisterScreen() {
+		if (registerScreen == null) registerScreen = new RegisterScreen(this);
+		return registerScreen;
+	}
+	
 	private RecommendedItems getRecommendationScreen() {
 		if (recommendationScreen == null) recommendationScreen = new RecommendedItems(this);
 		return recommendationScreen;
@@ -109,14 +118,15 @@ public class Accurator implements EntryPoint {
 		getManagement().login(user, pass);
 	}
 
-	@UiHandler("btnRegister")
-	void btnRegisterClick(ClickEvent e) {
-		// get the entered fields
-		String user = txtRegisterName.getText();
-		String pass = txtRegisterPassword.getText();
-		String fullName = txtRegisterFullName.getText();
-		getManagement().register(user, pass, fullName);
-	}
+//Not needed anymore because of register screen
+//	@UiHandler("btnRegister")
+//	void btnRegisterClick(ClickEvent e) {
+//		// get the entered fields
+//		String user = txtRegisterName.getText();
+//		String pass = txtRegisterPassword.getText();
+//		String fullName = txtRegisterFullName.getText();
+//		getManagement().register(user, pass, fullName);
+//	}
 
 	@UiHandler("lnkAbout")
 	void lnkAboutClick(ClickEvent e) {
@@ -140,7 +150,7 @@ public class Accurator implements EntryPoint {
 		getRecommendationScreen().loadNextRecommendations();
 		History.newItem(State.Recommendation.toString());
 	}
-
+	
 	public void onModuleLoad() {
 		RootPanel rootPanel = RootPanel.get();
 		Widget w = uiBinder.createAndBindUi(this);
@@ -412,6 +422,9 @@ public class Accurator implements EntryPoint {
 					break;
 				case Intro:
 					content.add(getIntroScreen());
+					break;
+				case Register:
+					content.add(getRegisterScreen());
 					break;
 				default:
 					content.add(getIntroScreen());

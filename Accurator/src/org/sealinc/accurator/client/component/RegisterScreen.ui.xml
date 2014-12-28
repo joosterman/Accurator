@@ -1,0 +1,13 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
+	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:HTMLPanel styleName="registerContent">
+		<div class="col-md-6">
+			<g:Hyperlink targetHistoryToken="Recommendation"
+				styleName="btn btn-danger btn-lg">
+				<ui:msg description="Start annotating!">Start annotating!</ui:msg>
+			</g:Hyperlink>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

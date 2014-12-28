@@ -147,6 +147,11 @@
 						<button type="button" class="button-overlay" data-dismiss="modal">Close</button>
 						<g:Button ui:field="btnRegister" stylePrimaryName="button-primary"
 							text="Register"></g:Button>
+						<!-- Just added to test -->
+						<g:Hyperlink targetHistoryToken="Register"
+							styleName="btn btn-danger btn-lg">
+						<ui:msg description="Start annotating!">Start annotating!</ui:msg>
+						</g:Hyperlink>
 					</div>
 				</div>
 			</div>
