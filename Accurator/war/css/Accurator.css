@@ -98,19 +98,6 @@ a:hover {
 	/* Preserve aspect ratio */ min-width: 100%;
 }
 
-.introContent .bottom {
-	min-height: 600px; margin-top: 50px;
-}
-
-.introContent .bottom .row {
-	height: 250px;
-}
-
-/* Logos */
-.logo {
-	height: 150px;
-}
-
 /* Button */
 .introLink {
 	color: #505050;
@@ -122,28 +109,6 @@ a:hover {
 
 .introLink:focus {
 	outline: none;
-}
-
-#learn-more {
-	position: absolute; bottom: 90px; left: 0; width: 100%;
-	text-align: center;
-}
-
-#learn-more-text {
-	margin: auto; /*background-color: rgba(255, 255, 255, 0.6);*/
-	cursor: pointer; padding: 5px; border-radius: 5px;
-}
-
-#learn-more :FIRST-CHILD {
-	width: 150px;
-}
-
-#learn-more .glyphicon {
-	height: 10px;
-}
-
-.imageButton:hover {
-	opacity: 0.4; cursor: pointer;
 }
 
 /* Annotation screen */
