@@ -17,7 +17,7 @@ public class IntroScreen extends Composite {
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 	private Accurator accurator;
 	private final String imagePathPrefix = "./images/background/";
-	private final String[] backgroundImages = { "1.jpg", "2.jpg", "3.jpg", "4.jpg" };
+	private final String[] backgroundImages = { "1.jpg" };
 
 	@UiField
 	InlineLabel lblLearnMore;
