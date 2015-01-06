@@ -83,8 +83,20 @@ a:hover {
 .backgroundImage {
 	position: relative; top: 0; left: 0;
 	min-width: 100%;
+	max-width: 100%;
 }
 
+.btn-transparent {
+	height: 40px; color: #fff; background-color: rgba(0, 0, 0, 0.33);	border: none;
+}
+
+.btn-transparent:focus {
+	background-color: #fff; text-decoration: none;
+}
+
+.btn-transparent:hover {
+	background-color: #fff; text-decoration: none;
+}
 /* Button */
 .introLink {
 	color: #505050;

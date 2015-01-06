@@ -4,12 +4,12 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-<link type="text/css" rel="stylesheet" href="https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web-fonts.css" />
+<!--<link type="text/css" rel="stylesheet" href="https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web-fonts.css" />
 <link type="text/css" rel="stylesheet" href="https://www.rijksmuseum.nl/WebStatic/rijksmuseum-web.css" />
+<link type="text/css" rel="stylesheet" href="css/Accurator_rmafix.css" />-->
+
 <link type="text/css" rel="stylesheet" media="screen" href="css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="css/Accurator.css" />
-<link type="text/css" rel="stylesheet" href="css/Accurator_rmafix.css" />
 <link type="text/css" rel="stylesheet" href="css/rangeslider.css" />
 <meta name="gwt:property" content="locale=nl" />
 <title>Accurator</title>

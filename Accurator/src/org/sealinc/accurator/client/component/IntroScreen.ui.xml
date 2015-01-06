@@ -22,7 +22,7 @@
 								</ui:msg>
 							</small>
 						</h2>
-						<g:Button ui:field="btnRegister" stylePrimaryName="button-overlay"
+						<g:Button ui:field="btnRegister" stylePrimaryName="btn btn-transparent"
 							text="Sign up"></g:Button>
 						<button class="btn btn-link introLink" data-toggle="modal"
 							data-target="#modalLogin">or Sign in</button>
