@@ -220,7 +220,7 @@ public class Utility {
 		}
 
 		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.adminRegisterUserURL, user, realname, password);
-		logger.warn("Using the following string to login:" + url);
+		
 		int statusCode = getStatusCode(url);
 		if (statusCode == 200) {
 			return true;

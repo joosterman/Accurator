@@ -32,16 +32,14 @@
 						<g:PasswordTextBox ui:field="txtRegisterPassword"
 							stylePrimaryName="form-control"></g:PasswordTextBox>
 					</div>
-					<div class="form-group">
-						<p>
-							<g:Label ui:field="lblRegisterMessage"></g:Label>
-						</p>
-					</div>
 				</form>
+			</div>
+			<div class="col-md-3 col-md-offset-1">
+				<g:FlowPanel ui:field="pnlWell"></g:FlowPanel>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-11 col-md-offset-1">
+			<div class="col-md-1 col-md-offset-1">
 				<g:Button ui:field="btnRegister" stylePrimaryName="btn btn-primary">
 					<ui:msg description="Register Button">Register</ui:msg>
 				</g:Button>

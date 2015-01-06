@@ -53,15 +53,15 @@ public class Accurator implements EntryPoint {
 	@UiField
 	Panel content, header;
 	@UiField
-	Label lblLoginMessage, lblRegisterMessage;
+	Label lblLoginMessage;
 	@UiField
 	Button btnDone, btnLogin;
 	@UiField
 	Anchor lnkLogout, lnkAbout, lnkLicenses;
 	@UiField
-	PasswordTextBox txtLoginPassword, txtRegisterPassword;
+	PasswordTextBox txtLoginPassword;
 	@UiField
-	TextBox txtLoginName, txtRegisterName, txtRegisterFullName;
+	TextBox txtLoginName;
 
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 	private List<HandlerRegistration> regs = new ArrayList<HandlerRegistration>();
@@ -95,7 +95,7 @@ public class Accurator implements EntryPoint {
 		return introScreen;
 	}
 
-	public RegisterScreen getRegisterScreen() {
+	private RegisterScreen getRegisterScreen() {
 		if (registerScreen == null) registerScreen = new RegisterScreen(this);
 		return registerScreen;
 	}
@@ -105,7 +105,7 @@ public class Accurator implements EntryPoint {
 		return recommendationScreen;
 	}
 
-	public UserManagement getManagement() {
+	private UserManagement getManagement() {
 		if (management == null) management = new UserManagement(this);
 		return management;
 	}
@@ -120,6 +120,14 @@ public class Accurator implements EntryPoint {
 
 	public void registerUser(String user, String pass, String fullName) {
 		getManagement().register(user, pass, fullName);
+	}
+	
+	public void registrationFailed(String failText) {
+		getRegisterScreen().setRegisterFailureText(failText);
+	}
+	
+	public void registrationFailedMessage(String failText, String message) {
+		getRegisterScreen().setRegisterFailureText(failText + " error: " + message);
 	}
 
 	@UiHandler("lnkAbout")

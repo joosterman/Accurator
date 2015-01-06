@@ -9,6 +9,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -19,9 +21,10 @@ public class RegisterScreen extends Composite {
 	Button btnRegister;
 	@UiField
 	TextBox txtRegisterUserName, txtRegisterPassword, txtRegisterFullName;
+	@UiField
+	FlowPanel pnlWell;
 	
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
-	
 	Accurator accurator;
 	
 	@UiHandler("btnRegister")
@@ -36,5 +39,13 @@ public class RegisterScreen extends Composite {
 	public RegisterScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.accurator = acc;
+	}
+	
+	public void setRegisterFailureText(String text) {
+		// clear the current
+		pnlWell.clear();
+		Label failLabel = new Label(text);
+		pnlWell.setStyleName("well");
+		pnlWell.add(failLabel);
 	}
 }

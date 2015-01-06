@@ -202,28 +202,17 @@ public class UserManagement {
 			@Override
 			public void onSuccess(Boolean isSuccess) {
 				if (isSuccess) {
-					setRegistrationFailed(false);
-					closeRegister();
 					login(user, password);
 				}
 				else {
-					setRegistrationFailed(true);
+					acc.registrationFailed(Utility.constants.registrationFailed());
 				}
 			}
-
+			
 			@Override
 			public void onFailure(Throwable caught) {
-				acc.lblRegisterMessage.setText("Account kon niet aangemaakt worden. Probeer nogmaals of neem contact op met de beheerder.");
+				acc.registrationFailedMessage(Utility.constants.registrationFailed(), caught.toString());
 			}
 		});
-	}
-
-	private native void closeRegister()/*-{
-		$wnd.jQuery("#modalRegister").modal("hide");
-	}-*/;
-
-	private void setRegistrationFailed(boolean failed) {
-		if (failed) acc.lblRegisterMessage.setText(Utility.constants.registrationFailed());
-		else acc.lblRegisterMessage.setText("");
 	}
 }
