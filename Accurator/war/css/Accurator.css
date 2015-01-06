@@ -40,6 +40,10 @@ a:hover {
 	overflow: scroll; height: 100%;
 }
 
+.page-title {
+	padding-top: 10px; padding-bottom: 10px;
+}
+
 /* Header */
 .logoutBlock .username {
 	position: relative; color: white; top: 5px; right: 150px;
@@ -48,23 +52,6 @@ a:hover {
 
 #headerImage {
 	height: 20px;
-}
-
-/* Footer */
-.introFooter {
-	height: 20px; position: fixed; bottom: 10px; left: 20px; right: 20px;
-}
-
-.footerLogo {
-	max-height: 90%; position: relative;
-}
-
-#footerLogoCommit {
-	float: right;
-}
-
-#footerLogoRijksmuseum {
-	float: left;
 }
 
 /* Login and registration */
@@ -95,7 +82,7 @@ a:hover {
 
 .backgroundImage {
 	position: relative; top: 0; left: 0;
-	/* Preserve aspect ratio */ min-width: 100%;
+	min-width: 100%;
 }
 
 /* Button */

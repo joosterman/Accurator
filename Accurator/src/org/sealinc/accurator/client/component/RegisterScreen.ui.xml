@@ -3,96 +3,49 @@
 	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
 	<g:HTMLPanel styleName="registerContent">
-		<div class="col-md-12">
-			<h2 class="page-title">
-				<label for="headerRegisterPage">
+		<div class="row">
+			<div class="col-md-11 col-md-offset-1">
+				<h2 class="page-title">
 					<ui:msg description="Create your Accurator Account">Create your Accurator Account</ui:msg>
-				</label>
-			</h2>
-		</div>
-		<div class="col-md-6">			
-			<form role="form">
-				<div class="form-group">
-					<label for="regrealName">
-						<ui:msg description="Full name">Full name</ui:msg>
-					</label>
-					<g:TextBox ui:field="txtRegisterFullName"
-						stylePrimaryName="form-control"></g:TextBox>
-				</div>
-				<div class="form-group">
-					<label for="name">
-						<ui:msg description="Username">Username</ui:msg>
-					</label>
-					<g:TextBox ui:field="txtRegisterName"
-						stylePrimaryName="form-control"></g:TextBox>
-				</div>
-				<div class="form-group">
-					<label for="password">
-						<ui:msg description="Password">Password</ui:msg>
-					</label>
-					<g:PasswordTextBox ui:field="txtRegisterPassword"
-						stylePrimaryName="form-control"></g:PasswordTextBox>
-				</div>
-				<div class="form-group">
-					<p>
-						<g:Label ui:field="lblRegisterMessage"></g:Label>
-					</p>
-				</div>
-			</form>
-		</div>
-		<!-- Register -->
-<!-- 		<div class="modal fade" id="modalRegister">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-hidden="true">&times; </button>
-						<h4 class="modal-title">
-							<ui:msg description="Register popup title">Register</ui:msg>
-						</h4>
-					</div>
-					<div class="modal-body bg-lighter">
-						<form role="form">
-							<div class="form-group">
-								<label for="name">
-									<ui:msg description="Username">Username</ui:msg>
-								</label>
-								<g:TextBox ui:field="txtRegisterName"
-									stylePrimaryName="form-control"></g:TextBox>
-							</div>
-							<div class="form-group">
-								<label for="password">
-									<ui:msg description="Password">Password</ui:msg>
-								</label>
-								<g:PasswordTextBox ui:field="txtRegisterPassword"
-									stylePrimaryName="form-control"></g:PasswordTextBox>
-							</div>
-							<div class="form-group">
-								<label for="regrealName">
-									<ui:msg description="Full name">Full name</ui:msg>
-								</label>
-								<g:TextBox ui:field="txtRegisterFullName"
-									stylePrimaryName="form-control"></g:TextBox>
-							</div>
-							<div class="form-group">
-								<p>
-									<g:Label ui:field="lblRegisterMessage"></g:Label>
-								</p>
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="button-overlay" data-dismiss="modal">Close</button>
-						<g:Button ui:field="btnRegister" stylePrimaryName="button-primary"
-							text="Register"></g:Button>
-						Just added to test
-						<g:Hyperlink targetHistoryToken="Register"
-							styleName="btn btn-danger btn-lg">
-						<ui:msg description="Start annotating!">Start annotating!</ui:msg>
-						</g:Hyperlink>
-					</div>
-				</div>
+				</h2>
 			</div>
-		</div> -->
+			<div class="col-md-5 col-md-offset-1">			
+				<form role="form">
+					<div class="form-group">
+						<label for="regrealName">
+							<ui:msg description="Full name">Full name</ui:msg>
+						</label>
+						<g:TextBox ui:field="txtRegisterFullName"
+							stylePrimaryName="form-control"></g:TextBox>
+					</div>
+					<div class="form-group">
+						<label for="name">
+							<ui:msg description="Username">Username</ui:msg>
+						</label>
+						<g:TextBox ui:field="txtRegisterUserName"
+							stylePrimaryName="form-control"></g:TextBox>
+					</div>
+					<div class="form-group">
+						<label for="password">
+							<ui:msg description="Password">Password</ui:msg>
+						</label>
+						<g:PasswordTextBox ui:field="txtRegisterPassword"
+							stylePrimaryName="form-control"></g:PasswordTextBox>
+					</div>
+					<div class="form-group">
+						<p>
+							<g:Label ui:field="lblRegisterMessage"></g:Label>
+						</p>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-11 col-md-offset-1">
+				<g:Button ui:field="btnRegister" stylePrimaryName="button-primary">
+					<ui:msg description="Register Button">Register</ui:msg>
+				</g:Button>
+			</div>
+		</div>
 	</g:HTMLPanel>
 </ui:UiBinder>

@@ -118,15 +118,9 @@ public class Accurator implements EntryPoint {
 		getManagement().login(user, pass);
 	}
 
-//Not needed anymore because of register screen
-//	@UiHandler("btnRegister")
-//	void btnRegisterClick(ClickEvent e) {
-//		// get the entered fields
-//		String user = txtRegisterName.getText();
-//		String pass = txtRegisterPassword.getText();
-//		String fullName = txtRegisterFullName.getText();
-//		getManagement().register(user, pass, fullName);
-//	}
+	public void registerUser(String user, String pass, String fullName) {
+		getManagement().register(user, pass, fullName);
+	}
 
 	@UiHandler("lnkAbout")
 	void lnkAboutClick(ClickEvent e) {
