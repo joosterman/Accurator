@@ -9,7 +9,7 @@
 					<ui:msg description="Create your Accurator Account">Create your Accurator Account</ui:msg>
 				</h2>
 			</div>
-			<div class="col-md-5 col-md-offset-1">			
+			<div class="col-md-3 col-md-offset-1">			
 				<form role="form">
 					<div class="form-group">
 						<label for="regrealName">
@@ -42,7 +42,7 @@
 		</div>
 		<div class="row">
 			<div class="col-md-11 col-md-offset-1">
-				<g:Button ui:field="btnRegister" stylePrimaryName="button-primary">
+				<g:Button ui:field="btnRegister" stylePrimaryName="btn btn-primary">
 					<ui:msg description="Register Button">Register</ui:msg>
 				</g:Button>
 			</div>

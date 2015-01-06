@@ -94,9 +94,9 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="button-overlay" data-dismiss="modal">Close</button>
-						<g:Button ui:field="btnLogin" stylePrimaryName="button-primary"
-							text="Log in"></g:Button>
+						<g:Button ui:field="btnLogin" stylePrimaryName="btn btn-primary">
+							<ui:msg description="loginButton">Login</ui:msg>
+						</g:Button>
 					</div>
 				</div>
 			</div>
