@@ -25,7 +25,8 @@ public class Config {
 		}
 	}
 
-	public static final String baseURL = "http://sealinc.ops.few.vu.nl/accurator/";
+//	public static final String baseURL = "http://sealinc.ops.few.vu.nl/accurator/";
+	public static final String baseURL = "http://dhcp-173-217.clients.vu.nl:3020/";
 
 	public static final String sparqlEndpoint = baseURL + "sparql/";
 	public static final String annotationComponentURL = baseURL + "annotate";

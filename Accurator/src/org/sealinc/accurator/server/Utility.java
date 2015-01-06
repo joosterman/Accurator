@@ -220,6 +220,7 @@ public class Utility {
 		}
 
 		String url = String.format("%s?user=%s&realname=%s&password=%s", Config.adminRegisterUserURL, user, realname, password);
+		logger.warn("Using the following string to login:" + url);
 		int statusCode = getStatusCode(url);
 		if (statusCode == 200) {
 			return true;
@@ -242,6 +243,7 @@ public class Utility {
 		}
 		// get new cookie
 		String url = String.format("%s?user=%s&password=%s", Config.loginURL, Config.adminUsername, Config.adminPassword);
+		
 		int code = -1;
 		try {
 			URL u = new URL(url);
