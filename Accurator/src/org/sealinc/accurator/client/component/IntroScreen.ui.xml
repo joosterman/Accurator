@@ -25,7 +25,7 @@
 						<g:Button ui:field="btnRegister" stylePrimaryName="btn btn-transparent">
 							<ui:msg description="RegisterButton">Register</ui:msg>
 						</g:Button>
-						<button class="btn btn-link introLink" data-toggle="modal" data-target="#modalLogin">
+						<button class="btn btn-link" data-toggle="modal" data-target="#modalLogin">
 							<ui:msg description="SignInButton">or Sign in</ui:msg>
 						</button>
 					</div>

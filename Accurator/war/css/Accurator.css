@@ -98,15 +98,15 @@ a:hover {
 	background-color: #fff; text-decoration: none;
 }
 /* Button */
-.introLink {
+.btn-link {
 	color: #505050;
 }
 
-.introLink:hover {
+.btn-link:hover {
 	color: #909090; cursor: pointer;
 }
 
-.introLink:focus {
+.btn-link:focus {
 	outline: none;
 }
 
