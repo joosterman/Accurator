@@ -12,11 +12,31 @@
 			<div class="col-md-3 col-md-offset-1">			
 				<form role="form">
 					<div class="form-group">
+						<label for="age">
+							<ui:msg description="Age">Age</ui:msg>
+						</label>
+						<g:IntegerBox ui:field="intAge" stylePrimaryName="form-control formAge">
+						</g:IntegerBox>
+					</div>
+					<div class="form-group">
+						<label for="gender">
+							<ui:msg description="Gender">Gender</ui:msg>
+						</label>
+						<br/>
+						<label class="radio-inline">
+							<g:RadioButton ui:field="chkGenderMale" name="genderRadio"/>
+							<ui:msg description="Male">Male</ui:msg>
+						</label>
+						<label class="radio-inline">
+							<g:RadioButton ui:field="chkGenderFemale" name="genderRadio"/>
+							<ui:msg description="Female">Female</ui:msg>
+						</label>
+					</div>
+					<div class="form-group">
 						<label for="mailAddress">
 							<ui:msg description="Email address">Email</ui:msg>
 						</label>
-						<g:TextBox ui:field="txtEMail"
-							stylePrimaryName="form-control">
+						<g:TextBox ui:field="txtEMail" stylePrimaryName="form-control">
 						</g:TextBox>
 					</div>
 				</form>
@@ -26,9 +46,9 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-2 col-md-offset-1">
+			<div class="col-md-4 col-md-offset-1">
 				<g:Button ui:field="btnAddInfo" stylePrimaryName="btn btn-primary">
-					<ui:msg description="Register Button">Register</ui:msg>
+					<ui:msg description="Add Info Button">Add Additional Info</ui:msg>
 				</g:Button>
 				<g:Button ui:field="btnSkip" stylePrimaryName="btn btn-link">
 					<ui:msg description="Skip Button">or skip this step</ui:msg>
