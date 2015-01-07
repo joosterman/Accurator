@@ -10,12 +10,16 @@
  *******************************************************************************/
 package org.sealinc.accurator.client.service;
 
+import java.util.List;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("AdminComponentService")
 public interface AdminComponentService extends RemoteService {
+	
+	public List<String> getCountries();
 	boolean register(String user, String password, String realName);
 
 	String getJSON(String url);

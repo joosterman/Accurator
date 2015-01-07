@@ -1,13 +1,16 @@
 package org.sealinc.accurator.client.component;
 
+import java.util.List;
+
 import org.sealinc.accurator.client.Accurator;
-import org.sealinc.accurator.server.Utility;
+import org.sealinc.accurator.client.Utility;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -53,10 +56,16 @@ public class AddInfoScreen extends Composite {
 	}
 	
 	private void addCountries() {
-		String[] countryList = Utility.getCountryList();
-		for(int i=0; i<countryList.length; i++) {
-			System.out.println(countryList[i]);
-		}
+		Utility.adminService.getCountries(new AsyncCallback<List<String>>() {
+			public void onSuccess(List<String> countries) {
+				System.out.println("blaat");
+				for (String country : countries) {
+					System.out.println(country);
+				}
+			}
+			@Override
+			public void onFailure(Throwable caught) {}
+		});
 		lbxCountry.addItem("Nederland");
 		lbxCountry.addItem("Duitsland");
 	}

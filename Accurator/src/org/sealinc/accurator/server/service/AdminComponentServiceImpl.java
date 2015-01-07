@@ -2,9 +2,14 @@ package org.sealinc.accurator.server.service;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+
 import org.sealinc.accurator.client.service.AdminComponentService;
 import org.sealinc.accurator.server.Utility;
+
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class AdminComponentServiceImpl extends RemoteServiceServlet implements AdminComponentService {
@@ -33,6 +38,17 @@ public class AdminComponentServiceImpl extends RemoteServiceServlet implements A
 		url += "nocache=" + new Random().nextInt();
 
 		return Utility.getHTMLContent(url);
+	}
+	
+	/**
+	 * Get list of countries.
+	 * 
+	 * @return String[] of countries
+	 */
+	@Override
+	public List<String> getCountries() {
+		List<String> countryList = Arrays.asList(Locale.getISOCountries());		
+		return countryList;
 	}
 
 }
