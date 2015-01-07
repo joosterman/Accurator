@@ -9,35 +9,49 @@
 					<ui:msg description="Create your Accurator Account">Create your Accurator Account</ui:msg>
 				</h2>
 			</div>
-			<div class="col-md-3 col-md-offset-1">			
-				<form role="form">
+			<div class="col-md-6 col-md-offset-1">			
+				<form class="form-horizontal">
 					<div class="form-group">
-						<label for="age">
+						<label for="age" class="col-sm-2 control-label">
 							<ui:msg description="Age">Age</ui:msg>
 						</label>
-						<g:IntegerBox ui:field="intAge" stylePrimaryName="form-control formAge">
-						</g:IntegerBox>
+						<div class="col-sm-2">
+							<g:IntegerBox ui:field="intAge" stylePrimaryName="form-control">
+							</g:IntegerBox>
+						</div>
 					</div>
 					<div class="form-group">
-						<label for="gender">
+						<label for="gender" class="col-sm-2 control-label">
 							<ui:msg description="Gender">Gender</ui:msg>
 						</label>
-						<br/>
-						<label class="radio-inline">
-							<g:RadioButton ui:field="chkGenderMale" name="genderRadio"/>
-							<ui:msg description="Male">Male</ui:msg>
-						</label>
-						<label class="radio-inline">
-							<g:RadioButton ui:field="chkGenderFemale" name="genderRadio"/>
-							<ui:msg description="Female">Female</ui:msg>
-						</label>
+						<div class="col-sm-6">
+							<label class="radio-inline">
+								<g:RadioButton ui:field="chkGenderMale" name="genderRadio"/>
+								<ui:msg description="Male">Male</ui:msg>
+							</label>
+							<label class="radio-inline">
+								<g:RadioButton ui:field="chkGenderFemale" name="genderRadio"/>
+								<ui:msg description="Female">Female</ui:msg>
+							</label>
+						</div>
 					</div>
 					<div class="form-group">
-						<label for="mailAddress">
+						<label for="country"  class="col-sm-2 control-label">
+							<ui:msg description="lblCountry">Country</ui:msg>
+						</label>
+						<div class="col-sm-6">
+						<g:ListBox ui:field="lbxCountry" stylePrimaryName="form-control">
+						</g:ListBox>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="mailAddress" class="col-sm-2 control-label">
 							<ui:msg description="Email address">Email</ui:msg>
 						</label>
-						<g:TextBox ui:field="txtEMail" stylePrimaryName="form-control">
-						</g:TextBox>
+						<div class="col-sm-6">
+							<g:TextBox ui:field="txtEMail" stylePrimaryName="form-control">
+							</g:TextBox>
+						</div>
 					</div>
 				</form>
 			</div>

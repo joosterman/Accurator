@@ -1,7 +1,7 @@
 package org.sealinc.accurator.client.component;
 
-
 import org.sealinc.accurator.client.Accurator;
+import org.sealinc.accurator.server.Utility;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -29,6 +30,8 @@ public class AddInfoScreen extends Composite {
 	@UiField
 	RadioButton chkGenderMale, chkGenderFemale;
 	@UiField
+	ListBox lbxCountry;
+	@UiField
 	FlowPanel pnlInfoWell;
 	
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
@@ -44,13 +47,19 @@ public class AddInfoScreen extends Composite {
 	public AddInfoScreen(Accurator acc) {
 		initWidget(uiBinder.createAndBindUi(this));
 		this.accurator = acc;
-		
-//		intAge.getElement().setAttribute("type", "number");
 		intAge.setMaxLength(3);
-		intAge.setVisibleLength(3);
+		addCountries();
 //		txtEMail.getElement().setAttribute("type", "email");
 	}
 	
+	private void addCountries() {
+		String[] countryList = Utility.getCountryList();
+		for(int i=0; i<countryList.length; i++) {
+			System.out.println(countryList[i]);
+		}
+		lbxCountry.addItem("Nederland");
+		lbxCountry.addItem("Duitsland");
+	}
 	public void setInfoFailureText(String text) {
 		// clear the current
 		pnlInfoWell.clear();
