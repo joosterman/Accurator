@@ -60,7 +60,7 @@ public class AddInfoScreen extends Composite {
 			public void onSuccess(List<String> countries) {
 				System.out.println("blaat");
 				for (String country : countries) {
-					System.out.println(country);
+					lbxCountry.addItem(country);
 				}
 			}
 			@Override
