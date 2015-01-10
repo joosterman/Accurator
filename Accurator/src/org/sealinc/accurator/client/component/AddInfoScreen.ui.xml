@@ -81,7 +81,7 @@
 					<!-- Level of education -->
 					<div class="form-group">
 						<label for="education"  class="col-sm-4 control-label">
-							<ui:msg description="qstEducation">What is the highest level of education you have achieved?</ui:msg>
+							<ui:msg description="qstEducation">What is the highest level of education you have recieved?</ui:msg>
 						</label>
 						<div class="col-sm-6">
 						<g:ListBox ui:field="lbxEducation" stylePrimaryName="form-control">

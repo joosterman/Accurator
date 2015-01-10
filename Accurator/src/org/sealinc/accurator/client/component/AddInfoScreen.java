@@ -33,7 +33,7 @@ public class AddInfoScreen extends Composite {
 	@UiField
 	RadioButton chkGenderMale, chkGenderFemale;
 	@UiField
-	ListBox lbxCountry;
+	ListBox lbxCountry, lbxEducation, lbxIncome;
 	@UiField
 	FlowPanel pnlInfoWell;
 	
@@ -52,6 +52,8 @@ public class AddInfoScreen extends Composite {
 		this.accurator = acc;
 		intAge.setMaxLength(3);
 		addCountries();
+		addEducationLevels();
+		addIncomeLevels();
 //		txtEMail.getElement().setAttribute("type", "email");
 	}
 	
@@ -69,6 +71,37 @@ public class AddInfoScreen extends Composite {
 		lbxCountry.addItem("Nederland");
 		lbxCountry.addItem("Duitsland");
 	}
+	
+	private void addEducationLevels() {
+		String[] educationLevels = {"",
+									Utility.constants.primarySchool(),
+									Utility.constants.highSchool(),
+									Utility.constants.college(),
+									Utility.constants.bachelor(),
+									Utility.constants.master(),
+									Utility.constants.doctorate()};
+		
+		for(int i=0; i<educationLevels.length; i++) {
+			lbxEducation.addItem(educationLevels[i]);
+		}
+	}
+	
+	private void addIncomeLevels() {
+		String[] incomeLevels = {"",
+								 Utility.constants.income20(),
+								 Utility.constants.income20to35(),
+								 Utility.constants.income35to50(),
+								 Utility.constants.income50to75(),
+								 Utility.constants.income75to100(),
+								 Utility.constants.income100to150(),
+								 Utility.constants.income150to200(),
+								 Utility.constants.income200()};
+		
+		for(int i=0; i<incomeLevels.length; i++) {
+			lbxIncome.addItem(incomeLevels[i]);
+		}
+	}
+	
 	public void setInfoFailureText(String text) {
 		// clear the current
 		pnlInfoWell.clear();
