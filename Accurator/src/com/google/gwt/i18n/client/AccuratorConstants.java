@@ -24,4 +24,10 @@ public interface AccuratorConstants extends ConstantsWithLookup {
 	String income100to150();
 	String income150to200();
 	String income200();
+//	Internet usage question options
+	String internetAlways();
+	String internetOnceADay();
+	String internet3to5();
+	String internet1to2();
+	String internetLessThan1();
 }

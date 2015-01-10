@@ -33,7 +33,7 @@ public class AddInfoScreen extends Composite {
 	@UiField
 	RadioButton chkGenderMale, chkGenderFemale;
 	@UiField
-	ListBox lbxCountry, lbxEducation, lbxIncome;
+	ListBox lbxCountry, lbxEducation, lbxIncome, lbxInternetUsage;
 	@UiField
 	FlowPanel pnlInfoWell;
 	
@@ -54,13 +54,13 @@ public class AddInfoScreen extends Composite {
 		addCountries();
 		addEducationLevels();
 		addIncomeLevels();
+		addInternetUseLevels();
 //		txtEMail.getElement().setAttribute("type", "email");
 	}
 	
 	private void addCountries() {
 		Utility.adminService.getCountries(new AsyncCallback<List<String>>() {
 			public void onSuccess(List<String> countries) {
-				System.out.println("blaat");
 				for (String country : countries) {
 					lbxCountry.addItem(country);
 				}
@@ -68,8 +68,6 @@ public class AddInfoScreen extends Composite {
 			@Override
 			public void onFailure(Throwable caught) {}
 		});
-		lbxCountry.addItem("Nederland");
-		lbxCountry.addItem("Duitsland");
 	}
 	
 	private void addEducationLevels() {
@@ -99,6 +97,19 @@ public class AddInfoScreen extends Composite {
 		
 		for(int i=0; i<incomeLevels.length; i++) {
 			lbxIncome.addItem(incomeLevels[i]);
+		}
+	}
+	
+	private void addInternetUseLevels() {
+		String[] internetUseLevels = {"",
+								 Utility.constants.internetAlways(),
+								 Utility.constants.internetOnceADay(),
+								 Utility.constants.internet3to5(),
+								 Utility.constants.internet1to2(),
+								 Utility.constants.internetLessThan1()};
+		
+		for(int i=0; i<internetUseLevels.length; i++) {
+			lbxInternetUsage.addItem(internetUseLevels[i]);
 		}
 	}
 	
