@@ -126,6 +126,10 @@
 								<g:CheckBox ui:field="chkSocialTwitter" name="socialNetworkCheckbox"/>
 								<ui:msg description="Twitter">Twitter</ui:msg>
 							</label>
+							<label class="checkbox-inline">
+								<g:CheckBox ui:field="chkSocialNone" name="socialNetworkCheckbox"/>
+								<ui:msg description="None">None of these</ui:msg>
+							</label>
 						</div>
 					</div>
 					<!-- Internet usage -->
@@ -217,6 +221,10 @@
 							<label class="checkbox-inline">
 								<g:CheckBox ui:field="chkTagSiteSteve" name="tagSiteCheckbox"/>
 								<ui:msg description="SteveMuseum">Steve.Museum</ui:msg>
+							</label>
+							<label class="checkbox-inline">
+								<g:CheckBox ui:field="chkTagNone" name="tagSiteCheckbox"/>
+								<ui:msg description="None">None of these</ui:msg>
 							</label>
 						</div>
 					</div>
