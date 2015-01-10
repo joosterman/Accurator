@@ -19,9 +19,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IntegerBox;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
@@ -45,8 +43,8 @@ public class AddInfoScreen extends Composite {
 			 chkTagSiteWaIsDa, chkTagSiteSpotvogel, chkTagSiteSteve, chkTagNone;
 	@UiField
 	ListBox lbxCountry, lbxLanguage, lbxEducation, lbxIncome, lbxInternetUsage;
-	@UiField
-	FlowPanel pnlInfoWell;
+//	@UiField
+//	FlowPanel pnlInfoWell;
 	
 	private static MyUiBinder uiBinder = GWT.create(MyUiBinder.class);
 	Accurator accurator;
@@ -414,11 +412,11 @@ public class AddInfoScreen extends Composite {
 		}
 	}
 	
-	public void setInfoFailureText(String text) {
-		// clear the current
-		pnlInfoWell.clear();
-		Label lblFailInfo = new Label(text);
-		pnlInfoWell.setStyleName("well");
-		pnlInfoWell.add(lblFailInfo);
-	}
+//	public void setInfoFailureText(String text) {
+//		// clear the current
+//		pnlInfoWell.clear();
+//		Label lblFailInfo = new Label(text);
+//		pnlInfoWell.setStyleName("well");
+//		pnlInfoWell.add(lblFailInfo);
+//	}
 }

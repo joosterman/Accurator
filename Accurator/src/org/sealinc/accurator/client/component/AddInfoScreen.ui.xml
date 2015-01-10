@@ -2,15 +2,15 @@
 	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
 	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
 	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
-	<g:HTMLPanel styleName="registerContent">
+	<g:HTMLPanel>
 		<div class="row">
-			<div class="col-md-11 col-md-offset-1">
+			<div class="col-md-10 col-md-offset-1">
 				<h2 class="page-title">
 					<ui:msg description="Additional Info">Additional Info</ui:msg>
 					<small><ui:msg description="Additional Info Thanks">it would help us a lot if you would provide us with the following information</ui:msg></small>
 				</h2>
 			</div>
-			<div class="col-md-11 col-md-offset-1">			
+			<div class="col-md-10 col-md-offset-1">			
 				<form class="form-horizontal">
 					<!-- Age -->
 					<div class="form-group">
@@ -230,9 +230,9 @@
 					</div>
 				</form>
 			</div>
-			<div class="col-md-3 col-md-offset-1">
+<!-- 			<div class="col-md-1">
 				<g:FlowPanel ui:field="pnlInfoWell"></g:FlowPanel>
-			</div>
+			</div> -->
 		</div>
 		<div class="row">
 			<div class="col-md-4 col-md-offset-1">
