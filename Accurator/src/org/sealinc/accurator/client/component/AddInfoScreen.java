@@ -33,7 +33,7 @@ public class AddInfoScreen extends Composite {
 	@UiField
 	RadioButton chkGenderMale, chkGenderFemale;
 	@UiField
-	ListBox lbxCountry, lbxEducation, lbxIncome, lbxInternetUsage;
+	ListBox lbxCountry, lbxLanguage, lbxEducation, lbxIncome, lbxInternetUsage;
 	@UiField
 	FlowPanel pnlInfoWell;
 	
@@ -52,6 +52,7 @@ public class AddInfoScreen extends Composite {
 		this.accurator = acc;
 		intAge.setMaxLength(3);
 		addCountries();
+		addLanguages();
 		addEducationLevels();
 		addIncomeLevels();
 		addInternetUseLevels();
@@ -59,10 +60,24 @@ public class AddInfoScreen extends Composite {
 	}
 	
 	private void addCountries() {
+		lbxCountry.addItem("");
 		Utility.adminService.getCountries(new AsyncCallback<List<String>>() {
 			public void onSuccess(List<String> countries) {
 				for (String country : countries) {
 					lbxCountry.addItem(country);
+				}
+			}
+			@Override
+			public void onFailure(Throwable caught) {}
+		});
+	}
+	
+	private void addLanguages() {
+		lbxLanguage.addItem("");
+		Utility.adminService.getLanguages(new AsyncCallback<List<String>>() {
+			public void onSuccess(List<String> languages) {
+				for (String language : languages) {
+					lbxLanguage.addItem(language);
 				}
 			}
 			@Override

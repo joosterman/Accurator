@@ -20,6 +20,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface AdminComponentService extends RemoteService {
 	
 	public List<String> getCountries();
+	public List<String> getLanguages();
 	boolean register(String user, String password, String realName);
 
 	String getJSON(String url);

@@ -11,5 +11,7 @@ public interface AdminComponentServiceAsync {
 	void getJSON(String url, AsyncCallback<String> callback);
 	
 	void getCountries(AsyncCallback<List<String>> callback);
+	
+	void getLanguages(AsyncCallback<List<String>> callback);
 
 }
