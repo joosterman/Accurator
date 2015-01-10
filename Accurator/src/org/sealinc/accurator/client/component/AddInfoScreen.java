@@ -200,13 +200,15 @@ public class AddInfoScreen extends Composite {
 		String socialMedia = "unknown";
 		if(chkSocialFacebook.getValue() == true) {
 			socialMedia = "facebook";
-		} else if(chkSocialLinkedIn.getValue() == true){
+		}
+		if(chkSocialLinkedIn.getValue() == true){
 			if (chkSocialFacebook.getValue() == true) {
 				socialMedia += " linkedin";
 			} else {
 				socialMedia = "linkedin";
 			}
-		} else if(chkSocialTwitter.getValue() == true){
+		}
+		if(chkSocialTwitter.getValue() == true){
 			if (chkSocialFacebook.getValue() == true || chkSocialLinkedIn.getValue() == true) {
 				socialMedia += " twitter";
 			} else {
@@ -283,13 +285,15 @@ public class AddInfoScreen extends Composite {
 		String taggingSites = "unknown";
 		if(chkTagSiteWaIsDa.getValue() == true) {
 			taggingSites = "waisda";
-		} else if(chkTagSiteSpotvogel.getValue() == true){
+		}
+		if(chkTagSiteSpotvogel.getValue() == true){
 			if (chkTagSiteWaIsDa.getValue() == true) {
 				taggingSites += " spotvogel";
 			} else {
 				taggingSites = "spotvogel";
 			}
-		} else if(chkTagSiteSteve.getValue() == true){
+		}
+		if(chkTagSiteSteve.getValue() == true){
 			if (chkTagSiteWaIsDa.getValue() == true || chkTagSiteSpotvogel.getValue() == true) {
 				taggingSites += " steve";
 			} else {
