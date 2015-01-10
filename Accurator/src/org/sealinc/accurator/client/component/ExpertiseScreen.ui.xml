@@ -1,0 +1,33 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	ui:generateFormat='com.google.gwt.i18n.rebind.format.PropertiesFormat'
+	ui:generateKeys="com.google.gwt.i18n.rebind.keygen.MD5KeyGenerator"
+	ui:generateLocales="default" xmlns:g='urn:import:com.google.gwt.user.client.ui'>
+	<g:HTMLPanel>
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<h2 class="page-title">
+					<ui:msg description="Expertise">Expertise</ui:msg>
+					<small><ui:msg description="Expertise Question">how much do you know about the following topics</ui:msg></small>
+				</h2>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-1">
+				<g:FlowPanel ui:field="pnlExpertiseLeft"></g:FlowPanel>
+			</div>
+			<div class="col-md-4 col-md-offset-1">
+				<g:FlowPanel ui:field="pnlExpertiseRight"></g:FlowPanel>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 col-md-offset-1">
+				<g:Button ui:field="btnExpertise" stylePrimaryName="btn btn-primary">
+					<ui:msg description="Add Info Button">Add Expertise</ui:msg>
+				</g:Button>
+				<g:Button ui:field="btnSkipExpertise" stylePrimaryName="btn btn-link">
+					<ui:msg description="Skip Button">or skip this step</ui:msg>
+				</g:Button>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

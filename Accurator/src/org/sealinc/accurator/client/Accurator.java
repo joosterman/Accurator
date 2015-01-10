@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.sealinc.accurator.client.component.AddInfoScreen;
 import org.sealinc.accurator.client.component.AnnotateScreen;
+import org.sealinc.accurator.client.component.ExpertiseScreen;
 import org.sealinc.accurator.client.component.IntroScreen;
 import org.sealinc.accurator.client.component.ProfileScreen;
 import org.sealinc.accurator.client.component.RecommendedItems;
@@ -48,7 +49,7 @@ public class Accurator implements EntryPoint {
 	interface MyUiBinder extends UiBinder<Widget, Accurator> {}
 
 	public enum State {
-		Annotate, Profile, Quality, Admin, Recommendation, Intro, Register, AddInfo
+		Annotate, Profile, Quality, Admin, Recommendation, Intro, Register, AddInfo, Expertise
 	};
 
 	@UiField
@@ -74,6 +75,7 @@ public class Accurator implements EntryPoint {
 	private IntroScreen introScreen;
 	private RegisterScreen registerScreen;
 	private AddInfoScreen addInfoScreen;
+	private ExpertiseScreen expertiseScreen;
 	private RecommendedItems recommendationScreen;
 	private UserManagement management;
 	private boolean hasPredefinedAnnotationOrder = false;
@@ -105,6 +107,11 @@ public class Accurator implements EntryPoint {
 	private AddInfoScreen getAddInfoScreen() {
 		if (addInfoScreen == null) addInfoScreen = new AddInfoScreen(this);
 		return addInfoScreen;
+	}
+	
+	private ExpertiseScreen getExpertiseScreen() {
+		if (expertiseScreen == null) expertiseScreen = new ExpertiseScreen(this);
+		return expertiseScreen;
 	}
 	
 	private RecommendedItems getRecommendationScreen() {
@@ -437,6 +444,9 @@ public class Accurator implements EntryPoint {
 					break;
 				case AddInfo:
 					content.add(getAddInfoScreen());
+					break;
+				case Expertise:
+					content.add(getExpertiseScreen());
 					break;
 				default:
 					content.add(getIntroScreen());
