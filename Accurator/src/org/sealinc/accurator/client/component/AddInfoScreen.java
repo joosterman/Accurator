@@ -3,10 +3,15 @@ package org.sealinc.accurator.client.component;
 import java.util.List;
 
 import org.sealinc.accurator.client.Accurator;
+import org.sealinc.accurator.client.JsUserProfileEntry;
 import org.sealinc.accurator.client.Utility;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -56,38 +61,60 @@ public class AddInfoScreen extends Composite {
 	
 	@UiHandler("btnAddInfo")
 	void btnAddInfoClick(ClickEvent e) {
+		String user = Utility.getQualifiedUsername();
 		// get the entered fields
 		int age = getAge();
+		Utility.storeUserProfileEntry(user, "age", "user", user, Integer.toString(age), "int");
 		String gender = getGender();
+		Utility.storeUserProfileEntry(user, "gender", "user", user, gender, "String");
 		String country = getCountry();
+		Utility.storeUserProfileEntry(user, "country", "user", user, country, "String");
 		String community = getCommunity();
+		Utility.storeUserProfileEntry(user, "community", "user", user, community, "String");
 		String language = getLanguage();
+		Utility.storeUserProfileEntry(user, "language", "user", user, language, "String");
 		String education = getEducation();
+		Utility.storeUserProfileEntry(user, "education", "user", user, education, "String");
 		String income = getIncome();
+		Utility.storeUserProfileEntry(user, "income", "user", user, income, "String");
 		String mail = getMail(); 
+		Utility.storeUserProfileEntry(user, "mail", "user", user, mail, "String");
 		String socialMedia = getSocialMedia();
+		Utility.storeUserProfileEntry(user, "socialMedia", "user", user, socialMedia, "String");
 		String internetUsage = getInternetUsage();
+		Utility.storeUserProfileEntry(user, "internetUsage", "user", user, internetUsage, "String");
 		int museumVisits = getMuseumVisits();
+		Utility.storeUserProfileEntry(user, "museumVisits", "user", user, Integer.toString(museumVisits), "integer");
 		String museumEmployee = getMuseumEmployee();
+		Utility.storeUserProfileEntry(user, "museumEmployee", "user", user, museumEmployee, "String");
 		String taggingExperience = getTaggingExperience();
+		Utility.storeUserProfileEntry(user, "taggingExperience", "user", user, taggingExperience, "String");
 		String taggingLevel = getTaggingLevel();
+		Utility.storeUserProfileEntry(user, "taggingLevel", "user", user, taggingLevel, "String");
 		String tagSites = getTagSites();
+		Utility.storeUserProfileEntry(user, "tagSites", "user", user, tagSites, "String");
 		
-		System.out.println(age);
-		System.out.println(gender);
-		System.out.println(country);
-		System.out.println(community);
-		System.out.println(language);
-		System.out.println(education);
-		System.out.println(income);
-		System.out.println(mail);
-		System.out.println(socialMedia);
-		System.out.println(internetUsage);
-		System.out.println(museumVisits);
-		System.out.println(museumEmployee);
-		System.out.println(taggingExperience);
-		System.out.println(taggingLevel);
-		System.out.println(tagSites);
+		printEntry(user, "gender", "user", user);
+	}
+	
+	private void printEntry(String user, String dimension, String scope, String provider) {
+		RequestCallback callback = new RequestCallback() {
+			@Override
+			public void onResponseReceived(Request request, Response response) {
+				JsArray<JsUserProfileEntry> entries = Utility.parseUserProfileEntry(response.getText());
+				String value = "";
+				if (entries != null && entries.length() > 0) {
+					System.out.println("entires are not null or lenght 0");
+					value = entries.get(0).getValueAsString();
+				}
+				System.out.println("The value of age: " + value);
+			}
+
+			@Override
+			public void onError(Request request, Throwable exception) {}
+		};
+		System.out.println(user + dimension + scope + provider);
+		Utility.getUserProfileEntry(user, dimension, scope, provider, callback);
 	}
 	
 	private int getAge() {
