@@ -195,11 +195,11 @@
 								<ui:msg description="Novice">Novice</ui:msg>
 							</label>
 							<label class="radio-inline">
-								<g:RadioButton ui:field="chkIntermediate" name="TaggingLevelRadio"/>
+								<g:RadioButton ui:field="chkTaggingIntermediate" name="TaggingLevelRadio"/>
 								<ui:msg description="Intermediate">Intermediate</ui:msg>
 							</label>
 							<label class="radio-inline">
-								<g:RadioButton ui:field="chkExpert" name="TaggingLevelRadio"/>
+								<g:RadioButton ui:field="chkTaggingExpert" name="TaggingLevelRadio"/>
 								<ui:msg description="Expert">Expert</ui:msg>
 							</label>
 						</div>
