@@ -23,6 +23,7 @@
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/bootbox.js"></script>
 <script type="text/javascript" src="js/rangeslider.min.js"></script>
+<script src="http://google-analytics.com/ga.js"></script>
 
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -39,6 +40,6 @@
 		<div
 			style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
 			Your web browser must have JavaScript enabled in order for this application to display correctly.</div>
-	</noscript>
+	</noscript>	
 </body>
 </html>

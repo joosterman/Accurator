@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
@@ -26,13 +25,14 @@ public class IntroScreen extends Composite {
 	InlineLabel lblLearnMore;
 	@UiField
 	Image imgBackground;
-	@UiField
+
+	/*@UiField
 	Anchor btnLogin;
 
 	@UiHandler("btnLogin")
 	void btnLoginClick(ClickEvent e) {
 		accurator.login_demo();
-	}
+	}*/
 
 	@Override
 	public void setHeight(String height) {

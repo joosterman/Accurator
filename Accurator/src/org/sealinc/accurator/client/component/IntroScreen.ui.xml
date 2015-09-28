@@ -33,8 +33,9 @@
 									<p>Share your knowledge and annotate artworks from the
 										Rijksmuseum.</p>
 									<p>
-										<g:Anchor ui:field="btnLogin" target="_blank" styleName="btn btn-lg btn-danger">Start
-											ANNOTATING!</g:Anchor>
+										<a href="http://annotate.accurator.nl" target="_blank" class="btn btn-lg btn-danger" role="button">Start ANNOTATING!</a>
+										<!-- <g:Anchor ui:field="btnLogin" target="_blank" styleName="btn btn-lg btn-danger">Start
+											ANNOTATING!</g:Anchor> -->
 									</p>
 								</div>
 							</div>
@@ -74,7 +75,7 @@
 									<h1>Cluster Search</h1>
 									<p>Clustering cultural heritage objects using Linked Data.</p>
 									<p>
-										<a class="btn btn-lg btn-danger" href="http://sealinc.ops.few.vu.nl/clustersearch/"
+										<a class="btn btn-lg btn-danger" href="http://sealinc.ops.few.vu.nl/clustersearch/cluster_search"
 											target="_blank" role="button">Experience the SEARCH!</a>
 									</p>
 								</div>

@@ -22,8 +22,6 @@
 	<!-- Other module inherits -->
 	<inherits name="com.googlecode.objectify.Objectify" />
 
-	<!-- Google Analytics script -->
-	<script src="http://google-analytics.com/ga.js"/>
 	<!-- Specify the app entry point class. -->
 	<entry-point class='org.sealinc.accurator.client.Accurator' />
 
